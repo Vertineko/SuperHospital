@@ -7,10 +7,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Patient-Server</artifactId>
+    <artifactId>Admin-Server</artifactId>
     <packaging>jar</packaging>
 
-    <name>Patient-Server</name>
+    <name>Admin-Server</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -24,11 +24,11 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.vertineko.shospital</groupId>
             <artifactId>Common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
     </dependencies>
 </project>

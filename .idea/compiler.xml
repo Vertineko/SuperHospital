@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Patient-Server" />
-        <module name="Record-Server" />
         <module name="Gateway" />
+        <module name="Admin-Server" />
+        <module name="Record-Server" />
         <module name="Medicine-Server" />
         <module name="Doctor-Server" />
+        <module name="Common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -19,6 +21,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Admin-Server" options="-parameters" />
+      <module name="Common" options="-parameters" />
       <module name="Doctor-Server" options="-parameters" />
       <module name="Doctor-Sever" options="" />
       <module name="Gateway" options="-parameters" />
