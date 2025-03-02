@@ -9,5 +9,43 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+    gateway:
+      httpclient:
+        pool:
+          max-idle-time: 60000ms
 
+      discovery:
+        locator:
+          enabled: true
 
+      routes:
+        - id: admin-server_route
+          uri: lb://admin-server/admin/api/**
+          predicates:
+            - Path=/admin/api/**
+          filters:
+            - name: TokenValidate
+              args:
+                whitePathList:
+                  - /admin/api/login
+
+        - id: doctor-server_route
+          uri: lb://doctor-server/doctor/api/**
+          predicates:
+            - Path=/doctor/api/**
+          filters:
+            - name: TokenValidate
+              args:
+                whitePathList:
+                  - /doctor/api/login
+
+        - id: patient-server_route
+          uri: lb://patient-server/patient/api/**
+          predicates:
+            - Path=/patient/api/**
+          filters:
+            - name: TokenValidate
+              args:
+                whitePathList:
+                  - /doctor/api/login
+                  - /doctor/api/register

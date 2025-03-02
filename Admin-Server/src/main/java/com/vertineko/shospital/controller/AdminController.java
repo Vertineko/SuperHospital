@@ -17,9 +17,14 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @RequestMapping("/superhospital/admin/login")
+    @RequestMapping("/admin/api/login")
     public Result<String> login(@RequestBody AdminLoginDO adminLoginDO) {
         String res = adminService.login(adminLoginDO);
         return res == null ? Results.fail("") : Results.success(res);
+    }
+
+    @RequestMapping("/admin/api/test")
+    public Result<String> test() {
+        return Results.fail("是摆了");
     }
 }
