@@ -42,13 +42,14 @@ public class Results {
 
     /**
      * 无返回值-请求失败
-     * @param message 返回消息
-     * @return Result<Void>
+     * @param data 返回消息
+     * @return Result<T>
      */
-    public static Result<Void> fail(String message){
-        return Result.<Void>builder()
+    public static <T> Result<T> fail(T data){
+        return Result.<T>builder()
                 .code("500")
-                .message(message)
+                .message("failed")
+                .data(data)
                 .build();
     }
 
