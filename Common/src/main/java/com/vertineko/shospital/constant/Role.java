@@ -8,9 +8,13 @@ public enum Role {
 
 
     //枚举值
-    private String msg;
+    private final String msg;
 
     Role(String msg) {
         this.msg = msg;
+    }
+
+    public String getMsg() {
+        return msg;
     }
 }

@@ -1,5 +1,8 @@
 server:
   port: 8001
+
+jwt:
+  key: finalfantasy2658
 spring:
   application:
     name: admin-server

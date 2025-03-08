@@ -1,6 +1,7 @@
 package com.vertineko.shospital.constant;
 
 public enum RedisKeyConstant {
+    REDIS_SESSION_KEY_PREFIX("user_context"),
 
     ADMIN_LOGIN_KEY_PREFIX("admin:login:");
 

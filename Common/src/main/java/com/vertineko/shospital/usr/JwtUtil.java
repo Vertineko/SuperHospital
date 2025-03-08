@@ -1,86 +1,64 @@
 package com.vertineko.shospital.usr;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.jwt.JWT;
+import lombok.extern.slf4j.Slf4j;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Jwt工具类
+ */
+@Slf4j
 public class JwtUtil {
 
-    // 密钥（建议从配置文件中读取）
-    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
-    // JWT 过期时间（单位：毫秒）
-    private static final long EXPIRATION_TIME = 86400000; // 24小时
+    /**
+     * 密钥
+     */
+    private static final byte[] privateKey = "asdfghjklqwertyuiopzxcvbnm".getBytes();
 
     /**
-     * 生成 JWT
-     *
-     * @param subject 主题（通常是用户ID）
-     * @param claims  自定义声明
-     * @return JWT 字符串
+     * 生成Jwt
+     * @param user 传入的需要载入到Payload中的用户信息
+     * @return 返回Jwt Token
      */
-    public static String generateToken(String subject, Map<String, Object> claims) {
-        return Jwts.builder()
-                .setClaims(claims) // 设置自定义声明
-                .setSubject(subject) // 设置主题
-                .setIssuedAt(new Date()) // 设置签发时间
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // 设置过期时间
-                .signWith(SECRET_KEY) // 使用密钥签名
-                .compact(); // 生成 JWT
+    public static String createToken(Map<String, String> user) {
+        Date now = new Date();
+        return JWT.create()
+                .setPayload("id", user.get("id"))
+                .setPayload("username", user.get("username"))
+                .setPayload("role", user.get("role"))
+                //设置签发时间
+                .setIssuedAt(now)
+                //设置Jwt过期时间点为签发时间4小时以后
+                .setExpiresAt(DateUtil.offsetHour(now, 4))
+                .setKey(privateKey)
+                .sign();
     }
 
     /**
-     * 解析 JWT
-     *
-     * @param token JWT 字符串
-     * @return 声明（Claims）
+     * 解析Jwt Token
+     * @param token 传入的Jwt Token
+     * @return 返回载入到Payload中的信息
      */
-    public static Claims parseToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY) // 设置密钥
-                .build()
-                .parseClaimsJws(token) // 解析 JWT
-                .getBody(); // 获取声明
+    public static Map<String, String> parse(String token) {
+        JWT jwt = JWT.of(token);
+        Map<String, String> map = new HashMap<>();
+        map.put("id" ,jwt.getPayload("id").toString());
+        map.put("username", jwt.getPayload("username").toString());
+        map.put("role", jwt.getPayload("role").toString());
+        return map;
     }
 
     /**
-     * 验证 JWT 是否有效
-     *
-     * @param token JWT 字符串
-     * @return 是否有效
+     * 验证Jwt的密钥以及是否过期
+     * @param token 传入的Jwt Token
      */
-    public static boolean validateToken(String token) {
-        try {
-            parseToken(token); // 尝试解析 JWT
-            return true; // 解析成功，JWT 有效
-        } catch (Exception e) {
-            return false; // 解析失败，JWT 无效
-        }
-    }
+    public static boolean verify(String token){
+        JWT jwt = JWT.of(token);
+        return jwt.setKey(privateKey).verify() && jwt.validate(0);
 
-    /**
-     * 获取 JWT 中的主题（通常是用户ID）
-     *
-     * @param token JWT 字符串
-     * @return 主题
-     */
-    public static String getSubject(String token) {
-        return parseToken(token).getSubject();
-    }
-
-    /**
-     * 获取 JWT 中的自定义声明
-     *
-     * @param token JWT 字符串
-     * @return 自定义声明
-     */
-    public static Map<String, Object> getClaims(String token) {
-        return new HashMap<>(parseToken(token));
     }
 }

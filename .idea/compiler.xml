@@ -7,17 +7,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Admin-Server" />
         <module name="Patient-Server" />
         <module name="Gateway" />
-        <module name="Admin-Server" />
-        <module name="Record-Server" />
-        <module name="Medicine-Server" />
         <module name="Doctor-Server" />
         <module name="Common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Doctor-Sever" target="1.8" />
+      <module name="Medicine-Server" target="17" />
+      <module name="Record-Server" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
