@@ -2,29 +2,84 @@ package com.vertineko.shospital.controller;
 
 import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
-import com.vertineko.shospital.dto.admin.req.AdminLoginDO;
+import com.vertineko.shospital.dto.admin.req.AdminLoginDTO;
+import com.vertineko.shospital.dto.admin.req.UpdateAdminByIdDTO;
+import com.vertineko.shospital.dto.admin.req.UpdateAdminByUsernameDTO;
+import com.vertineko.shospital.dto.doctor.req.InsertDoctorDTO;
+import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByIdDTO;
+import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByUsernameDTO;
+import com.vertineko.shospital.remote.service.DoctorRemoteService;
 import com.vertineko.shospital.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController()
 @Slf4j
 @RequiredArgsConstructor
 public class AdminController {
 
     private final AdminService adminService;
 
+    private final DoctorRemoteService doctorRemoteService;
+
     @RequestMapping("/admin/api/login")
-    public Result<String> login(@RequestBody AdminLoginDO adminLoginDO) {
-        String res = adminService.login(adminLoginDO);
+    public Result<String> login(@RequestBody AdminLoginDTO adminLoginDTO) {
+        String res = adminService.login(adminLoginDTO);
         return res == null ? Results.fail("") : Results.success(res);
     }
 
-    @RequestMapping("/admin/api/test")
-    public Result<String> test() {
-        return Results.fail("是摆了");
+    @RequestMapping("/admin/api/removeById/{id}")
+    public Result<Integer> removeById(@PathVariable Long id) {
+        return Results.success(adminService.removeById(id));
     }
+
+    @RequestMapping("/admin/api/removeByUsername/{username}")
+    public Result<Integer> removeByUsername(@PathVariable String username) {
+        return Results.success(adminService.removeByUsername(username));
+    }
+
+    @RequestMapping("/admin/api/updateById")
+    public Result<Integer> updateById(@RequestBody UpdateAdminByIdDTO requestParam) {
+        return Results.success(adminService.updateById(requestParam));
+    }
+
+    @RequestMapping("/admin/api/updateByUsername")
+    public Result<Integer> updateByUsername(@RequestBody UpdateAdminByUsernameDTO requestParam) {
+        return Results.success(adminService.updateByUsername(requestParam));
+    }
+
+
+
+
+
+    //以下都是远程调用
+    @RequestMapping("/admin/api/addDoc")
+    public String addDoc(@RequestBody InsertDoctorDTO requestParam) {
+        return doctorRemoteService.insertDoctor(requestParam);
+    }
+
+    @RequestMapping("/admin/api/removeDocById/{id}")
+    public String removeDocById(@PathVariable Long id){
+        return doctorRemoteService.removeById(id);
+    }
+
+    @RequestMapping("/admin/api/removeDocByUsername/{username}")
+    public String removeDocByUsername(@PathVariable String username){
+        return doctorRemoteService.removeByUsername(username);
+    }
+
+    @RequestMapping("/admin/api/updateDocById")
+    public String updateDocById(@RequestBody UpdateDoctorByIdDTO requestParam){
+        return doctorRemoteService.updateById(requestParam);
+    }
+
+    @RequestMapping("/admin/api/updateDocByUsername")
+    public String updateDocByUsername(@RequestBody UpdateDoctorByUsernameDTO requestParam){
+        return doctorRemoteService.updateByUsername(requestParam);
+    }
+
 }

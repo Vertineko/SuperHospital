@@ -1,10 +1,9 @@
 package com.vertineko.shospital.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.vertineko.shospital.dao.AdminDO;
+import com.vertineko.shospital.dao.DoctorDO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface AdminMapper extends BaseMapper<AdminDO> {
-
+public interface DoctorMapper extends BaseMapper<DoctorDO> {
 }

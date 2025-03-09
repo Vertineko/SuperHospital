@@ -2,6 +2,7 @@ package com.vertineko.shospital.dao;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.vertineko.shospital.constant.Role;
+import com.vertineko.shospital.constant.Sex;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,25 +12,30 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("admin")
-public class Admin {
-    /**
-     * 医生编号
-     */
+@TableName("doctor")
+public class DoctorDO extends BaseDO{
+
     private Long id;
 
-    /**
-     * 用户名/邮箱
-     */
     private String username;
 
-    /**
-     * 密码
-     */
     private String password;
 
-    /**
-     * 职责
-     */
+    private String name;
+
+    private Integer age;
+
+    private Sex sex;
+
+    private String tele;
+
+    private String mail;
+
+    private String worktime;
+
+    private Long department;
+
     private Role role;
+
+    private Integer newflag;
 }

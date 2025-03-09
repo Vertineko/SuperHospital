@@ -20,8 +20,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Throwable.class)
     public Result<String> handleOthersException(Throwable e, HttpServletRequest request) {
         log.error("[{}] {}", request.getMethod(), request.getRequestURL().toString(), e);
-        return Results.fail("发生了未知错误["
-                + "cause:" + e.getCause() + "\n "
-                + "message:" + e.getMessage() + "]\n ");
+        return Results.fail("发生了未知错误");
     }
 }

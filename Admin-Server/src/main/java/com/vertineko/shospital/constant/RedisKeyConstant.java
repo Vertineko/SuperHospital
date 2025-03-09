@@ -1,17 +1,24 @@
 package com.vertineko.shospital.constant;
 
+import lombok.Getter;
+
+@Getter
 public enum RedisKeyConstant {
-    REDIS_SESSION_KEY_PREFIX("user_context"),
+    //前端传入时 token的标识
+    REDIS_SESSION_KEY_PREFIX("token"),
 
-    ADMIN_LOGIN_KEY_PREFIX("admin:login:");
+    ADMIN_LOGIN_KEY_PREFIX("ADMIN:LOGIN:"),
 
-    private String key;
+    ADMIN_INFO_LOCK_KEY_PREFIX("ADMIN:INFO:LOCK:"),
+
+    ADMIN_INFO_RWLOCK_KEY_PREFIX("ADMIN:INFO:RWLOCK:"),
+
+    ;
+
+    private final String key;
 
     RedisKeyConstant(String key) {
         this.key = key;
     }
 
-    public String getKey() {
-        return key;
-    }
 }

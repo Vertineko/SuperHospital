@@ -1,4 +1,4 @@
-package com.vertineko.shospital.constrain.exception;
+package com.vertineko.shospital.constrain.exceptionDef;
 
 import lombok.Data;
 

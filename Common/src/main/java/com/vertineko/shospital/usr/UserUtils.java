@@ -3,7 +3,7 @@ package com.vertineko.shospital.usr;
 /**
  * 用户上下文
  */
-public final class UserInfoDTO {
+public final class UserUtils {
 
     private static final ThreadLocal<UserDO> threadLocal = new ThreadLocal<>();
 

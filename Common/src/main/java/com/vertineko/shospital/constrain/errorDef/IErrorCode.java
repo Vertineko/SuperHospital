@@ -1,4 +1,4 @@
-package com.vertineko.shospital.constrain.error;
+package com.vertineko.shospital.constrain.errorDef;
 
 public interface IErrorCode {
     public String getErrorCode();

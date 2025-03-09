@@ -1,21 +1,16 @@
-package com.vertineko.shospital.dao;
+package com.vertineko.shospital.dto.doctor.req;
 
-import com.vertineko.shospital.constant.Role;
 import com.vertineko.shospital.constant.Sex;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class DocterDO {
+public class UpdateDoctorByIdDTO {
 
     private Long id;
 
-    private String username;
-
     private String password;
+
+    private String name;
 
     private Integer age;
 
@@ -29,5 +24,4 @@ public class DocterDO {
 
     private Long department;
 
-    private Role role;
 }

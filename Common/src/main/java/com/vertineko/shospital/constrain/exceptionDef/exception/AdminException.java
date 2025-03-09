@@ -1,16 +1,16 @@
-package com.vertineko.shospital.exception;
+package com.vertineko.shospital.constrain.exceptionDef.exception;
 
-import com.vertineko.shospital.constrain.exception.AbstractException;
-import com.vertineko.shospital.exception.error.AdminErrorCode;
+import com.vertineko.shospital.constrain.errorDef.error.AdminErrorCode;
+import com.vertineko.shospital.constrain.exceptionDef.AbstractException;
 
-public class AdminException extends AbstractException{
+public class AdminException extends AbstractException {
 
     public AdminException(String message, Throwable cause, AdminErrorCode adminErrorCode) {
         super(message, cause, adminErrorCode.getErrorCode(), adminErrorCode.getMessage());
     }
 
     public AdminException(AdminErrorCode adminErrorCode) {
-        super(null, null, adminErrorCode.getErrorCode(), adminErrorCode.getMessage());
+        super(adminErrorCode.getMessage(), null, adminErrorCode.getErrorCode(), adminErrorCode.getMessage());
     }
     @Override
     public String toString() {
