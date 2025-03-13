@@ -1,5 +1,7 @@
 package com.vertineko.shospital.service;
 
+import com.vertineko.shospital.dao.DoctorDO;
+import com.vertineko.shospital.dao.dto.req.DoctorPageDTO;
 import com.vertineko.shospital.dto.doctor.req.InsertDoctorDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByIdDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByUsernameDTO;
@@ -15,4 +17,10 @@ public interface DoctorService {
     int updateById(UpdateDoctorByIdDTO requestParam);
 
     int updateByUsername(UpdateDoctorByUsernameDTO requestParam);
+
+    DoctorDO getById(Long id);
+
+    DoctorDO getByUsername(String username);
+
+    DoctorPageDTO getDoctorPage(DoctorPageDTO requestParam);
 }

@@ -2,6 +2,7 @@ package com.vertineko.shospital.controller;
 
 import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
+import com.vertineko.shospital.dao.dto.req.DoctorPageDTO;
 import com.vertineko.shospital.dto.doctor.req.InsertDoctorDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByIdDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByUsernameDTO;
@@ -50,6 +51,16 @@ public class DoctorController {
         return Results.success(doctorService.removeByUsername(username));
     }
 
+    /**
+     * 分页查询医生
+     * @param requestParam 分页查询参数
+     * @return 分页记录
+     */
+    @RequestMapping("/doctor/api/getDocPage")
+    public Result<DoctorPageDTO> getDoctorPage(@RequestBody DoctorPageDTO requestParam){
+        return Results.success(doctorService.getDoctorPage(requestParam));
+    }
+
     @RequestMapping("/doctor/api/updateById")
     public Result<Integer> updateById(@RequestBody UpdateDoctorByIdDTO requestParam){
         return Results.success(doctorService.updateById(requestParam));
@@ -59,4 +70,6 @@ public class DoctorController {
     public Result<Integer> updateByUsername(@RequestBody UpdateDoctorByUsernameDTO requestParam){
         return Results.success(doctorService.updateByUsername(requestParam));
     }
+
+
 }

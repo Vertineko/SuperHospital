@@ -6,14 +6,11 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vertineko.shospital.constant.NewConstant;
 import com.vertineko.shospital.constant.RedisKeyConstant;
-import com.vertineko.shospital.constrain.exceptionDef.exception.AdminException;
 import com.vertineko.shospital.constrain.errorDef.error.AdminErrorCode;
+import com.vertineko.shospital.constrain.exceptionDef.exception.AdminException;
 import com.vertineko.shospital.dao.AdminDO;
+import com.vertineko.shospital.dao.dto.req.*;
 import com.vertineko.shospital.dao.mapper.AdminMapper;
-import com.vertineko.shospital.dto.admin.req.AdminInsertDTO;
-import com.vertineko.shospital.dto.admin.req.AdminLoginDTO;
-import com.vertineko.shospital.dto.admin.req.UpdateAdminByIdDTO;
-import com.vertineko.shospital.dto.admin.req.UpdateAdminByUsernameDTO;
 import com.vertineko.shospital.service.AdminService;
 import com.vertineko.shospital.usr.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -163,6 +160,16 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminDO> implemen
         }finally {
             rLock.writeLock().unlock();
         }
+    }
+
+    @Override
+    public AdminPageDTO getAdminPage(AdminPageDTO requestParam) {
+        LambdaQueryWrapper<AdminDO> queryWrapper = Wrappers.lambdaQuery(AdminDO.class)
+                .like(AdminDO::getUsername, requestParam.getUsername())
+                .like(AdminDO::getName, requestParam.getName())
+                .like(AdminDO::getTele, requestParam.getTele())
+                .eq(AdminDO::getNewflag, requestParam.getNewFlag());
+        return adminMapper.selectPage(requestParam, queryWrapper);
     }
 
 

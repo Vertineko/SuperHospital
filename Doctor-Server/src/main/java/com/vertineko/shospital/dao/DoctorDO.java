@@ -37,5 +37,4 @@ public class DoctorDO extends BaseDO{
 
     private Role role;
 
-    private Integer newflag;
 }

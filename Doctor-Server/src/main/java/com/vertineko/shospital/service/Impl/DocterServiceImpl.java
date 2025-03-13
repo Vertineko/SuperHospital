@@ -10,6 +10,7 @@ import com.vertineko.shospital.constant.Role;
 import com.vertineko.shospital.constrain.exceptionDef.exception.DocterException;
 import com.vertineko.shospital.constrain.errorDef.error.DoctorErrorCode;
 import com.vertineko.shospital.dao.DoctorDO;
+import com.vertineko.shospital.dao.dto.req.DoctorPageDTO;
 import com.vertineko.shospital.dao.mapper.DoctorMapper;
 import com.vertineko.shospital.dto.doctor.req.InsertDoctorDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByIdDTO;
@@ -135,13 +136,29 @@ public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
     }
 
 
-    private DoctorDO getByUsername(String username) {
+    public DoctorDO getByUsername(String username) {
         LambdaQueryWrapper<DoctorDO> queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
                 .eq(DoctorDO::getUsername, username);
         return doctorMapper.selectOne(queryWrapper);
     }
 
-    private DoctorDO getById(Long id) {
+    @Override
+    public DoctorPageDTO getDoctorPage(DoctorPageDTO requestParam) {
+        LambdaQueryWrapper<DoctorDO> queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
+                .like(DoctorDO::getUsername, requestParam.getUsername())
+                .like(DoctorDO::getName, requestParam.getName())
+                .lt(DoctorDO::getAge, requestParam.getMaxAge())
+                .gt(DoctorDO::getAge, requestParam.getMinAge())
+                .eq(DoctorDO::getSex, requestParam.getSex())
+                .like(DoctorDO::getTele, requestParam.getTele())
+                .like(DoctorDO::getMail, requestParam.getMail())
+                .eq(DoctorDO::getWorktime, requestParam.getWorktime())
+                .eq(DoctorDO::getDepartment, requestParam.getDepartment())
+                .eq(DoctorDO::getNewflag, requestParam.getNewflag());
+        return doctorMapper.selectPage(requestParam, queryWrapper);
+    }
+
+    public DoctorDO getById(Long id) {
         LambdaQueryWrapper<DoctorDO> queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
                 .eq(DoctorDO::getId, id);
         return doctorMapper.selectOne(queryWrapper);

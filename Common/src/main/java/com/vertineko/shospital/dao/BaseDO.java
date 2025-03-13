@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class BaseDO {
 
-    private int newflag;
+    private Integer newflag;
 }

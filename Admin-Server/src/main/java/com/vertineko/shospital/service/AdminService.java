@@ -1,12 +1,10 @@
 package com.vertineko.shospital.service;
 
 import com.vertineko.shospital.dao.AdminDO;
-import com.vertineko.shospital.dto.admin.req.AdminInsertDTO;
-import com.vertineko.shospital.dto.admin.req.AdminLoginDTO;
-import com.vertineko.shospital.dto.admin.req.UpdateAdminByIdDTO;
-import com.vertineko.shospital.dto.admin.req.UpdateAdminByUsernameDTO;
+import com.vertineko.shospital.dao.dto.req.*;
 
 public interface AdminService {
+
     String login(AdminLoginDTO requestParam);
 
     int addAdmin(AdminInsertDTO requestParam);
@@ -22,4 +20,7 @@ public interface AdminService {
     int updateById(UpdateAdminByIdDTO requestParam);
 
     int updateByUsername(UpdateAdminByUsernameDTO requestParam);
+
+    AdminPageDTO getAdminPage(AdminPageDTO requestParam);
+
 }

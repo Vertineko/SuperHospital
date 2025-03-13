@@ -1,15 +1,16 @@
-package com.vertineko.shospital.dto.admin.req;
+package com.vertineko.shospital.dao.dto.req;
 
 import lombok.Data;
 
 @Data
-public class AdminInsertDTO {
+public class UpdateAdminByUsernameDTO {
 
     private String username;
 
     private String password;
 
+    private String tele;
+
     private String name;
 
-    private String tele;
 }

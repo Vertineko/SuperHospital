@@ -1,4 +1,4 @@
-package com.vertineko.shospital.dto.admin.req;
+package com.vertineko.shospital.dao.dto.req;
 
 import lombok.Data;
 

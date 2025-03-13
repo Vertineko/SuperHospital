@@ -2,9 +2,10 @@ package com.vertineko.shospital.controller;
 
 import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
-import com.vertineko.shospital.dto.admin.req.AdminLoginDTO;
-import com.vertineko.shospital.dto.admin.req.UpdateAdminByIdDTO;
-import com.vertineko.shospital.dto.admin.req.UpdateAdminByUsernameDTO;
+import com.vertineko.shospital.dao.dto.req.AdminLoginDTO;
+import com.vertineko.shospital.dao.dto.req.AdminPageDTO;
+import com.vertineko.shospital.dao.dto.req.UpdateAdminByIdDTO;
+import com.vertineko.shospital.dao.dto.req.UpdateAdminByUsernameDTO;
 import com.vertineko.shospital.dto.doctor.req.InsertDoctorDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByIdDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByUsernameDTO;
@@ -52,7 +53,10 @@ public class AdminController {
         return Results.success(adminService.updateByUsername(requestParam));
     }
 
-
+    @RequestMapping("/admin/api/getAdminPage")
+    public Result<AdminPageDTO> getAdminPage(@RequestBody AdminPageDTO requestParam) {
+        return Results.success(adminService.getAdminPage(requestParam));
+    }
 
 
 
