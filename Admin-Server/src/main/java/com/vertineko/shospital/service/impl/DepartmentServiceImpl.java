@@ -8,10 +8,12 @@ import com.vertineko.shospital.dao.DepartmentDO;
 import com.vertineko.shospital.dao.mapper.DepartmentMapper;
 import com.vertineko.shospital.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, DepartmentDO> implements DepartmentService {
 
     private final DepartmentMapper departmentMapper;

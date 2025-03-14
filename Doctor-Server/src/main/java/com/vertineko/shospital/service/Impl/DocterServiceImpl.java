@@ -51,7 +51,7 @@ public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
             try{
                 DoctorDO doctorDO = new DoctorDO();
                 BeanUtil.copyProperties(requestParam, doctorDO);
-                doctorDO.setRole(Role.DOCTER);
+                doctorDO.setRole(Role.DOCTOR);
                 doctorDO.setNewflag(NewConstant.NEW_USER);
                 return doctorMapper.insert(doctorDO);
             }finally {

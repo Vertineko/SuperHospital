@@ -47,5 +47,5 @@ spring:
             - name: TokenValidate
               args:
                 whitePathList:
-                  - /doctor/api/login
-                  - /doctor/api/register
+                  - /patient/api/login
+                  - /patient/api/register
