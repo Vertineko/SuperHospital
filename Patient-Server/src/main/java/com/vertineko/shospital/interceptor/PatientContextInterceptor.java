@@ -33,7 +33,7 @@ public class PatientContextInterceptor implements HandlerInterceptor {
         //请求头中存在token
         log.info("token:{}", token);
         if (token != null && !token.isEmpty()) {
-            String user_context = redisTemplate.opsForValue().get(RedisKeyConstant.ADMIN_LOGIN_KEY_PREFIX.getKey() + token);
+            String user_context = redisTemplate.opsForValue().get(RedisKeyConstant.PATIENT_LOGIN_KEY_PREFIX.getKey() + token);
             log.info("jwt:{}", user_context);
             if (user_context == null) {
                 log.error("[ex]{}", AdminErrorCode.ADMIN_TOKEN_WRONG.getMessage());
@@ -48,7 +48,7 @@ public class PatientContextInterceptor implements HandlerInterceptor {
                 UserDO user = UserDO.builder()
                         .id(Long.valueOf(map.get("id")))
                         .username(map.get("username"))
-                        .role(Role.PATIENT.getMsg())
+                        .role(map.get("role"))
                         .build();
 
                 //防止在一些用户知道后端接口URL后用其他职责的账号恶意访问

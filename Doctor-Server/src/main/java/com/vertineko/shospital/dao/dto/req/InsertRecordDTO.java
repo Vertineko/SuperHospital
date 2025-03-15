@@ -1,57 +1,40 @@
-package com.vertineko.shospital.dao;
+package com.vertineko.shospital.dao.dto.req;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.vertineko.shospital.constant.Sex;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@TableName("record")
-public class RecordDO {
+public class InsertRecordDTO {
 
-    private Long id;
-
-    //患者ID
     private Long patientId;
 
-    //主治医生ID
     private Long doctorId;
 
-    //患者姓名
     private String name;
 
     private Sex sex;
 
     private Integer age;
 
-    private String department;
+    private Integer department;
 
     private Integer epidemic;
 
-    //病情症状
     private String condition;
 
-    //临床初步诊断
     private String check;
 
-    //辅助诊断
     private String assistantCheck;
 
-    //当前病症处理
+    private String diagnosis;
+
     private String handle;
 
-    //医嘱
     private String advice;
 
-    //诊断时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-
-
 }
