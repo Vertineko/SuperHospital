@@ -2,6 +2,9 @@ package com.vertineko.shospital.interceptor;
 
 import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
+import com.vertineko.shospital.constrain.exceptionDef.exception.AdminException;
+import com.vertineko.shospital.constrain.exceptionDef.exception.DocterException;
+import com.vertineko.shospital.constrain.exceptionDef.exception.PatientException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -21,5 +24,26 @@ public class GlobalExceptionHandler {
     public Result<String> handleOthersException(Throwable e, HttpServletRequest request) {
         log.error("[{}] {}", request.getMethod(), request.getRequestURL().toString(), e);
         return Results.fail("发生了未知错误");
+    }
+
+    @SneakyThrows
+    @ExceptionHandler(AdminException.class)
+    public Result<String> handleOthersException(AdminException e, HttpServletRequest request) {
+        log.error("[{}] {}", request.getMethod(), request.getRequestURL().toString(), e);
+        return Results.fail(e.getMsg());
+    }
+
+    @SneakyThrows
+    @ExceptionHandler(DocterException.class)
+    public Result<String> handleOthersException(DocterException e, HttpServletRequest request) {
+        log.error("[{}] {}", request.getMethod(), request.getRequestURL().toString(), e);
+        return Results.fail(e.getMsg());
+    }
+
+    @SneakyThrows
+    @ExceptionHandler(PatientException.class)
+    public Result<String> handleOthersException(PatientException e, HttpServletRequest request) {
+        log.error("[{}] {}", request.getMethod(), request.getRequestURL().toString(), e);
+        return Results.fail(e.getMsg());
     }
 }

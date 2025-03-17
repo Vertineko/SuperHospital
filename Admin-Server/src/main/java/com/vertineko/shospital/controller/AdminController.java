@@ -29,8 +29,7 @@ public class AdminController {
 
     @RequestMapping("/admin/api/login")
     public Result<String> login(@RequestBody AdminLoginDTO adminLoginDTO) {
-        String res = adminService.login(adminLoginDTO);
-        return res == null ? Results.fail("") : Results.success(res);
+        return Results.success(adminService.login(adminLoginDTO));
     }
 
     @RequestMapping("/admin/api/removeById/{id}")

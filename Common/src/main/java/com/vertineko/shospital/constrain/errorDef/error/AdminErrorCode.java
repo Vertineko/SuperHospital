@@ -7,7 +7,7 @@ import lombok.Getter;
 public enum AdminErrorCode implements IErrorCode {
     //A1xxxx 权限区块错误
     USER_IS_NOT_ADMIN("A00000", "该用户没有足够的权限访问该页面！"),
-    ADMIN_LOGIN_REPEAT("A10001", "您已经处于登陆状态！"),
+    ADMIN_LOGIN_REPEAT("A10001", "您已经处于登录状态！"),
     ADMIN_USERNAME_REPEATED("A10002", "该用户名已被占用！"),
     ADMIN_TOKEN_MISSING("A10003", "用户未登录！"),
     ADMIN_TOKEN_WRONG("A10004", "该TOKEN已过期或失效，请重新登录！"),

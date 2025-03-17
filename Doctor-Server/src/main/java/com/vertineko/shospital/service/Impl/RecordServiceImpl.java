@@ -67,7 +67,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
                 .like(RecordDO::getName, recordPageDTO.getName())
                 .gt(RecordDO::getCreateTime, recordPageDTO.getMinCreateTime())
                 .lt(RecordDO::getCreateTime, recordPageDTO.getMaxCreateTime())
-                .eq(RecordDO::getDoctorId, UserUtils.getUser().getId());
+                .eq(RecordDO::getPatientId, UserUtils.getUser().getId());
         return recordMapper.selectPage(recordPageDTO, queryWrapper);
     }
 
@@ -80,6 +80,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
         return recordMapper.deleteById(id);
     }
 
+    //保留更新病历状态
     @Override
     public int updateRecord(RecordDO requestParam) {
         return 0;

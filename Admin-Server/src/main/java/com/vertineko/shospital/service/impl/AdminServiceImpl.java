@@ -50,7 +50,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminDO> implemen
                 .eq(AdminDO::getPassword, adminLoginDTO.getPassword());
         AdminDO temp = adminMapper.selectOne(queryWrapper);
         if (temp == null) {
-            return null;
+            throw new AdminException(AdminErrorCode.ADMIN_IS_NOT_EXISTED);
         }
         //构造Jwt的内容
         Map<String, String> claims = new HashMap<>();
