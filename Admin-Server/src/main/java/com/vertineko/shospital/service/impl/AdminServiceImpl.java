@@ -61,6 +61,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminDO> implemen
         stringRedisTemplate.opsForValue().set(key, JwtUtil.createToken(claims));
         stringRedisTemplate.expire(key, KEY_ALIVE_TIME, TimeUnit.HOURS);
         return username;
+
+
     }
 
     @Override

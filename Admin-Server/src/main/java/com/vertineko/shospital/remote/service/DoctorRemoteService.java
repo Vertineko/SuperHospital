@@ -1,6 +1,7 @@
 package com.vertineko.shospital.remote.service;
 
 
+import com.vertineko.shospital.dto.doctor.req.DoctorPageDTO;
 import com.vertineko.shospital.dto.doctor.req.InsertDoctorDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByIdDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByUsernameDTO;
@@ -28,4 +29,7 @@ public interface DoctorRemoteService {
 
     @RequestMapping("/doctor/api/updateByUsername")
     String updateByUsername(UpdateDoctorByUsernameDTO requestParam);
+
+    @RequestMapping("/doctor/api/getDocPage")
+    String getDoctorPage(DoctorPageDTO requestParam);
 }
