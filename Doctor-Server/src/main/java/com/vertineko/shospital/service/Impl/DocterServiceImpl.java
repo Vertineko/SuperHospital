@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vertineko.shospital.constant.NewConstant;
 import com.vertineko.shospital.constant.RedisKeyConstant;
 import com.vertineko.shospital.constant.Role;
-import com.vertineko.shospital.constrain.exceptionDef.exception.DocterException;
 import com.vertineko.shospital.constrain.errorDef.error.DoctorErrorCode;
+import com.vertineko.shospital.constrain.exceptionDef.exception.DocterException;
 import com.vertineko.shospital.dao.DoctorDO;
 import com.vertineko.shospital.dao.dto.req.DoctorPageDTO;
 import com.vertineko.shospital.dao.mapper.DoctorMapper;
@@ -144,17 +144,31 @@ public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
 
     @Override
     public DoctorPageDTO getDoctorPage(DoctorPageDTO requestParam) {
-        LambdaQueryWrapper<DoctorDO> queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
-                .like(DoctorDO::getUsername, requestParam.getUsername())
-                .like(DoctorDO::getName, requestParam.getName())
-                .lt(DoctorDO::getAge, requestParam.getMaxAge())
-                .gt(DoctorDO::getAge, requestParam.getMinAge())
-                .eq(DoctorDO::getSex, requestParam.getSex())
-                .like(DoctorDO::getTele, requestParam.getTele())
-                .like(DoctorDO::getMail, requestParam.getMail())
-                .eq(DoctorDO::getWorktime, requestParam.getWorktime())
-                .eq(DoctorDO::getDepartment, requestParam.getDepartment())
-                .eq(DoctorDO::getNewflag, requestParam.getNewflag());
+        LambdaQueryWrapper<DoctorDO> queryWrapper;
+        if (requestParam.getWorktime() == null || requestParam.getWorktime().isEmpty()) {
+            queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
+                    .like(DoctorDO::getUsername, requestParam.getUsername())
+                    .like(DoctorDO::getName, requestParam.getName())
+                    .lt(DoctorDO::getAge, requestParam.getMaxAge())
+                    .gt(DoctorDO::getAge, requestParam.getMinAge())
+                    .eq(DoctorDO::getSex, requestParam.getSex())
+                    .like(DoctorDO::getTele, requestParam.getTele())
+                    .like(DoctorDO::getMail, requestParam.getMail())
+                    .eq(DoctorDO::getDepartment, requestParam.getDepartment());
+
+        }else {
+            queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
+                    .like(DoctorDO::getUsername, requestParam.getUsername())
+                    .like(DoctorDO::getName, requestParam.getName())
+                    .lt(DoctorDO::getAge, requestParam.getMaxAge())
+                    .gt(DoctorDO::getAge, requestParam.getMinAge())
+                    .eq(DoctorDO::getSex, requestParam.getSex())
+                    .like(DoctorDO::getTele, requestParam.getTele())
+                    .like(DoctorDO::getMail, requestParam.getMail())
+                    .eq(DoctorDO::getWorktime, requestParam.getWorktime())
+                    .eq(DoctorDO::getDepartment, requestParam.getDepartment());
+
+        }
         return doctorMapper.selectPage(requestParam, queryWrapper);
     }
 
