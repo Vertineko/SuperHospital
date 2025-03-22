@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vertineko.shospital.constant.NewConstant;
 import com.vertineko.shospital.constant.RedisKeyConstant;
 import com.vertineko.shospital.constant.Role;
+import com.vertineko.shospital.constant.Sex;
 import com.vertineko.shospital.constrain.errorDef.error.DoctorErrorCode;
 import com.vertineko.shospital.constrain.exceptionDef.exception.DocterException;
 import com.vertineko.shospital.dao.DoctorDO;
@@ -15,6 +16,7 @@ import com.vertineko.shospital.dao.mapper.DoctorMapper;
 import com.vertineko.shospital.dto.doctor.req.InsertDoctorDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByIdDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByUsernameDTO;
+import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -136,45 +138,44 @@ public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
     }
 
 
-    public DoctorDO getByUsername(String username) {
+    @Override
+    public DoctorPageDTO getDoctorPage(DoctorPageDTO requestParam) {
         LambdaQueryWrapper<DoctorDO> queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
-                .eq(DoctorDO::getUsername, username);
-        return doctorMapper.selectOne(queryWrapper);
+                .like(null!=requestParam.getUsername() ,DoctorDO::getUsername, requestParam.getUsername())
+                .like(null!=requestParam.getName(),DoctorDO::getName, requestParam.getName())
+                .lt(null!=requestParam.getMaxAge(),DoctorDO::getAge, requestParam.getMaxAge())
+                .gt(null!=requestParam.getMinAge(),DoctorDO::getAge, requestParam.getMinAge())
+                .eq(Sex.NULL!=requestParam.getSex() ,DoctorDO::getSex, requestParam.getSex())
+                .like(null!=requestParam.getTele(), DoctorDO::getTele, requestParam.getTele())
+                .like(null!=requestParam.getMail() ,DoctorDO::getMail, requestParam.getMail())
+                .eq(null!=requestParam.getWorktime() && !requestParam.getWorktime().isEmpty() ,DoctorDO::getWorktime, requestParam.getWorktime())
+                .eq(null!=requestParam.getDepartment(), DoctorDO::getDepartment, requestParam.getDepartment());
+        return doctorMapper.selectPage(requestParam, queryWrapper);
     }
 
     @Override
-    public DoctorPageDTO getDoctorPage(DoctorPageDTO requestParam) {
-        LambdaQueryWrapper<DoctorDO> queryWrapper;
-        if (requestParam.getWorktime() == null || requestParam.getWorktime().isEmpty()) {
-            queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
-                    .like(DoctorDO::getUsername, requestParam.getUsername())
-                    .like(DoctorDO::getName, requestParam.getName())
-                    .lt(DoctorDO::getAge, requestParam.getMaxAge())
-                    .gt(DoctorDO::getAge, requestParam.getMinAge())
-                    .eq(DoctorDO::getSex, requestParam.getSex())
-                    .like(DoctorDO::getTele, requestParam.getTele())
-                    .like(DoctorDO::getMail, requestParam.getMail())
-                    .eq(DoctorDO::getDepartment, requestParam.getDepartment());
-
-        }else {
-            queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
-                    .like(DoctorDO::getUsername, requestParam.getUsername())
-                    .like(DoctorDO::getName, requestParam.getName())
-                    .lt(DoctorDO::getAge, requestParam.getMaxAge())
-                    .gt(DoctorDO::getAge, requestParam.getMinAge())
-                    .eq(DoctorDO::getSex, requestParam.getSex())
-                    .like(DoctorDO::getTele, requestParam.getTele())
-                    .like(DoctorDO::getMail, requestParam.getMail())
-                    .eq(DoctorDO::getWorktime, requestParam.getWorktime())
-                    .eq(DoctorDO::getDepartment, requestParam.getDepartment());
-
+    public DocDetailVO getDocDetail(String username) {
+        DoctorDO doctorDO = getByUsername(username);
+        if (doctorDO == null) {
+            throw new DocterException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
         }
-        return doctorMapper.selectPage(requestParam, queryWrapper);
+        DocDetailVO docDetailVO = new DocDetailVO();
+        BeanUtil.copyProperties(doctorDO, docDetailVO);
+        return docDetailVO;
     }
 
     public DoctorDO getById(Long id) {
         LambdaQueryWrapper<DoctorDO> queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
                 .eq(DoctorDO::getId, id);
+        return doctorMapper.selectOne(queryWrapper);
+    }
+
+
+
+    public DoctorDO getByUsername(String username) {
+        LambdaQueryWrapper<DoctorDO> queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
+                .eq(DoctorDO::getUsername, username);
+        log.info("参数:{}", username);
         return doctorMapper.selectOne(queryWrapper);
     }
 }

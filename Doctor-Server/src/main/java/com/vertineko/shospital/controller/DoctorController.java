@@ -6,13 +6,11 @@ import com.vertineko.shospital.dao.dto.req.DoctorPageDTO;
 import com.vertineko.shospital.dto.doctor.req.InsertDoctorDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByIdDTO;
 import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByUsernameDTO;
+import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -71,5 +69,9 @@ public class DoctorController {
         return Results.success(doctorService.updateByUsername(requestParam));
     }
 
-
+    @RequestMapping("/doctor/api/getDocDetailByUsername")
+    public Result<DocDetailVO> getDocDetailByUsername(@RequestParam String username){
+        log.info("参数:{}", username);
+        return Results.success(doctorService.getDocDetail(username));
+    }
 }

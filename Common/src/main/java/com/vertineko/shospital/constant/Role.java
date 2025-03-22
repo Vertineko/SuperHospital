@@ -1,5 +1,8 @@
 package com.vertineko.shospital.constant;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
     ADMIN("管理员"),
     DOCTOR("医生"),
@@ -14,7 +17,9 @@ public enum Role {
         this.msg = msg;
     }
 
-    public String getMsg() {
+    @Override
+    public String toString() {
         return msg;
     }
+
 }

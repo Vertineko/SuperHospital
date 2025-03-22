@@ -2,6 +2,8 @@ package com.vertineko.shospital.service;
 
 import com.vertineko.shospital.dao.DepartmentDO;
 
+import java.util.List;
+
 public interface DepartmentService {
 
 
@@ -12,4 +14,6 @@ public interface DepartmentService {
     DepartmentDO getDepartment(Long id);
 
     int updateDepartment(Long id, String name);
+
+    List<DepartmentDO> getDepartments();
 }

@@ -1,6 +1,7 @@
 package com.vertineko.shospital.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vertineko.shospital.constrain.errorDef.error.DepartmentErrorCode;
 import com.vertineko.shospital.constrain.exceptionDef.exception.DepartmentException;
@@ -10,6 +11,8 @@ import com.vertineko.shospital.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +54,12 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
         }
         department.setName(name);
         return departmentMapper.updateById(department);
+    }
+
+    @Override
+    public List<DepartmentDO> getDepartments() {
+        LambdaQueryWrapper<DepartmentDO> queryWrapper = Wrappers.lambdaQuery(DepartmentDO.class);
+        return departmentMapper.selectList(queryWrapper);
+
     }
 }

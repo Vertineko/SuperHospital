@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class DepartmentController {
@@ -35,6 +37,11 @@ public class DepartmentController {
     @RequestMapping("/admin/api/department")
     public Result<Integer> updateDepartment(@Param("id") Long id, @Param("name") String name){
         return Results.success(departmentService.updateDepartment(id, name));
+    }
+
+    @RequestMapping("/admin/api/department/getAll")
+    public Result<List<DepartmentDO>> getAllDepartment(){
+        return Results.success(departmentService.getDepartments());
     }
 
 }

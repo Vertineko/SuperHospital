@@ -1,9 +1,13 @@
 package com.vertineko.shospital.constant;
 
 
+import lombok.Getter;
+
+@Getter
 public enum Sex {
     MALE("男"),
-    FEMALE("女");
+    FEMALE("女"),
+    NULL("null");
 
 
     private final String val;
@@ -12,7 +16,8 @@ public enum Sex {
         this.val = val;
     }
 
-    public String getVal(){
+    @Override
+    public String toString() {
         return val;
     }
 }

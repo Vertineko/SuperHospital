@@ -1,14 +1,13 @@
-package com.vertineko.shospital.dto.doctor.req;
+package com.vertineko.shospital.dto.doctor.res;
 
+import com.vertineko.shospital.constant.Role;
 import com.vertineko.shospital.constant.Sex;
 import lombok.Data;
 
 @Data
-public class InsertDoctorDTO {
+public class DocDetailVO {
 
     private String username;
-
-    private String password;
 
     private String name;
 
@@ -23,4 +22,6 @@ public class InsertDoctorDTO {
     private String worktime;
 
     private Long department;
+
+    private Role role;
 }

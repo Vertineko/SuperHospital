@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Component
 @FeignClient(value = "doctor-server")
@@ -32,4 +33,8 @@ public interface DoctorRemoteService {
 
     @RequestMapping("/doctor/api/getDocPage")
     String getDoctorPage(DoctorPageDTO requestParam);
+
+    @RequestMapping("/doctor/api/getDocDetailByUsername")
+    String getDocDetailByUsername(@RequestParam("username") String username);
+
 }

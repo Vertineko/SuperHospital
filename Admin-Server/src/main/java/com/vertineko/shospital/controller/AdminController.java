@@ -90,4 +90,9 @@ public class AdminController {
     public String getDocPage(@RequestBody DoctorPageDTO requestParam){
         return doctorRemoteService.getDoctorPage(requestParam);
     }
+
+    @RequestMapping("/admin/api/getDocDetailByUsername")
+    public String getDocDetailByUsername(String username){
+        return doctorRemoteService.getDocDetailByUsername(username);
+    }
 }
