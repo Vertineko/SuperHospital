@@ -8,6 +8,8 @@ import AdminRecMag from '../view/pages/admin/AdminRecMag.vue'
 import AddDocPage from '../view/pages/admin/AddDocPage.vue'
 import DocDetailPage from '../view/pages/admin/DocDetailPage.vue'
 import ModDocPage from '../view/pages/admin/ModDocPage.vue'
+import DepMagPage from '../view/pages/admin/department/DepMagPage.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +52,10 @@ const router = createRouter({
             path: '/ModDocPage',
             component: ModDocPage
           },
+          {
+            path: '/AdminDepMag',
+            component: DepMagPage
+          }
         ]
       },
     ]

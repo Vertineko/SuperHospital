@@ -143,7 +143,7 @@ import { AdminDocQuery, getAllDepartment, removeDocByUsername } from '../../../r
 import { ElMessage, type FormInstance } from 'element-plus';
 import { useRouter } from 'vue-router';
 
-const table = ref()
+
 const router = useRouter()
 const searchForm = ref<FormInstance>()
 const FormData = reactive(

@@ -1,3 +1,4 @@
+
 import { da } from "element-plus/es/locales.mjs"
 import http from "./http"
 //管理员接口
@@ -100,3 +101,50 @@ export function removeDocByUsername(data:string) {
     })
 }
 
+interface DocQueryByDepDTO{
+    department:string,
+    current:string,
+    size:string
+}
+
+export function getDocByDepartment(data:DocQueryByDepDTO){
+    return http({
+        url: "/api/admin/api/getDocDepPageByDepId",
+        method: "post",
+        data
+    })
+}
+
+export function addDepartment(data:string){
+    return http({
+        url: "/api/admin/api/department/insert?name=" + data,
+        method: "put"
+    })
+}
+
+interface modDepartmentDTO{
+    id:string,
+    name:string
+}
+
+export function updateDepartment(data:modDepartmentDTO){
+    return http({
+        url: "/api/admin/api/department",
+        method: "put",
+        params:{id:data.id, name:data.name}
+    })
+}
+
+export function getDepartment(data:string) {
+    return http({
+        url: "/api/admin/api/department/" + data,
+        method: "get",
+    })
+}
+
+export function removeDepartment(data:string) {
+    return http({
+        url: "/api/admin/api/department/" + data,
+        method: "delete",
+    })
+}

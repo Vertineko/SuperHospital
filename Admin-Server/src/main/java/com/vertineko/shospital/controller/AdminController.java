@@ -6,10 +6,7 @@ import com.vertineko.shospital.dao.dto.req.AdminLoginDTO;
 import com.vertineko.shospital.dao.dto.req.AdminPageDTO;
 import com.vertineko.shospital.dao.dto.req.UpdateAdminByIdDTO;
 import com.vertineko.shospital.dao.dto.req.UpdateAdminByUsernameDTO;
-import com.vertineko.shospital.dto.doctor.req.DoctorPageDTO;
-import com.vertineko.shospital.dto.doctor.req.InsertDoctorDTO;
-import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByIdDTO;
-import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByUsernameDTO;
+import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.remote.service.DoctorRemoteService;
 import com.vertineko.shospital.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -94,5 +91,10 @@ public class AdminController {
     @RequestMapping("/admin/api/getDocDetailByUsername")
     public String getDocDetailByUsername(String username){
         return doctorRemoteService.getDocDetailByUsername(username);
+    }
+
+    @RequestMapping("/admin/api/getDocDepPageByDepId")
+    public String getDocDetailByUsername(@RequestBody DocDepartPageDTO requestParam){
+        return doctorRemoteService.getDocDepPageByDepId(requestParam);
     }
 }

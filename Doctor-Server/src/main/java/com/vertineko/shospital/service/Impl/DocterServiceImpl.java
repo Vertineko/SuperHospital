@@ -11,11 +11,8 @@ import com.vertineko.shospital.constant.Sex;
 import com.vertineko.shospital.constrain.errorDef.error.DoctorErrorCode;
 import com.vertineko.shospital.constrain.exceptionDef.exception.DocterException;
 import com.vertineko.shospital.dao.DoctorDO;
-import com.vertineko.shospital.dao.dto.req.DoctorPageDTO;
 import com.vertineko.shospital.dao.mapper.DoctorMapper;
-import com.vertineko.shospital.dto.doctor.req.InsertDoctorDTO;
-import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByIdDTO;
-import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByUsernameDTO;
+import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.service.DoctorService;
 import lombok.RequiredArgsConstructor;
@@ -162,6 +159,15 @@ public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
         DocDetailVO docDetailVO = new DocDetailVO();
         BeanUtil.copyProperties(doctorDO, docDetailVO);
         return docDetailVO;
+    }
+
+    @Override
+    public DocDepartPageDTO getDocDepPageByDepId(DocDepartPageDTO requestParam) {
+        DoctorPageDTO doctorPageDTO = new DoctorPageDTO();
+        doctorPageDTO.setSex(Sex.NULL);
+        BeanUtil.copyProperties(requestParam, doctorPageDTO);
+        BeanUtil.copyProperties(getDoctorPage(doctorPageDTO), requestParam);
+        return requestParam;
     }
 
     public DoctorDO getById(Long id) {

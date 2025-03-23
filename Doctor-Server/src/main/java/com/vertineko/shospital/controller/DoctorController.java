@@ -2,10 +2,7 @@ package com.vertineko.shospital.controller;
 
 import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
-import com.vertineko.shospital.dao.dto.req.DoctorPageDTO;
-import com.vertineko.shospital.dto.doctor.req.InsertDoctorDTO;
-import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByIdDTO;
-import com.vertineko.shospital.dto.doctor.req.UpdateDoctorByUsernameDTO;
+import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.service.DoctorService;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +68,16 @@ public class DoctorController {
 
     @RequestMapping("/doctor/api/getDocDetailByUsername")
     public Result<DocDetailVO> getDocDetailByUsername(@RequestParam String username){
-        log.info("参数:{}", username);
         return Results.success(doctorService.getDocDetail(username));
+    }
+
+    /**
+     * 根据部门ID获取医生列表
+     * @param requestParam 请求参数只包含department_id
+     * @return 查询的结果
+     */
+    @RequestMapping("/doctor/api/getDocDepPageByDepId")
+    public Result<DocDepartPageDTO> getDocDepPageByDepId(@RequestBody DocDepartPageDTO requestParam){
+        return Results.success(doctorService.getDocDepPageByDepId(requestParam));
     }
 }
