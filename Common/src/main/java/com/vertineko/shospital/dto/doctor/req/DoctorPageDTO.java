@@ -5,6 +5,8 @@ import com.vertineko.shospital.constant.Sex;
 import com.vertineko.shospital.dao.DoctorDO;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class DoctorPageDTO extends Page<DoctorDO> {
     /**
@@ -29,5 +31,9 @@ public class DoctorPageDTO extends Page<DoctorDO> {
 
     private Long department;
 
-    private Integer newflag;
+    /**
+     * 解析后以数组方式存起来的工作日期，最大长度为7,其中每个元素只有0 or 1两种可能
+     */
+    private List<Integer> workTimeList;
+
 }

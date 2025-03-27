@@ -1,11 +1,13 @@
 package com.vertineko.shospital.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.vertineko.shospital.dao.PatientDO;
 import com.vertineko.shospital.dao.dto.req.PatientLoginDTO;
 import com.vertineko.shospital.dao.dto.req.UpdatePatientByIdDTO;
 import com.vertineko.shospital.dao.dto.req.UpdatePatientByUsernameDTO;
 import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
+import com.vertineko.shospital.dto.patient.res.PatientPageVO;
 
 public interface PatientService {
 
@@ -21,7 +23,7 @@ public interface PatientService {
 
     int updateByUsername(UpdatePatientByUsernameDTO requestParam);
 
-    PatientPageDTO pagePatient(PatientPageDTO requestParam);
+    IPage<PatientPageVO> pagePatient(PatientPageDTO requestParam);
 
     PatientDO getById(Long id);
 

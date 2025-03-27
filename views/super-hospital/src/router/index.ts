@@ -1,14 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AdminLogin from '../view/pages/admin/Login.vue'
+import AdminLogin from '../view/Login.vue'
 import AdminHome from '../view/pages/admin/AdminHome.vue'
 import AdminConsole from '../view/pages/admin/AdminConsole.vue'
-import AdminDocMag from '../view/pages/admin/AdminDocMag.vue'
-import AdminPatMag from '../view/pages/admin/AdminPatMag.vue'
-import AdminRecMag from '../view/pages/admin/AdminRecMag.vue'
-import AddDocPage from '../view/pages/admin/AddDocPage.vue'
-import DocDetailPage from '../view/pages/admin/DocDetailPage.vue'
-import ModDocPage from '../view/pages/admin/ModDocPage.vue'
+import AdminDocMag from '../view/pages/admin/doctor/AdminDocMag.vue'
+import AdminPatMag from '../view/pages/admin/patient/AdminPatMag.vue'
+import AdminRecMag from '../view/pages/admin/record/AdminRecMag.vue'
+import AddDocPage from '../view/pages/admin/doctor/AddDocPage.vue'
+import DocDetailPage from '../view/pages/admin/doctor/DocDetailPage.vue'
+import ModDocPage from '../view/pages/admin/doctor/ModDocPage.vue'
 import DepMagPage from '../view/pages/admin/department/DepMagPage.vue'
+import AdminMedMag from '../view/pages/admin/medicine/AdminMedMag.vue'
+import MedStockPage from '../view/pages/admin/medicine/MedStockPage.vue'
 
 
 const router = createRouter({
@@ -55,6 +57,16 @@ const router = createRouter({
           {
             path: '/AdminDepMag',
             component: DepMagPage
+          }
+          ,
+          {
+            path: '/AdminMedMag',
+            component: AdminMedMag
+          }
+          ,
+          {
+            path: '/MedStockPage',
+            component: MedStockPage
           }
         ]
       },

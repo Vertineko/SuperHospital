@@ -1,5 +1,12 @@
 server:
   port: 8002
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+
+
 spring:
   application:
     name: doctor-server

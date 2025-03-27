@@ -12,6 +12,8 @@ public class PatientPageDTO extends Page<PatientDO> {
 
     private String username;
 
+    private String name;
+
     private Sex sex;
 
     private Integer minAge;

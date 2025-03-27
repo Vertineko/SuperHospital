@@ -22,7 +22,7 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AdminContextInterceptor implements HandlerInterceptor {
+public class DoctorContextInterceptor implements HandlerInterceptor {
 
     private final StringRedisTemplate redisTemplate;
 
@@ -33,7 +33,7 @@ public class AdminContextInterceptor implements HandlerInterceptor {
         //请求头中存在token
         log.info("token:{}", token);
         if (token != null && !token.isEmpty()) {
-            String user_context = redisTemplate.opsForValue().get(RedisKeyConstant.ADMIN_LOGIN_KEY_PREFIX.getVal() + token);
+            String user_context = redisTemplate.opsForValue().get(RedisKeyConstant.DOCTOR_LOGIN_KEY_PREFIX.getVal() + token);
             log.info("jwt:{}", user_context);
             if (user_context == null) {
                 log.error("[ex]{}", AdminErrorCode.ADMIN_TOKEN_WRONG.getMessage());

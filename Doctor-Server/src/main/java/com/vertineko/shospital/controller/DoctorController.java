@@ -1,9 +1,11 @@
 package com.vertineko.shospital.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
 import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
+import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
 import com.vertineko.shospital.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +54,7 @@ public class DoctorController {
      * @return 分页记录
      */
     @RequestMapping("/doctor/api/getDocPage")
-    public Result<DoctorPageDTO> getDoctorPage(@RequestBody DoctorPageDTO requestParam){
+    public Result<IPage<DoctorPageVO>> getDoctorPage(@RequestBody DoctorPageDTO requestParam){
         return Results.success(doctorService.getDoctorPage(requestParam));
     }
 

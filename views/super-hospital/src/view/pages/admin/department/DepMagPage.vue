@@ -1,5 +1,5 @@
 <template>
-    <h1>科室管理</h1>
+    <span>科室管理</span>
     <div class="showArea">
         <el-row :gutter="0">
             <el-col :span="12">

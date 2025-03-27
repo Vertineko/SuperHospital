@@ -2,6 +2,7 @@ package com.vertineko.shospital.service.Impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vertineko.shospital.constant.NewConstant;
@@ -14,7 +15,9 @@ import com.vertineko.shospital.dao.DoctorDO;
 import com.vertineko.shospital.dao.mapper.DoctorMapper;
 import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
+import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
 import com.vertineko.shospital.service.DoctorService;
+import com.vertineko.shospital.utils.WorkTimeUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
@@ -27,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> implements DoctorService {
+public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> implements DoctorService {
 
     private final DoctorMapper doctorMapper;
 
@@ -44,7 +47,7 @@ public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
             throw new DocterException(DoctorErrorCode.DOCTOR_USERNAME_REPEATED);
         }
         //没有重复就加分布式锁 新增该角色
-        RLock rlock = redisson.getLock(RedisKeyConstant.DOCTOR_INFO_LOCK_PREFIX.getVal() + requestParam.getUsername());
+        RLock rlock = redisson.getLock(RedisKeyConstant.DOCTOR_INFO_LOCK_KEY_PREFIX.getVal() + requestParam.getUsername());
         //防止于此同时另一个管理员同样在录入该用户 最后导致数据库中冗余数据的产生
         if (rlock.tryLock()){
             try{
@@ -68,7 +71,7 @@ public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
         DoctorDO doctorDO = getById(id);
         if (doctorDO != null) {
             //先加锁, 此处的所获取模式为有限等待获取写锁(3000ms)，超时抛异常， 获取成功就删除
-            RReadWriteLock rwLock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_PREFIX.getVal() + doctorDO.getId());
+            RReadWriteLock rwLock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_KEY_PREFIX.getVal() + doctorDO.getId());
             rwLock.writeLock().lock(Long.parseLong(RedisKeyConstant.REDIS_LOCK_MAX_WAIT_TIME.getVal()), TimeUnit.MILLISECONDS);
             try{
                 return doctorMapper.deleteById(doctorDO);
@@ -86,7 +89,7 @@ public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
         DoctorDO doctorDO = getByUsername(username);
         if (doctorDO != null) {
             //先加锁, 此处的所获取模式为有限等待获取写锁(3000ms)，超时抛异常， 获取成功就删除
-            RReadWriteLock rwLock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_PREFIX.getVal() + doctorDO.getId());
+            RReadWriteLock rwLock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_KEY_PREFIX.getVal() + doctorDO.getId());
             rwLock.writeLock().lock(Long.parseLong(RedisKeyConstant.REDIS_LOCK_MAX_WAIT_TIME.getVal()), TimeUnit.MILLISECONDS);
             try{
                 return doctorMapper.deleteById(doctorDO);
@@ -105,7 +108,7 @@ public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
         if (doctorDO == null) {
             throw new DocterException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
         }
-        RReadWriteLock rwlock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_PREFIX.getVal() + doctorDO.getId());
+        RReadWriteLock rwlock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_KEY_PREFIX.getVal() + doctorDO.getId());
         rwlock.writeLock().lock(Long.parseLong(RedisKeyConstant.REDIS_LOCK_MAX_WAIT_TIME.getVal()), TimeUnit.MILLISECONDS);
         try {
             BeanUtil.copyProperties(requestParam, doctorDO);
@@ -123,7 +126,7 @@ public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
         if (doctorDO == null) {
             throw new DocterException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
         }
-        RReadWriteLock rwlock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_PREFIX.getVal() + doctorDO.getId());
+        RReadWriteLock rwlock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_KEY_PREFIX.getVal() + doctorDO.getId());
         rwlock.writeLock().lock(Long.parseLong(RedisKeyConstant.REDIS_LOCK_MAX_WAIT_TIME.getVal()), TimeUnit.MILLISECONDS);
         try {
             BeanUtil.copyProperties(requestParam, doctorDO);
@@ -136,18 +139,11 @@ public class DocterServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
 
 
     @Override
-    public DoctorPageDTO getDoctorPage(DoctorPageDTO requestParam) {
-        LambdaQueryWrapper<DoctorDO> queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
-                .like(null!=requestParam.getUsername() ,DoctorDO::getUsername, requestParam.getUsername())
-                .like(null!=requestParam.getName(),DoctorDO::getName, requestParam.getName())
-                .lt(null!=requestParam.getMaxAge(),DoctorDO::getAge, requestParam.getMaxAge())
-                .gt(null!=requestParam.getMinAge(),DoctorDO::getAge, requestParam.getMinAge())
-                .eq(Sex.NULL!=requestParam.getSex() ,DoctorDO::getSex, requestParam.getSex())
-                .like(null!=requestParam.getTele(), DoctorDO::getTele, requestParam.getTele())
-                .like(null!=requestParam.getMail() ,DoctorDO::getMail, requestParam.getMail())
-                .eq(null!=requestParam.getWorktime() && !requestParam.getWorktime().isEmpty() ,DoctorDO::getWorktime, requestParam.getWorktime())
-                .eq(null!=requestParam.getDepartment(), DoctorDO::getDepartment, requestParam.getDepartment());
-        return doctorMapper.selectPage(requestParam, queryWrapper);
+    public IPage<DoctorPageVO> getDoctorPage(DoctorPageDTO requestParam) {
+        if (requestParam.getWorktime() != null && !requestParam.getWorktime().isEmpty()){
+            requestParam.setWorkTimeList(WorkTimeUtils.parseWorkTimeStr(requestParam.getWorktime()));
+        }
+        return doctorMapper.getPage(requestParam);
     }
 
     @Override

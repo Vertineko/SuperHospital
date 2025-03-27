@@ -2,6 +2,7 @@ package com.vertineko.shospital.service.Impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vertineko.shospital.constant.RedisKeyConstant;
@@ -15,6 +16,7 @@ import com.vertineko.shospital.dao.dto.req.UpdatePatientByUsernameDTO;
 import com.vertineko.shospital.dao.mapper.PatientMapper;
 import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
+import com.vertineko.shospital.dto.patient.res.PatientPageVO;
 import com.vertineko.shospital.service.PatientService;
 import com.vertineko.shospital.usr.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -157,14 +159,8 @@ public class PatientServiceImpl extends ServiceImpl<PatientMapper, PatientDO> im
     }
 
     @Override
-    public PatientPageDTO pagePatient(PatientPageDTO requestParam) {
-        LambdaQueryWrapper<PatientDO> queryWrapper = Wrappers.lambdaQuery(PatientDO.class)
-                .like(PatientDO::getUsername, requestParam.getUsername())
-                .eq(PatientDO::getSex, requestParam.getSex())
-                .gt(PatientDO::getAge, requestParam.getMinAge())
-                .lt(PatientDO::getAge, requestParam.getMaxAge())
-                .like(PatientDO::getTele, requestParam.getTele());
-        return patientMapper.selectPage(requestParam, queryWrapper);
+    public IPage<PatientPageVO> pagePatient(PatientPageDTO requestParam) {
+        return patientMapper.getPage(requestParam);
     }
 
     @Override
