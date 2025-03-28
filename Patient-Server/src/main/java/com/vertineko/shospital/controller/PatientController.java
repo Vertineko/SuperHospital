@@ -13,7 +13,6 @@ import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
 import com.vertineko.shospital.dto.patient.res.PatientPageVO;
 import com.vertineko.shospital.service.PatientService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,7 +32,7 @@ public class PatientController {
     }
 
     @RequestMapping("/patient/api/removeByUsername")
-    public Result<Integer> removeByUsername(@Param("username") String username){
+    public Result<Integer> removeByUsername(@RequestParam("username") String username){
         return Results.success(patientService.removeByUsername(username));
     }
 

@@ -2,13 +2,13 @@ package com.vertineko.shospital.dto.doctor.req;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.vertineko.shospital.constant.Sex;
-import com.vertineko.shospital.dao.DoctorDO;
+import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class DoctorPageDTO extends Page<DoctorDO> {
+public class DoctorPageDTO extends Page<DoctorPageVO> {
     /**
      * 分页时的查找参数
      */

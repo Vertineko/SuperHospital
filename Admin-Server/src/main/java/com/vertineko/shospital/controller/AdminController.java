@@ -7,14 +7,14 @@ import com.vertineko.shospital.dao.dto.req.AdminPageDTO;
 import com.vertineko.shospital.dao.dto.req.UpdateAdminByIdDTO;
 import com.vertineko.shospital.dao.dto.req.UpdateAdminByUsernameDTO;
 import com.vertineko.shospital.dto.doctor.req.*;
+import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
+import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
 import com.vertineko.shospital.remote.service.DoctorRemoteService;
+import com.vertineko.shospital.remote.service.PatientRemoteService;
 import com.vertineko.shospital.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @Slf4j
@@ -24,6 +24,8 @@ public class AdminController {
     private final AdminService adminService;
 
     private final DoctorRemoteService doctorRemoteService;
+
+    private final PatientRemoteService patientRemoteService;
 
     @RequestMapping("/admin/api/login")
     public Result<String> login(@RequestBody AdminLoginDTO adminLoginDTO) {
@@ -57,7 +59,8 @@ public class AdminController {
 
 
 
-    //以下都是远程调用
+    //以下都是医生端远程调用
+
     @RequestMapping("/admin/api/addDoc")
     public String addDoc(@RequestBody InsertDoctorDTO requestParam) {
         return doctorRemoteService.insertDoctor(requestParam);
@@ -97,4 +100,27 @@ public class AdminController {
     public String getDocDetailByUsername(@RequestBody DocDepartPageDTO requestParam){
         return doctorRemoteService.getDocDepPageByDepId(requestParam);
     }
+
+
+    //以下是患者端远程调用
+    @RequestMapping("/admin/api/getPatientPage")
+    public String pagePatient(@RequestBody PatientPageDTO requestParam){
+        return patientRemoteService.pagePatient(requestParam);
+    }
+
+    @RequestMapping("/admin/api/addPatient")
+    public String insertPatient(@RequestBody InsertPatientDTO requestParam){
+        return patientRemoteService.insertPatient(requestParam);
+    }
+
+    @RequestMapping("/admin/api/removePatient")
+    public String removePatient(@RequestParam("username") String username){
+        return patientRemoteService.removeByUsername(username);
+    }
+
+    @RequestMapping("/admin/api/getPatient")
+    public String getByUsername(@RequestParam("username") String username){
+        return patientRemoteService.getByUsername(username);
+    }
+
 }

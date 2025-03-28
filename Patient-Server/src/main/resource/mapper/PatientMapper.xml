@@ -16,7 +16,7 @@
                 AND name like concat('%', #{name}, '%')
             </if>
 
-            <if test="sex != null and sex.name().equals('null')" >
+            <if test="sex != null and !sex.getVal().equals('null')" >
                 AND sex = #{sex}
             </if>
 

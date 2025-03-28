@@ -17,6 +17,8 @@ public class PatientDO {
 
     private Long id;
 
+    private String name;
+
     private String username;
 
     private String password;

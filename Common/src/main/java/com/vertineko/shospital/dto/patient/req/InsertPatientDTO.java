@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class InsertPatientDTO {
 
+    private String name;
+
     private String username;
 
     private String password;

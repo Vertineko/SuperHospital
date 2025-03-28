@@ -148,3 +148,53 @@ export function removeDepartment(data:string) {
         method: "delete",
     })
 }
+
+interface PatientQueryData{
+    username:string
+    name:string
+    sex:string
+    minAge:string
+    maxAge:string
+    tele:string
+    current:string
+    size:string
+}
+
+export function PatientsQuery(data: PatientQueryData){
+    return http({
+        url: '/api/admin/api/getPatientPage',
+        method: 'post',
+        data
+    })
+}
+
+interface addPatientData{
+    name:string
+    username:string
+    password:string
+    sex:string
+    tele:string
+    age:string
+}
+
+export function addPatient(data: addPatientData){
+    return http({
+        url:'/api/admin/api/addPatient',
+        method:'put',
+        data
+    })
+}
+
+export function removePatient(data: string){
+    return http({
+        url:'/api/admin/api/removePatient?username=' + data,
+        method:'delete',
+    })
+}
+
+export function getPatient(data:string) {
+    return http({
+        url:'/api/admin/api/getPatient?username=' + data,
+        method:'get'
+    })
+}

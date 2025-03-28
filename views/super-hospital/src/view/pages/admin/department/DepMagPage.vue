@@ -49,7 +49,10 @@
         width="500" 
         align-center
         :show-close="false">
-            <el-form ref="FormRef" :model="FormData" :rules="Rules">
+            <el-form 
+            ref="FormRef" 
+            :model="FormData" 
+            :rules="Rules">
                 <el-form-item prop='name' label="科室名">
                     <el-input v-model="FormData.name"></el-input>
                 </el-form-item>
@@ -74,8 +77,8 @@
                 </el-form-item>
                 <el-form-item>
                     <div class="action">
-                        <el-button type="danger" @click="modIsShow = false; FormData.name = ''">取消</el-button>
                         <el-button type="primary" @click="mod(FormRef); modIsShow = false">确认</el-button>
+                        <el-button type="danger" @click="modIsShow = false; FormData.name = ''">取消</el-button>
                     </div>
                 </el-form-item>
             </el-form>
