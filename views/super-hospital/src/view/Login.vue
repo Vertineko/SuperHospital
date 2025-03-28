@@ -53,8 +53,8 @@
 }
 
 h1 {
-   margin-top: 15%; 
-   margin-bottom: 20%;
+   margin-top: 60px; 
+   
 }
 
 .loginCard {
@@ -102,7 +102,7 @@ template {
 import { ElMessage, type FormInstance } from 'element-plus';
 import { reactive, ref  } from 'vue';
 import { useRouter } from 'vue-router';
-import { AdminLogin } from '../request/api';
+import { AdminLogin, PatientLogin, DoctorLogin } from '../request/api';
 
 const router = useRouter();
 const loginRef = ref<FormInstance>()
@@ -172,7 +172,7 @@ const doctorLogin = (formEl:FormInstance | undefined) => {
     formEl.validate(async (valid) => {
         //校验格式对了以后才会放行
         if (valid) {
-            const res = await AdminLogin(LoginFormData)
+            const res = await DoctorLogin(LoginFormData)
             //console.log(res)
             if (res.data.code == '200'){
                 localStorage.setItem('token', res.data?.data)
@@ -205,7 +205,7 @@ const patientLogin = (formEl:FormInstance | undefined) => {
     formEl.validate(async (valid) => {
         //校验格式对了以后才会放行
         if (valid) {
-            const res = await AdminLogin(LoginFormData)
+            const res = await PatientLogin(LoginFormData)
             //console.log(res)
             if (res.data.code == '200'){
                 localStorage.setItem('token', res.data?.data)
