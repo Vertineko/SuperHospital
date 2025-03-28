@@ -2,11 +2,14 @@ package com.vertineko.shospital.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.vertineko.shospital.dao.DoctorDO;
+import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
 
 public interface DoctorService {
+
+    String login(LoginDTO requestParam);
 
     int insertDoctor(InsertDoctorDTO requestParam);
 

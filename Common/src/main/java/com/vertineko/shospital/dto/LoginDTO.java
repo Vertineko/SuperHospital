@@ -1,9 +1,11 @@
-package com.vertineko.shospital.dao.dto.req;
+package com.vertineko.shospital.dto;
 
 import lombok.Data;
 
 @Data
-public class AdminLoginDTO {
+public class LoginDTO {
+
     private String username;
+
     private String password;
 }

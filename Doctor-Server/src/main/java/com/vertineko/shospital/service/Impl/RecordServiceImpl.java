@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vertineko.shospital.constrain.errorDef.error.DoctorErrorCode;
-import com.vertineko.shospital.constrain.exceptionDef.exception.DocterException;
+import com.vertineko.shospital.constrain.exceptionDef.exception.DoctorException;
 import com.vertineko.shospital.dao.RecordDO;
 import com.vertineko.shospital.dao.dto.req.InsertRecordDTO;
 import com.vertineko.shospital.dao.dto.req.RecordPageDTO;
@@ -46,7 +46,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
                 .eq(RecordDO::getId, id);
         RecordDO record = recordMapper.selectOne(queryWrapper);
         if (record == null) {
-            throw new DocterException(DoctorErrorCode.RECORD_NOT_EXISTED);
+            throw new DoctorException(DoctorErrorCode.RECORD_NOT_EXISTED);
         }
         return record;
     }
@@ -75,7 +75,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
     public int removeRecord(Long id) {
         RecordDO record = getById(id);
         if (record == null) {
-            throw new DocterException(DoctorErrorCode.RECORD_NOT_EXISTED);
+            throw new DoctorException(DoctorErrorCode.RECORD_NOT_EXISTED);
         }
         return recordMapper.deleteById(id);
     }

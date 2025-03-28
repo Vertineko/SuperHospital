@@ -1,12 +1,11 @@
 
-import { da } from "element-plus/es/locales.mjs"
 import http from "./http"
 //管理员接口
-interface AdminLoginData{
+interface LoginData{
     username: string
     password: string
 }
-export function AdminLogin(data: AdminLoginData){
+export function AdminLogin(data: LoginData){
     return http({
         url : "/api/admin/api/login",
         method : "post",
@@ -196,5 +195,39 @@ export function getPatient(data:string) {
     return http({
         url:'/api/admin/api/getPatient?username=' + data,
         method:'get'
+    })
+}
+
+interface modPatientData{
+    username:string
+    name:string
+    password:string
+    sex:string
+    age:string
+    tele:string
+}
+
+export function updatePatient(data:modPatientData){
+    return http({
+        url:'/api/admin/api/updatePatient',
+        method:'put',
+        data
+    })
+}
+
+export function PatientLogin(data: LoginData){
+    return http({
+        url : "/api/patient/api/login",
+        method : "post",
+        data
+    })
+}
+
+
+export function DoctorLogin(data: LoginData){
+    return http({
+        url : "/api/doctor/api/login",
+        method : "post",
+        data
     })
 }

@@ -2,6 +2,7 @@ package com.vertineko.shospital.remote.service;
 
 import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
+import com.vertineko.shospital.dto.patient.req.UpdatePatientByUsernameDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,4 +24,7 @@ public interface PatientRemoteService {
 
     @RequestMapping("/patient/api/getByUsername")
     String getByUsername(@RequestParam("username") String username);
+
+    @RequestMapping("/patient/api/updateByUsername")
+    String updateByUsername(@RequestBody UpdatePatientByUsernameDTO requestParam);
 }

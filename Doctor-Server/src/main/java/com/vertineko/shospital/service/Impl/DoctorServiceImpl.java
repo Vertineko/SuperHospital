@@ -10,21 +10,28 @@ import com.vertineko.shospital.constant.RedisKeyConstant;
 import com.vertineko.shospital.constant.Role;
 import com.vertineko.shospital.constant.Sex;
 import com.vertineko.shospital.constrain.errorDef.error.DoctorErrorCode;
-import com.vertineko.shospital.constrain.exceptionDef.exception.DocterException;
+import com.vertineko.shospital.constrain.errorDef.error.PatientErrorCode;
+import com.vertineko.shospital.constrain.exceptionDef.exception.DoctorException;
+import com.vertineko.shospital.constrain.exceptionDef.exception.PatientException;
 import com.vertineko.shospital.dao.DoctorDO;
 import com.vertineko.shospital.dao.mapper.DoctorMapper;
+import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
 import com.vertineko.shospital.service.DoctorService;
+import com.vertineko.shospital.usr.JwtUtil;
 import com.vertineko.shospital.utils.WorkTimeUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -32,9 +39,38 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> implements DoctorService {
 
+    private final StringRedisTemplate redisTemplate;
+
     private final DoctorMapper doctorMapper;
 
     private final RedissonClient redisson;
+
+    private static final int KEY_ALIVE_TIME = 4;
+
+    @Override
+    public String login(LoginDTO requestParam) {
+        //首先查找用户是否已经登录
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(RedisKeyConstant.DOCTOR_LOGIN_KEY_PREFIX.getVal() + requestParam.getUsername()))){
+            throw new DoctorException(DoctorErrorCode.DOCTOR_HAS_ALREADY_LOGIN);
+        }
+        LambdaQueryWrapper<DoctorDO> queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
+                .eq(DoctorDO::getUsername, requestParam.getUsername())
+                .eq(DoctorDO::getPassword, requestParam.getPassword());
+        DoctorDO doctorDO = doctorMapper.selectOne(queryWrapper);
+        if (doctorDO == null) {
+            throw new PatientException(PatientErrorCode.PATIENT_USER_NOT_EXISTED);
+        }
+        //构造JWT
+        Map<String, String> map = new HashMap<>();
+        map.put("id", doctorDO.getId() + "");
+        map.put("username", doctorDO.getUsername());
+        map.put("role", doctorDO.getRole().getMsg());
+        String token = JwtUtil.createToken(map);
+        String key = RedisKeyConstant.DOCTOR_LOGIN_KEY_PREFIX.getVal() + doctorDO.getUsername();
+        redisTemplate.opsForValue().set(key, token);
+        redisTemplate.expire(key, KEY_ALIVE_TIME, TimeUnit.HOURS);
+        return requestParam.getUsername();
+    }
 
     @Override
     public int insertDoctor(InsertDoctorDTO requestParam) {
@@ -44,7 +80,7 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
         DoctorDO doctor = doctorMapper.selectOne(queryWrapper);
         //如果重复了，就抛异常
         if (doctor != null) {
-            throw new DocterException(DoctorErrorCode.DOCTOR_USERNAME_REPEATED);
+            throw new DoctorException(DoctorErrorCode.DOCTOR_USERNAME_REPEATED);
         }
         //没有重复就加分布式锁 新增该角色
         RLock rlock = redisson.getLock(RedisKeyConstant.DOCTOR_INFO_LOCK_KEY_PREFIX.getVal() + requestParam.getUsername());
@@ -60,7 +96,7 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
                 rlock.unlock();
             }
         }else {
-            throw new DocterException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
+            throw new DoctorException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
         }
 
     }
@@ -79,7 +115,7 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
                 rwLock.writeLock().unlock();
             }
         }else {
-            throw new DocterException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
+            throw new DoctorException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
         }
     }
 
@@ -97,7 +133,7 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
                 rwLock.writeLock().unlock();
             }
         }else {
-            throw new DocterException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
+            throw new DoctorException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
         }
     }
 
@@ -106,7 +142,7 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
         //首先查找是否有该医生角色
         DoctorDO doctorDO = getById(requestParam.getId());
         if (doctorDO == null) {
-            throw new DocterException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
+            throw new DoctorException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
         }
         RReadWriteLock rwlock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_KEY_PREFIX.getVal() + doctorDO.getId());
         rwlock.writeLock().lock(Long.parseLong(RedisKeyConstant.REDIS_LOCK_MAX_WAIT_TIME.getVal()), TimeUnit.MILLISECONDS);
@@ -124,7 +160,7 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
         //首先查找是否有该医生角色
         DoctorDO doctorDO = getByUsername(requestParam.getUsername());
         if (doctorDO == null) {
-            throw new DocterException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
+            throw new DoctorException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
         }
         RReadWriteLock rwlock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_KEY_PREFIX.getVal() + doctorDO.getId());
         rwlock.writeLock().lock(Long.parseLong(RedisKeyConstant.REDIS_LOCK_MAX_WAIT_TIME.getVal()), TimeUnit.MILLISECONDS);
@@ -150,7 +186,7 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
     public DocDetailVO getDocDetail(String username) {
         DoctorDO doctorDO = getByUsername(username);
         if (doctorDO == null) {
-            throw new DocterException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
+            throw new DoctorException(DoctorErrorCode.DOCTOR_USER_NOT_EXISTED);
         }
         DocDetailVO docDetailVO = new DocDetailVO();
         BeanUtil.copyProperties(doctorDO, docDetailVO);

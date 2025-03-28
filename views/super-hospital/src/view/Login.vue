@@ -19,7 +19,13 @@
                         <el-form-item label="密码:" prop="password">
                            <el-input style="width:85%;" type="password" v-model="LoginFormData.password" />
                         </el-form-item>
-
+                        <el-form-item style="align-items: center;">
+                            <el-radio-group v-model="model">
+                                <el-radio value="admin">管理员</el-radio>
+                                <el-radio value="doctor">医生</el-radio>
+                                <el-radio value="patient">患者</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
                         <el-form-item style="align-items: center;">
                             <el-button type="primary" style="margin-top: 10%;" @click="login(loginRef)">登录</el-button>
                         </el-form-item>
@@ -48,7 +54,7 @@
 
 h1 {
    margin-top: 15%; 
-   margin-bottom: 20%,
+   margin-bottom: 20%;
 }
 
 .loginCard {
@@ -113,10 +119,22 @@ const loginRules = {
 
 const LoginFormData = reactive({
     username: '',
-    password: ''
+    password: '',
 })
 
-const login = (formEl:FormInstance | undefined) => {
+const model = ref('admin')
+const login = (formEl:any) =>{
+    if (model.value == 'admin'){
+        adminLogin(formEl)
+    }else if (model.value == 'doctor'){
+        doctorLogin(formEl)
+    }else if (model.value == 'patient'){
+        patientLogin(formEl)
+    }
+
+    
+}
+const adminLogin = (formEl:FormInstance | undefined) => {
     if (!formEl) return
     formEl.validate(async (valid) => {
         //校验格式对了以后才会放行
@@ -147,5 +165,71 @@ const login = (formEl:FormInstance | undefined) => {
         }
     })
       
-  }
+}
+
+const doctorLogin = (formEl:FormInstance | undefined) => {
+    if (!formEl) return
+    formEl.validate(async (valid) => {
+        //校验格式对了以后才会放行
+        if (valid) {
+            const res = await AdminLogin(LoginFormData)
+            //console.log(res)
+            if (res.data.code == '200'){
+                localStorage.setItem('token', res.data?.data)
+                ElMessage.success('登录成功！')
+                router.push('/')
+            }else {
+                //console.log('不为200')
+                if (res.data?.data == "您已经处于登录状态！"){
+                    //此时检测本地有没有token
+                    const token = localStorage.getItem('token')
+                    console.log(token)
+                    if (token == LoginFormData.username){
+                        ElMessage.success('登录成功！')
+                        router.push('/e')
+                    }else {
+                        ElMessage.warning('此账号已经在别处登录，如果并非您本人所为，请及时联系管理员！')
+                    }
+                }else{
+                    ElMessage.warning('工号或者密码错误，请重试！')
+                }
+                
+            }
+        }
+    })
+      
+}
+
+const patientLogin = (formEl:FormInstance | undefined) => {
+    if (!formEl) return
+    formEl.validate(async (valid) => {
+        //校验格式对了以后才会放行
+        if (valid) {
+            const res = await AdminLogin(LoginFormData)
+            //console.log(res)
+            if (res.data.code == '200'){
+                localStorage.setItem('token', res.data?.data)
+                ElMessage.success('登录成功！')
+                router.push('/')
+            }else {
+                //console.log('不为200')
+                if (res.data?.data == "您已经处于登录状态！"){
+                    //此时检测本地有没有token
+                    const token = localStorage.getItem('token')
+                    console.log(token)
+                    if (token == LoginFormData.username){
+                        ElMessage.success('登录成功！')
+                        router.push('/AdminHome')
+                    }else {
+                        ElMessage.warning('此账号已经在别处登录，如果并非您本人所为，请及时联系管理员！')
+                    }
+                }else{
+                    ElMessage.warning('工号或者密码错误，请重试！')
+                }
+                
+            }
+        }
+    })
+      
+}
 </script>

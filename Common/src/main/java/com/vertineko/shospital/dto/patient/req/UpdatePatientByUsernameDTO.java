@@ -1,4 +1,4 @@
-package com.vertineko.shospital.dao.dto.req;
+package com.vertineko.shospital.dto.patient.req;
 
 import com.vertineko.shospital.constant.Sex;
 import lombok.Data;
@@ -7,6 +7,8 @@ import lombok.Data;
 public class UpdatePatientByUsernameDTO {
 
     private String username;
+
+    private String name;
 
     private String password;
 

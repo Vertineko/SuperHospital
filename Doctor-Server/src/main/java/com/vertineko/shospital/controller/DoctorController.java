@@ -3,6 +3,7 @@ package com.vertineko.shospital.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
+import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
@@ -17,6 +18,16 @@ import org.springframework.web.bind.annotation.*;
 public class DoctorController {
 
     private final DoctorService doctorService;
+
+    /**
+     * 医生登录
+     * @param requestParam
+     * @return
+     */
+    @RequestMapping("/doctor/api/login")
+    public Result<String> login(@RequestBody LoginDTO requestParam){
+        return Results.success(doctorService.login(requestParam));
+    }
 
     /**
      * 录入医生信息

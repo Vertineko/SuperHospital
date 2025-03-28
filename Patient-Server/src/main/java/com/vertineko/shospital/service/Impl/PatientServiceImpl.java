@@ -10,9 +10,9 @@ import com.vertineko.shospital.constant.Role;
 import com.vertineko.shospital.constrain.errorDef.error.PatientErrorCode;
 import com.vertineko.shospital.constrain.exceptionDef.exception.PatientException;
 import com.vertineko.shospital.dao.PatientDO;
-import com.vertineko.shospital.dao.dto.req.PatientLoginDTO;
 import com.vertineko.shospital.dao.dto.req.UpdatePatientByIdDTO;
-import com.vertineko.shospital.dao.dto.req.UpdatePatientByUsernameDTO;
+import com.vertineko.shospital.dto.LoginDTO;
+import com.vertineko.shospital.dto.patient.req.UpdatePatientByUsernameDTO;
 import com.vertineko.shospital.dao.mapper.PatientMapper;
 import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
@@ -98,7 +98,7 @@ public class PatientServiceImpl extends ServiceImpl<PatientMapper, PatientDO> im
     }
 
     @Override
-    public String login(PatientLoginDTO requestParam) {
+    public String login(LoginDTO requestParam) {
         //首先查找用户是否已经登录
         if (Boolean.TRUE.equals(redisTemplate.hasKey(RedisKeyConstant.PATIENT_LOGIN_KEY_PREFIX.getKey() + requestParam.getUsername()))){
             throw new PatientException(PatientErrorCode.PATIENT_USER_HAS_ALREADY_LOGIN);

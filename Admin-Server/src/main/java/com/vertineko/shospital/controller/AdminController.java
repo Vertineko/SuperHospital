@@ -2,13 +2,14 @@ package com.vertineko.shospital.controller;
 
 import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
-import com.vertineko.shospital.dao.dto.req.AdminLoginDTO;
 import com.vertineko.shospital.dao.dto.req.AdminPageDTO;
 import com.vertineko.shospital.dao.dto.req.UpdateAdminByIdDTO;
 import com.vertineko.shospital.dao.dto.req.UpdateAdminByUsernameDTO;
+import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
+import com.vertineko.shospital.dto.patient.req.UpdatePatientByUsernameDTO;
 import com.vertineko.shospital.remote.service.DoctorRemoteService;
 import com.vertineko.shospital.remote.service.PatientRemoteService;
 import com.vertineko.shospital.service.AdminService;
@@ -28,8 +29,8 @@ public class AdminController {
     private final PatientRemoteService patientRemoteService;
 
     @RequestMapping("/admin/api/login")
-    public Result<String> login(@RequestBody AdminLoginDTO adminLoginDTO) {
-        return Results.success(adminService.login(adminLoginDTO));
+    public Result<String> login(@RequestBody LoginDTO requestParam) {
+        return Results.success(adminService.login(requestParam));
     }
 
     @RequestMapping("/admin/api/removeById/{id}")
@@ -121,6 +122,11 @@ public class AdminController {
     @RequestMapping("/admin/api/getPatient")
     public String getByUsername(@RequestParam("username") String username){
         return patientRemoteService.getByUsername(username);
+    }
+
+    @RequestMapping("/admin/api/updatePatient")
+    public String updateByUsername(@RequestBody UpdatePatientByUsernameDTO requestParam){
+        return patientRemoteService.updateByUsername(requestParam);
     }
 
 }

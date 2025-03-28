@@ -11,6 +11,7 @@ import com.vertineko.shospital.constrain.exceptionDef.exception.AdminException;
 import com.vertineko.shospital.dao.AdminDO;
 import com.vertineko.shospital.dao.dto.req.*;
 import com.vertineko.shospital.dao.mapper.AdminMapper;
+import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.service.AdminService;
 import com.vertineko.shospital.usr.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminDO> implemen
     private static final int LOCK_ALIVE_TIME = 1000;
 
     @Override
-    public String login(AdminLoginDTO adminLoginDTO) {
+    public String login(LoginDTO adminLoginDTO) {
         String username = adminLoginDTO.getUsername();
         String key = RedisKeyConstant.ADMIN_LOGIN_KEY_PREFIX.getKey() + username;
         //首先检测登录状态
