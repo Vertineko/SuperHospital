@@ -148,6 +148,20 @@ export function removeDepartment(data:string) {
     })
 }
 
+interface getDepartmentPageData{
+    name:string
+    current:string
+    size:string
+}
+
+export function getDepartmentPage(data:getDepartmentPageData){
+    return http({
+        url:'/api/doctor/api/department/getPage',
+        method:'post',
+        data
+    })
+}
+
 interface PatientQueryData{
     username:string
     name:string
@@ -228,6 +242,20 @@ export function DoctorLogin(data: LoginData){
     return http({
         url : "/api/doctor/api/login",
         method : "post",
+        data
+    })
+}
+
+interface getAbsDocDTO{
+    departmentId:string
+    current:string
+    size:string
+}
+
+export function getAbsDocDTO(data:getAbsDocDTO){
+    return http({
+        url: '/api/patient/api/getDocAbsPage',
+        method: 'post',
         data
     })
 }

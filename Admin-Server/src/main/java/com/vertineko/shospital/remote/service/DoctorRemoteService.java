@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Component
@@ -37,5 +38,23 @@ public interface DoctorRemoteService {
     @RequestMapping("/doctor/api/getDocDepPageByDepId")
     String getDocDepPageByDepId(DocDepartPageDTO requestParam);
 
+    @RequestMapping("/doctor/api/department/insert")
+    String insertDepartment(String name);
+
+
+    @RequestMapping(method = RequestMethod.DELETE, path = "/doctor/api/department/{id}")
+    String deleteDepartment(@PathVariable Long id);
+
+
+    @RequestMapping(method = RequestMethod.GET, path = "/doctor/api/department/{id}")
+    String getDepartment(@PathVariable Long id);
+
+
+    @RequestMapping("/doctor/api/department")
+    String updateDepartment(@RequestParam("id") Long id, @RequestParam("name") String name);
+
+
+    @RequestMapping("/doctor/api/department/getAll")
+    String getAllDepartment();
 
 }

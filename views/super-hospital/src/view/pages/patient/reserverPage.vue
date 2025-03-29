@@ -1,42 +1,155 @@
 <template>
-    
+    <el-form ref="queryFormRef" :model="queryDepartment" style="display: flex;">
+        <el-form-item label="科室名称：" prop="name">
+            <el-input v-model="queryDepartment.name" style="width: 300px; margin-right: 20px;" />
+        </el-form-item>
+        <el-form-item>
+            <el-icon @click="query(queryFormRef)" size="20">
+                <Search />
+            </el-icon>
+            <el-icon size="20" @click="init()">
+                <Refresh />
+            </el-icon>
+        </el-form-item>
+    </el-form>
+    <el-table ref="DepartmentTableRef" @row-click="selectDepartment" highlight-current-row :data="departments.records">
+        <el-table-column prop="id" label="科室编号" />
+        <el-table-column prop="name" label="科室名称" />
+    </el-table>
+    <div class="pagePlugin">
+        <el-pagination v-model:current-page="queryDepartment.current" layout="prev, pager, next"
+            :total="departments.total" @change="query(queryFormRef)" />
+    </div>
 
+
+    <el-drawer v-model="isDrawShow" :title="currRow.name" :direction="direction">
+        <el-table :data="absDocList.records">
+            <el-table-column label="姓名" prop="name" />
+
+
+            <el-table-column label="挂号费" prop="price" />
+
+
+            <el-table-column label="操作" >
+                <el-button type="primary">挂号</el-button>
+            </el-table-column>
+
+        </el-table>
+        <div class="pagePlugin">
+            <el-pagination v-model:current-page="drawRequest.current" layout="prev, pager, next"
+                :total="absDocList.total" @change="query(queryFormRef)" />
+        </div>
+    </el-drawer>
 </template>
 
 
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue';
-import { getAllDepartment } from '../../../request/api';
-import { ElMention, ElMessage } from 'element-plus';
-import { de } from 'element-plus/es/locales.mjs';
+import { onMounted, reactive, ref } from 'vue';
+import { getDepartmentPage, getAbsDocDTO } from '../../../request/api';
+import { ElMessage, type DrawerProps, type FormInstance } from 'element-plus';
 
+
+const queryFormRef = ref<FormInstance>()
+const direction = ref<DrawerProps['direction']>('rtl')
+const isDrawShow = ref(false)
 const departments = reactive(
     {
-        records:[{
+        records: [{
             id: '',
             name: ''
-        }]
+        }],
+        total: 1
     }
 )
 
-onMounted(() =>{
+const currRow = reactive({
+    id:'',
+    name:''
+})
+
+const queryDepartment = reactive({
+    name: '',
+    current: '1',
+    size: '10'
+})
+
+const drawRequest = reactive({
+    departmentId:'',
+    current:'1',
+    size:'10'
+})
+
+const absDocList = reactive({
+    records:[
+        {
+            id:'',
+            name:'',
+            price:''
+        }
+    ],
+    total:1
+})
+onMounted(() => {
     init()
 })
 
-const init = async () =>{
-    const res = await getAllDepartment();
-    if (res.data.code === '200'){
-        departments.records = res.data.data
+const reset = () => {
+    queryDepartment.name = ''
+    queryDepartment.current = '1'
+    queryDepartment.size = '10'
+}
+
+const query = (formEl: FormInstance | undefined) => {
+    if (!formEl) return
+    formEl.validate(async (valid) => {
+        if (valid) {
+            const res = await getDepartmentPage(queryDepartment);
+            if (res.data.code === '200') {
+                departments.records = res.data.data.records
+                departments.total = res.data.data.total
+                console.log(departments.records)
+            } else {
+                ElMessage.error(res.data.data)
+            }
+        }
+    })
+}
+
+const init = async () => {
+    reset()
+    const res = await getDepartmentPage(queryDepartment);
+    if (res.data.code === '200') {
+        departments.records = res.data.data.records
+        departments.total = res.data.data.total
         console.log(departments.records)
-    }else {
+    } else {
         ElMessage.error(res.data.data)
     }
 }
+const selectDepartment = async (row:any) => {
+    isDrawShow.value = true
+    currRow.id = row.id
+    currRow.name = row.name
+    drawRequest.departmentId = currRow.id
+    const res = await getAbsDocDTO(drawRequest)
+    if (res.data.code === '200'){
+        absDocList.records = res.data.data.records
+        absDocList.total = res.data.data.total
+    }else {
+        ElMessage.error(res.data.data)
+    }
+    
+}
+
+
 </script>
 
 
 <style scoped lang="css">
-
-
-
+.pagePlugin {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
 </style>

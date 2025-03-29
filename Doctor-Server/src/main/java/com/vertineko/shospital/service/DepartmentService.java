@@ -1,6 +1,9 @@
 package com.vertineko.shospital.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.vertineko.shospital.dao.DepartmentDO;
+import com.vertineko.shospital.dto.doctor.req.DepartmentPageDTO;
+import com.vertineko.shospital.dto.doctor.res.DepartmentPageVO;
 
 import java.util.List;
 
@@ -16,4 +19,6 @@ public interface DepartmentService {
     int updateDepartment(Long id, String name);
 
     List<DepartmentDO> getDepartments();
+
+    IPage<DepartmentPageVO> selectDepartmentPage(DepartmentPageDTO requestParam);
 }

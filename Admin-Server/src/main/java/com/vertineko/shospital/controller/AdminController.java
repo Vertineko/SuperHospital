@@ -28,6 +28,7 @@ public class AdminController {
 
     private final PatientRemoteService patientRemoteService;
 
+
     @RequestMapping("/admin/api/login")
     public Result<String> login(@RequestBody LoginDTO requestParam) {
         return Results.success(adminService.login(requestParam));
@@ -127,6 +128,33 @@ public class AdminController {
     @RequestMapping("/admin/api/updatePatient")
     public String updateByUsername(@RequestBody UpdatePatientByUsernameDTO requestParam){
         return patientRemoteService.updateByUsername(requestParam);
+    }
+
+    //科室远程调用
+
+    @RequestMapping("/admin/api/department/insert")
+    public String insertDepartment(String name){
+        return doctorRemoteService.insertDepartment(name);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, path = "/admin/api/department/{id}")
+    public String deleteDepartment(@PathVariable Long id){
+        return doctorRemoteService.deleteDepartment(id);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/admin/api/department/{id}")
+    public String getDepartment(@PathVariable Long id){
+        return doctorRemoteService.getDepartment(id);
+    }
+
+    @RequestMapping("/admin/api/department")
+    public String updateDepartment(@RequestParam("id") Long id, @RequestParam("name") String name){
+        return doctorRemoteService.updateDepartment(id, name);
+    }
+
+    @RequestMapping("/admin/api/department/getAll")
+    public String getAllDepartment(){
+        return doctorRemoteService.getAllDepartment();
     }
 
 }

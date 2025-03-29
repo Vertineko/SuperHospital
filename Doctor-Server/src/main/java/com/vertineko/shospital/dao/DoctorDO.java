@@ -27,6 +27,8 @@ public class DoctorDO extends BaseDO{
 
     private Sex sex;
 
+    private Double price;
+
     private String tele;
 
     private String mail;

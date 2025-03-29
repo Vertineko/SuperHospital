@@ -53,4 +53,12 @@
         </where>
 
     </select>
+
+
+    <select id="getDocAbsPage" parameterType="com.vertineko.shospital.dto.doctor.req.DocAbsPageDTO"
+            resultType="com.vertineko.shospital.dto.doctor.res.DocAbsPageVO">
+        select id, name, price from doctor
+        where department = #{departmentId}
+            and substring(worktime, #{currDay}, 1)
+    </select>
 </mapper>

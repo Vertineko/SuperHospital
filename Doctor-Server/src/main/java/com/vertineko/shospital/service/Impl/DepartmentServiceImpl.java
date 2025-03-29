@@ -1,12 +1,15 @@
-package com.vertineko.shospital.service.impl;
+package com.vertineko.shospital.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vertineko.shospital.constrain.errorDef.error.DepartmentErrorCode;
 import com.vertineko.shospital.constrain.exceptionDef.exception.DepartmentException;
 import com.vertineko.shospital.dao.DepartmentDO;
 import com.vertineko.shospital.dao.mapper.DepartmentMapper;
+import com.vertineko.shospital.dto.doctor.req.DepartmentPageDTO;
+import com.vertineko.shospital.dto.doctor.res.DepartmentPageVO;
 import com.vertineko.shospital.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,5 +64,10 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
         LambdaQueryWrapper<DepartmentDO> queryWrapper = Wrappers.lambdaQuery(DepartmentDO.class);
         return departmentMapper.selectList(queryWrapper);
 
+    }
+
+    @Override
+    public IPage<DepartmentPageVO> selectDepartmentPage(DepartmentPageDTO requestParam) {
+        return departmentMapper.selectDepartmentPage(requestParam);
     }
 }

@@ -17,6 +17,7 @@ import com.vertineko.shospital.dao.DoctorDO;
 import com.vertineko.shospital.dao.mapper.DoctorMapper;
 import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.dto.doctor.req.*;
+import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
 import com.vertineko.shospital.service.DoctorService;
@@ -30,6 +31,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -200,6 +202,25 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
         BeanUtil.copyProperties(requestParam, doctorPageDTO);
         BeanUtil.copyProperties(getDoctorPage(doctorPageDTO), requestParam);
         return requestParam;
+    }
+
+    /**
+     * 用于患者端按照当天上班表和所选择的科室，筛选出的医生列表
+     *
+     * @param requestParam 请求参数
+     * @return 返回参数
+     */
+    @Override
+    public IPage<DocAbsPageVO> getDocAbsPage(DocAbsPageDTO requestParam) {
+        Calendar calendar = Calendar.getInstance();
+        int curr = calendar.get(Calendar.DAY_OF_WEEK);
+        if (curr == 1){
+            curr = 7;
+        }else {
+            curr = curr - 1;
+        }
+        requestParam.setCurrDay(curr);
+        return doctorMapper.getDocAbsPage(requestParam);
     }
 
     public DoctorDO getById(Long id) {

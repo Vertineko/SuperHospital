@@ -5,6 +5,7 @@ import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
 import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.dto.doctor.req.*;
+import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
 import com.vertineko.shospital.service.DoctorService;
@@ -89,8 +90,15 @@ public class DoctorController {
      * @param requestParam 请求参数只包含department_id
      * @return 查询的结果
      */
+    @Deprecated
     @RequestMapping("/doctor/api/getDocDepPageByDepId")
     public Result<DocDepartPageDTO> getDocDepPageByDepId(@RequestBody DocDepartPageDTO requestParam){
         return Results.success(doctorService.getDocDepPageByDepId(requestParam));
+    }
+
+
+    @RequestMapping("/doctor/api/getDocAbsPage")
+    public Result<IPage<DocAbsPageVO>> getDocAbsPage(@RequestBody DocAbsPageDTO requestParam){
+        return Results.success(doctorService.getDocAbsPage(requestParam));
     }
 }
