@@ -13,7 +13,7 @@
                 :rules="loginRules" 
                 status-icon> 
                     <div class="input">
-                        <el-form-item label="工号:" prop="username">
+                        <el-form-item label="用户名:" prop="username">
                             <el-input style="width:85%;" v-model="LoginFormData.username"/>
                         </el-form-item>
                         <el-form-item label="密码:" prop="password">
@@ -210,7 +210,7 @@ const patientLogin = (formEl:FormInstance | undefined) => {
             if (res.data.code == '200'){
                 localStorage.setItem('token', res.data?.data)
                 ElMessage.success('登录成功！')
-                router.push('/')
+                router.push('/PatientHome')
             }else {
                 //console.log('不为200')
                 if (res.data?.data == "您已经处于登录状态！"){
@@ -219,12 +219,12 @@ const patientLogin = (formEl:FormInstance | undefined) => {
                     console.log(token)
                     if (token == LoginFormData.username){
                         ElMessage.success('登录成功！')
-                        router.push('/AdminHome')
+                        router.push('/PatientHome')
                     }else {
                         ElMessage.warning('此账号已经在别处登录，如果并非您本人所为，请及时联系管理员！')
                     }
                 }else{
-                    ElMessage.warning('工号或者密码错误，请重试！')
+                    ElMessage.warning('用户名或者密码错误，请重试！')
                 }
                 
             }

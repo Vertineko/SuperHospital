@@ -12,7 +12,7 @@ public enum PatientErrorCode implements IErrorCode {
 
     PATIENT_NOT_EXISTED("P00004","该用户不存在或者已被其他用户修改，请重试！"),
 
-    PATIENT_USER_HAS_ALREADY_LOGIN("P00005","用户已经登录，请勿重复登录！"),
+    PATIENT_USER_HAS_ALREADY_LOGIN("P00005","您已经处于登录状态！"),
 
     PATIENT_USER_NOT_EXISTED("P00006","不存在该用户！"),;
 

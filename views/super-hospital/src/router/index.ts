@@ -11,6 +11,8 @@ import ModDocPage from '../view/pages/admin/doctor/ModDocPage.vue'
 import DepMagPage from '../view/pages/admin/department/DepMagPage.vue'
 import AdminMedMag from '../view/pages/admin/medicine/AdminMedMag.vue'
 import MedStockPage from '../view/pages/admin/medicine/MedStockPage.vue'
+import PatientHome from '../view/pages/patient/patientHome.vue'
+import ReserverPage from '../view/pages/patient/reserverPage.vue'
 
 
 const router = createRouter({
@@ -67,6 +69,17 @@ const router = createRouter({
           {
             path: '/MedStockPage',
             component: MedStockPage
+          }
+        ]
+      },
+      {
+        path: '/PatientHome',
+        name: 'PatientHome',
+        component: PatientHome,
+        children:[
+          {
+            path:'/ReserverPage',
+            component: ReserverPage
           }
         ]
       },
