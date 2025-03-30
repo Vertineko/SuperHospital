@@ -13,7 +13,7 @@ import AdminMedMag from '../view/pages/admin/medicine/AdminMedMag.vue'
 import MedStockPage from '../view/pages/admin/medicine/MedStockPage.vue'
 import PatientHome from '../view/pages/patient/patientHome.vue'
 import ReserverPage from '../view/pages/patient/reserverPage.vue'
-
+import myReservation from '../view/pages/patient/myReservation.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,6 +80,10 @@ const router = createRouter({
           {
             path:'/ReserverPage',
             component: ReserverPage
+          },
+          {
+            path:'/myReservation',
+            component: myReservation
           }
         ]
       },

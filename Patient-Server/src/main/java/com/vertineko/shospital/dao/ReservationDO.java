@@ -18,11 +18,15 @@ public class ReservationDO {
 
     private Long id;
 
-    private Long departmentId;
+    private String department;
+
+    private Long orderId;
 
     private Long doctorId;
 
     private Long patientId;
+
+    private Long recordId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;

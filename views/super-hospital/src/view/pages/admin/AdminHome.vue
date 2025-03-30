@@ -27,11 +27,11 @@
             <div class="header">
               <span>智慧医疗管理端</span>
             </div>
-            <div class="breadcrumb">
+            <!-- <div class="breadcrumb">
               <el-breadcrumb separator=">">
                 <el-breadcrumb-item :to="{ path: '/AdminConsole' }">AdminConsole</el-breadcrumb-item>
               </el-breadcrumb>
-            </div>
+            </div> -->
           </el-header>
 
 

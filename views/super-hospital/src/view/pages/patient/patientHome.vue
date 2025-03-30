@@ -49,7 +49,7 @@
   const username = localStorage.getItem('token')
   const menu = [
     { id: "1", name: '预约挂号', val: [{ name: '挂号', path:'/ReserverPage'}] },
-    { id: "2", name: '就诊记录', val: [{ name: '我的挂号' }] },
+    { id: "2", name: '就诊记录', val: [{ name: '我的挂号', path:'/myReservation'}] },
   ]
   </script>
   

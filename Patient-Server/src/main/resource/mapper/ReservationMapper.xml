@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.vertineko.shospital.dao.mapper.ReservationMapper">
+
+
+    <select id="getReservationPage" parameterType="com.vertineko.shospital.dto.patient.req.ReservationPageDTO"
+            resultType="com.vertineko.shospital.dto.patient.res.ReservationPageVO">
+        select r.id, r.department, d.name, r.create_time, r.status
+        from reservation r left join doctor d
+        on r.doctor_id = d.id
+        <where>
+            <if test="patientId != null">
+                and r.patient_id = #{patientId}
+            </if>
+            <if test="department != null and department != ''">
+                and r.department like concat('%', #{department}, '%')
+            </if>
+            <if test="status != null">
+                and r.status = #{status}
+            </if>
+        </where>
+    </select>
+</mapper>

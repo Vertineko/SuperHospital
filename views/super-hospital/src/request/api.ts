@@ -162,6 +162,14 @@ export function getDepartmentPage(data:getDepartmentPageData){
     })
 }
 
+export function patGetDepartmentPage(data:getDepartmentPageData){
+    return http({
+        url:'/api/patient/api/department/getPage',
+        method:'post',
+        data
+    })
+}
+
 interface PatientQueryData{
     username:string
     name:string
@@ -259,3 +267,39 @@ export function getAbsDocDTO(data:getAbsDocDTO){
         data
     })
 }
+
+interface insertReservationDTO{
+    department:string
+    doctorId:string
+}
+
+export function insertReservation(data:insertReservationDTO){
+    return http({
+        url:'/api/patient/api/reservation/insert',
+        method:'post',
+        data
+    })
+}
+
+interface pageReservationDTO{
+    department:string
+    status:string
+    current: number
+    size:number
+}
+
+export function pageReservation(data:pageReservationDTO){
+    return http({
+        url:'/api/patient/api/reservation/page',
+        method:'post',
+        data
+    })
+}
+
+export function cancelReservation(data:string){
+    return http({
+        url:'/api/patient/api/reservation/' + data,
+        method:'put',
+    })
+}
+

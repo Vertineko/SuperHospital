@@ -52,7 +52,7 @@ public class DoctorContextInterceptor implements HandlerInterceptor {
                         .build();
 
                 //防止在一些用户知道后端接口URL后用其他职责的账号恶意访问
-                if (!user.getRole().equals(Role.ADMIN.getMsg())) {
+                if (!user.getRole().equals(Role.DOCTOR.getMsg())) {
                     log.error("[ex]{}", AdminErrorCode.USER_IS_NOT_ADMIN.getMessage());
                     response.setStatus(403);
                     String res = constructResString(AdminErrorCode.USER_IS_NOT_ADMIN);

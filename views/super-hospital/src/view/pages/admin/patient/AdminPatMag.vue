@@ -211,7 +211,6 @@
 
 .removeDialog {
     display: flex;
-    flex-direction: row;
 
     .description {
         width: 100%;

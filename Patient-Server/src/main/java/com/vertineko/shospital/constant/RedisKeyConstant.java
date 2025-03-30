@@ -13,6 +13,8 @@ public enum RedisKeyConstant {
 
     PATIENT_INFO_RWLOCK_KEY_PREFIX("PATIENT:INFO:RWLOCK:"),
 
+    RESERVATION_INFO_RWLOCK_KEY_PREFIX("RESERVATION:INFO:RWLOCK:"),
+
     ;
 
     private final String key;

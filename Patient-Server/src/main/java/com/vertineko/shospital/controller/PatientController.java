@@ -7,6 +7,7 @@ import com.vertineko.shospital.constrain.Results;
 import com.vertineko.shospital.dao.PatientDO;
 import com.vertineko.shospital.dao.dto.req.UpdatePatientByIdDTO;
 import com.vertineko.shospital.dto.LoginDTO;
+import com.vertineko.shospital.dto.doctor.req.DepartmentPageDTO;
 import com.vertineko.shospital.dto.doctor.req.DocAbsPageDTO;
 import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
@@ -73,6 +74,11 @@ public class PatientController {
     @RequestMapping("/patient/api/getDocAbsPage")
     public String getDocAbsPage(@RequestBody DocAbsPageDTO requestParam){
         return doctorRemoteService.getDocAbsPage(requestParam);
+    }
+
+    @RequestMapping("/patient/api/department/getPage")
+    String getDepartmentPage(@RequestBody DepartmentPageDTO requestParam){
+        return doctorRemoteService.getDepartmentPage(requestParam);
     }
 
 }

@@ -24,6 +24,7 @@
 
     <el-drawer v-model="isDrawShow" :title="currRow.name" :direction="direction">
         <el-table :data="absDocList.records">
+            <el-table-column  prop="id" v-if="false"/>
             <el-table-column label="姓名" prop="name" />
 
 
@@ -31,7 +32,9 @@
 
 
             <el-table-column label="操作" >
-                <el-button type="primary">挂号</el-button>
+                <template #default="scope">
+                    <el-button type="primary" @click="reserve(scope.row.id)">挂号</el-button>
+                </template>
             </el-table-column>
 
         </el-table>
@@ -45,8 +48,9 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
-import { getDepartmentPage, getAbsDocDTO } from '../../../request/api';
+import { patGetDepartmentPage, getAbsDocDTO, insertReservation } from '../../../request/api';
 import { ElMessage, type DrawerProps, type FormInstance } from 'element-plus';
+import { el } from 'element-plus/es/locales.mjs';
 
 
 const queryFormRef = ref<FormInstance>()
@@ -89,6 +93,11 @@ const absDocList = reactive({
     ],
     total:1
 })
+
+const reserveData = reactive({
+    department:'',
+    doctorId:'',
+})
 onMounted(() => {
     init()
 })
@@ -103,7 +112,7 @@ const query = (formEl: FormInstance | undefined) => {
     if (!formEl) return
     formEl.validate(async (valid) => {
         if (valid) {
-            const res = await getDepartmentPage(queryDepartment);
+            const res = await patGetDepartmentPage(queryDepartment);
             if (res.data.code === '200') {
                 departments.records = res.data.data.records
                 departments.total = res.data.data.total
@@ -117,7 +126,7 @@ const query = (formEl: FormInstance | undefined) => {
 
 const init = async () => {
     reset()
-    const res = await getDepartmentPage(queryDepartment);
+    const res = await patGetDepartmentPage(queryDepartment);
     if (res.data.code === '200') {
         departments.records = res.data.data.records
         departments.total = res.data.data.total
@@ -141,6 +150,17 @@ const selectDepartment = async (row:any) => {
     
 }
 
+const reserve = async (id:string) =>{
+    reserveData.doctorId = id
+    reserveData.department = currRow.name
+    const res = await insertReservation(reserveData)
+    if (res.data.code === '200'){
+        ElMessage.success('预约成功！')
+        isDrawShow.value = false
+    }else {
+        ElMessage.error(res.data.data)
+    }
+}
 
 </script>
 
