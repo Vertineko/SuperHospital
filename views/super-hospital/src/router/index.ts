@@ -14,6 +14,9 @@ import MedStockPage from '../view/pages/admin/medicine/MedStockPage.vue'
 import PatientHome from '../view/pages/patient/patientHome.vue'
 import ReserverPage from '../view/pages/patient/reserverPage.vue'
 import myReservation from '../view/pages/patient/myReservation.vue'
+import DoctorHome from '../view/pages/doctor/doctorHome.vue'
+import CurrReservation from '../view/pages/doctor/currReservation.vue'
+import HistoryReservation from '../view/pages/doctor/historyReservation.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -87,6 +90,21 @@ const router = createRouter({
           }
         ]
       },
+      {
+        path:'/DoctorHome',
+        name:'DoctorHome',
+        component:DoctorHome,
+        children:[
+          {
+            path:'/historyReservation',
+            component: HistoryReservation
+          },
+          {
+            path:'/currReservation',
+            component: CurrReservation
+          }
+        ]
+      }
     ]
   })
   

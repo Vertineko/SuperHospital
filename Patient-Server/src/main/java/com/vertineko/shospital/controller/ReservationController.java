@@ -5,6 +5,10 @@ import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
 import com.vertineko.shospital.dao.ReservationDO;
 import com.vertineko.shospital.dao.dto.req.InsertReservationDTO;
+import com.vertineko.shospital.dto.doctor.req.DocCurrReservationPageDTO;
+import com.vertineko.shospital.dto.doctor.req.DocReservationHisDTO;
+import com.vertineko.shospital.dto.doctor.res.DocReservationHisVO;
+import com.vertineko.shospital.dto.doctor.res.DocReservationPageVO;
 import com.vertineko.shospital.dto.patient.req.ReservationPageDTO;
 import com.vertineko.shospital.dto.patient.res.ReservationPageVO;
 import com.vertineko.shospital.service.ReservationService;
@@ -43,5 +47,16 @@ public class ReservationController {
     @RequestMapping(method = RequestMethod.PUT, path = "/patient/api/reservation/{id}")
     public Result<Integer> cancelReservation(@PathVariable Long id){
         return Results.success(reservationService.cancelReservation(id));
+    }
+
+    @RequestMapping("/patient/api/currReservation")
+    public Result<IPage<DocReservationPageVO>> getDocReservationPage(@RequestBody DocCurrReservationPageDTO requestParam){
+        return Results.success(reservationService.getDocReservationPage(requestParam));
+    }
+
+    @RequestMapping("/patient/api/hisReservation")
+    public Result<IPage<DocReservationHisVO>> getDocReservationHisPage(@RequestBody DocReservationHisDTO requestParam){
+        log.info("医生id:{}", requestParam.getId());
+        return Results.success(reservationService.getDocReservationHisPage(requestParam));
     }
 }

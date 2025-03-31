@@ -25,13 +25,9 @@
           <el-container>
             <el-header style="">
               <div class="header">
-                <span>智慧医疗管理端</span>
+                <span>智慧医疗医生端</span>
               </div>
-              <div class="breadcrumb">
-                <el-breadcrumb separator=">">
-                  <el-breadcrumb-item :to="{ path: '/AdminConsole' }">AdminConsole</el-breadcrumb-item>
-                </el-breadcrumb>
-              </div>
+              
             </el-header>
   
   
@@ -52,11 +48,8 @@
   
   const username = localStorage.getItem('token')
   const menu = [
-    { id: "1", name: '控制台', val: [{ name: '主页', path: '/AdminConsole' }] },
-    { id: "2", name: '医生管理', val: [{ name: '医生信息管理', path: '/AdminDocMag' }, { name: '科室管理', path: '/AdminDepMag' }] },
-    { id: "3", name: '患者管理', val: [{ name: '患者信息管理', path: '/AdminPatMag' }] },
-    { id: "4", name: '病历管理', val: [{ name: '病历信息管理', path: '/AdminRecMag' }] },
-    { id: "5", name: '药品管理', val: [{ name: '药品信息管理', path: '/AdminMedMag' }, { name: '药品库存管理', path: '/MedStockPage' }] },
+    { id: "1", name: '当前预约', val: [{ name: '待处理预约', path: '/currReservation' }] },
+    { id: "2", name: '预约记录', val: [{ name: '预约历史', path: '/historyReservation' }] },
   ]
   </script>
   

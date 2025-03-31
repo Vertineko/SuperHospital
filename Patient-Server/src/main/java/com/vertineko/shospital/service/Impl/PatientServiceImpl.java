@@ -99,10 +99,7 @@ public class PatientServiceImpl extends ServiceImpl<PatientMapper, PatientDO> im
 
     @Override
     public String login(LoginDTO requestParam) {
-        //首先查找用户是否已经登录
-        if (Boolean.TRUE.equals(redisTemplate.hasKey(RedisKeyConstant.PATIENT_LOGIN_KEY_PREFIX.getKey() + requestParam.getUsername()))){
-            throw new PatientException(PatientErrorCode.PATIENT_USER_HAS_ALREADY_LOGIN);
-        }
+
         LambdaQueryWrapper<PatientDO> queryWrapper = Wrappers.lambdaQuery(PatientDO.class)
                 .eq(PatientDO::getUsername, requestParam.getUsername())
                 .eq(PatientDO::getPassword, requestParam.getPassword());

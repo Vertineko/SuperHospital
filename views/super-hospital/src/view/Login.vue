@@ -177,7 +177,7 @@ const doctorLogin = (formEl:FormInstance | undefined) => {
             if (res.data.code == '200'){
                 localStorage.setItem('token', res.data?.data)
                 ElMessage.success('登录成功！')
-                router.push('/')
+                router.push('/doctorHome')
             }else {
                 //console.log('不为200')
                 if (res.data?.data == "您已经处于登录状态！"){
@@ -186,7 +186,7 @@ const doctorLogin = (formEl:FormInstance | undefined) => {
                     console.log(token)
                     if (token == LoginFormData.username){
                         ElMessage.success('登录成功！')
-                        router.push('/e')
+                        router.push('/DoctorHome')
                     }else {
                         ElMessage.warning('此账号已经在别处登录，如果并非您本人所为，请及时联系管理员！')
                     }

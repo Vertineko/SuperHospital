@@ -22,4 +22,49 @@
             </if>
         </where>
     </select>
+
+    <select id="getCurrReservationPage" parameterType="com.vertineko.shospital.dto.doctor.req.DocCurrReservationPageDTO"
+            resultType="com.vertineko.shospital.dto.doctor.res.DocReservationPageVO">
+        select r.id, p.name as name, r.create_time
+        from reservation r left join patient p
+        on r.patient_id = p.id
+        <where>
+
+            <if test="patientName != null and patientName != ''">
+                and p.name like concat('%',#{patientName},'%')
+            </if>
+            <if test="minCreateTime != null">
+                and r.create_time &lt;= #{maxCreateTime}
+            </if>
+            <if test="minCreateTime != null">
+                and r.create_time &gt;= #{minCreateTime}
+            </if>
+            <if test="true">
+                and r.status = 0 and r.doctor_id = #{id}
+            </if>
+        </where>
+    </select>
+    <select id="getDocHisReservationPage" parameterType="com.vertineko.shospital.dto.doctor.req.DocReservationHisDTO"
+            resultType="com.vertineko.shospital.dto.doctor.res.DocReservationHisVO">
+        select r.id, p.name as name, r.create_time, r.status
+        from reservation r left join patient p
+        on r.patient_id = p.id
+        <where>
+            <if test="true">
+                and r.doctor_id = #{id}
+            </if>
+            <if test="patientName != null and patientName != ''">
+                and p.name like concat('%', #{patientName}, '%')
+            </if>
+            <if test="minCreateTime != null">
+                and r.create_time &lt;= #{maxCreateTime}
+            </if>
+            <if test="minCreateTime != null">
+                and r.create_time &gt;= #{minCreateTime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

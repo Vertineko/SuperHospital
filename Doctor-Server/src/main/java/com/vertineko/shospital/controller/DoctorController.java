@@ -8,7 +8,9 @@ import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
+import com.vertineko.shospital.remote.service.PatientRemoteService;
 import com.vertineko.shospital.service.DoctorService;
+import com.vertineko.shospital.usr.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 public class DoctorController {
 
     private final DoctorService doctorService;
+
+    private final PatientRemoteService patientRemoteService;
+
 
     /**
      * 医生登录
@@ -100,5 +105,37 @@ public class DoctorController {
     @RequestMapping("/doctor/api/getDocAbsPage")
     public Result<IPage<DocAbsPageVO>> getDocAbsPage(@RequestBody DocAbsPageDTO requestParam){
         return Results.success(doctorService.getDocAbsPage(requestParam));
+    }
+
+
+
+    //远程调用
+    @RequestMapping("/doctor/api/currReservation")
+    String getDocReservationPage(@RequestBody DocCurrReservationPageDTO requestParam){
+        requestParam.setId(UserUtils.getUser().getId());
+
+        return patientRemoteService.getDocReservationPage(requestParam);
+    }
+
+    /**
+     * 医生取消预约
+     * @param id
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.PUT, path = "/doctor/api/reservation/{id}")
+    String cancelReservation(@PathVariable Long id){
+        return patientRemoteService.cancelReservation(id);
+    }
+
+    /**
+     * 医生查询历史已处理的预约
+     * @param requestParam
+     * @return
+     */
+    @RequestMapping("/doctor/api/hisReservation")
+    String getDocReservationHisPage(@RequestBody DocReservationHisDTO requestParam){
+        requestParam.setId(UserUtils.getUser().getId());
+        log.info("本次查询预约列表的医生id:{}, system:{}", requestParam.getId(), UserUtils.getUser().getId());
+        return patientRemoteService.getDocReservationHisPage(requestParam);
     }
 }

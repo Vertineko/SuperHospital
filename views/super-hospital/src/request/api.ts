@@ -303,3 +303,43 @@ export function cancelReservation(data:string){
     })
 }
 
+export function docCancelReservation(data:string){
+    return http({
+        url:'/api/doctor/api/reservation/' + data,
+        method:'put',
+    })
+}
+
+interface queryCurrReservationDTO{
+    patientName:string
+    minCreateTime:string
+    maxCreateTime:string
+    current:number
+    size:number
+}
+
+export function queryCurrReservation(data:queryCurrReservationDTO){
+    return http({
+        url:'/api/doctor/api/currReservation',
+        method:'post',
+        data
+    })
+}
+
+interface queryHisReservationDTO{
+    patientName:string
+    minCreateTime:string
+    maxCreateTime:string
+    status:string
+    current:number
+    size:number
+}
+
+export function queryHisReservation(data:queryHisReservationDTO){
+    return http({
+        url:'/api/doctor/api/hisReservation',
+        method:'post',
+        data
+    })
+}
+

@@ -51,10 +51,7 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
 
     @Override
     public String login(LoginDTO requestParam) {
-        //首先查找用户是否已经登录
-        if (Boolean.TRUE.equals(redisTemplate.hasKey(RedisKeyConstant.DOCTOR_LOGIN_KEY_PREFIX.getVal() + requestParam.getUsername()))){
-            throw new DoctorException(DoctorErrorCode.DOCTOR_HAS_ALREADY_LOGIN);
-        }
+
         LambdaQueryWrapper<DoctorDO> queryWrapper = Wrappers.lambdaQuery(DoctorDO.class)
                 .eq(DoctorDO::getUsername, requestParam.getUsername())
                 .eq(DoctorDO::getPassword, requestParam.getPassword());

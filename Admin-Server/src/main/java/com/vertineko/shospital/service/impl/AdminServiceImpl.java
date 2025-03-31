@@ -42,10 +42,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminDO> implemen
     public String login(LoginDTO adminLoginDTO) {
         String username = adminLoginDTO.getUsername();
         String key = RedisKeyConstant.ADMIN_LOGIN_KEY_PREFIX.getKey() + username;
-        //首先检测登录状态
-        if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(key))) {
-            throw new AdminException(AdminErrorCode.ADMIN_LOGIN_REPEAT);
-        }
+
         LambdaQueryWrapper<AdminDO> queryWrapper = Wrappers.lambdaQuery(AdminDO.class)
                 .eq(AdminDO::getUsername, adminLoginDTO.getUsername())
                 .eq(AdminDO::getPassword, adminLoginDTO.getPassword());
