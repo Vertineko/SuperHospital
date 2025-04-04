@@ -20,7 +20,7 @@ import com.vertineko.shospital.dto.patient.req.ReservationPageDTO;
 import com.vertineko.shospital.dto.patient.res.ReservationPageVO;
 import com.vertineko.shospital.service.ReservationService;
 import com.vertineko.shospital.usr.UserDO;
-import com.vertineko.shospital.usr.UserUtils;
+import com.vertineko.shospital.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;

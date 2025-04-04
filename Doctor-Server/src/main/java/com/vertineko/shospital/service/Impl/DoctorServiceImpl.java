@@ -21,7 +21,7 @@ import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
 import com.vertineko.shospital.service.DoctorService;
-import com.vertineko.shospital.usr.JwtUtil;
+import com.vertineko.shospital.utils.JwtUtil;
 import com.vertineko.shospital.utils.WorkTimeUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

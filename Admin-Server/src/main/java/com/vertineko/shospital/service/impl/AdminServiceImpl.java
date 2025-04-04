@@ -13,7 +13,7 @@ import com.vertineko.shospital.dao.dto.req.*;
 import com.vertineko.shospital.dao.mapper.AdminMapper;
 import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.service.AdminService;
-import com.vertineko.shospital.usr.JwtUtil;
+import com.vertineko.shospital.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;

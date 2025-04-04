@@ -1,4 +1,6 @@
-package com.vertineko.shospital.usr;
+package com.vertineko.shospital.utils;
+
+import com.vertineko.shospital.usr.UserDO;
 
 /**
  * 用户上下文

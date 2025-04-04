@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>医生详细</h1>
+        <span>医生详细</span>
     </div>
     <div class="showArea">
         <el-row>

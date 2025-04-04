@@ -2,7 +2,6 @@ package com.vertineko.shospital.dao;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.vertineko.shospital.constant.Sex;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,14 +22,14 @@ public class RecordDO {
     //主治医生ID
     private Long doctorId;
 
-    //患者姓名
-    private String name;
-
-    private Sex sex;
-
-    private Integer age;
-
-    private String department;
+//    //患者姓名
+//    private String name;
+//
+//    private Sex sex;
+//
+//    private Integer age;
+//
+//    private String department;
 
     private Integer epidemic;
 

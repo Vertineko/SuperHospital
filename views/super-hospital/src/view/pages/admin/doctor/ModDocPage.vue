@@ -1,5 +1,5 @@
 <template>
-    <h1> 录入医生信息</h1>
+    <span> 录入医生信息</span>
     <div class="inputArea">
         <el-form ref="FormRef" :model="requestParam.records" :rules="requstRules">
             <el-form-item label="用户名：" prop="username">

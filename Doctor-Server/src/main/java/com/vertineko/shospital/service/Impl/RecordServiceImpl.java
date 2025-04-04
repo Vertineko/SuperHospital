@@ -11,7 +11,7 @@ import com.vertineko.shospital.dao.dto.req.InsertRecordDTO;
 import com.vertineko.shospital.dao.dto.req.RecordPageDTO;
 import com.vertineko.shospital.dao.mapper.RecordMapper;
 import com.vertineko.shospital.service.RecordService;
-import com.vertineko.shospital.usr.UserUtils;
+import com.vertineko.shospital.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

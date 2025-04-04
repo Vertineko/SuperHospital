@@ -49,12 +49,12 @@ public class ReservationController {
         return Results.success(reservationService.cancelReservation(id));
     }
 
-    @RequestMapping("/patient/api/currReservation")
+    @RequestMapping("/patient/api/reservation/currReservation")
     public Result<IPage<DocReservationPageVO>> getDocReservationPage(@RequestBody DocCurrReservationPageDTO requestParam){
         return Results.success(reservationService.getDocReservationPage(requestParam));
     }
 
-    @RequestMapping("/patient/api/hisReservation")
+    @RequestMapping("/patient/api/reservation/hisReservation")
     public Result<IPage<DocReservationHisVO>> getDocReservationHisPage(@RequestBody DocReservationHisDTO requestParam){
         log.info("医生id:{}", requestParam.getId());
         return Results.success(reservationService.getDocReservationHisPage(requestParam));

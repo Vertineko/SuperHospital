@@ -10,7 +10,7 @@ import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
 import com.vertineko.shospital.remote.service.PatientRemoteService;
 import com.vertineko.shospital.service.DoctorService;
-import com.vertineko.shospital.usr.UserUtils;
+import com.vertineko.shospital.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -113,7 +113,6 @@ public class DoctorController {
     @RequestMapping("/doctor/api/currReservation")
     String getDocReservationPage(@RequestBody DocCurrReservationPageDTO requestParam){
         requestParam.setId(UserUtils.getUser().getId());
-
         return patientRemoteService.getDocReservationPage(requestParam);
     }
 

@@ -145,7 +145,7 @@ const date = ref([''])
 const query = async () =>{
     const res = await queryHisReservation(searchForm);
     if (res.data.code === '200'){
-        console.log(res)
+        
         reservationData.records = res.data.data.records
         reservationData.total = res.data.data.total
     }else {
@@ -156,8 +156,7 @@ const query = async () =>{
 const setDate = ()=>{
     searchForm.minCreateTime = date.value[0]
     searchForm.maxCreateTime = date.value[1]
-    console.log(searchForm.minCreateTime)
-    console.log(searchForm.maxCreateTime)
+    
 }
 
 const cancelReserve = async () =>{
@@ -175,7 +174,7 @@ const cancelReserve = async () =>{
 
 const assistStatus = (status : number):string => {
     
-    console.log(typeof(status))
+    
     switch (status) {
         case -1:
             return '已取消';

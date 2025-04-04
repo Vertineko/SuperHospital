@@ -6,14 +6,16 @@ public enum DoctorErrorCode implements IErrorCode {
     //D1xxxx 登陆注册分区的错误
     DOCTOR_USERNAME_REPEATED("D10001", "该医生用户名或邮箱已存在!"),
     DOCTOR_HAS_ALREADY_LOGIN("D10002", "您已经处于登录状态！"),
+    DOCTOR_TOKEN_MISSING("A10003", "用户未登录！"),
+    DOCTOR_TOKEN_WRONG("A10004", "该TOKEN已过期或失效，请重新登录！"),
     //D2xxxx 业务分区错误
     DOCTOR_USER_NOT_EXISTED("D20001", "该医生用户不存在！"),
 
     RECORD_NOT_EXISTED("R00001", "该病历已被其他用户修改或不存在！");
 
 
-    private String code;
-    private String message;
+    private final String code;
+    private final String message;
 
     DoctorErrorCode(String code, String message) {
         this.code = code;

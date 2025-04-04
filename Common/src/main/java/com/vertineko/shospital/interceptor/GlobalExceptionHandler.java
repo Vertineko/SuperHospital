@@ -8,7 +8,6 @@ import com.vertineko.shospital.constrain.exceptionDef.exception.PatientException
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Component
 @Slf4j
 @RestControllerAdvice
-@Order(2)
 public class GlobalExceptionHandler {
 
     @SneakyThrows

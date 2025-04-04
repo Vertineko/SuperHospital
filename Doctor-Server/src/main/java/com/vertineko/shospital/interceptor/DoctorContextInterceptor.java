@@ -6,13 +6,14 @@ import com.vertineko.shospital.constant.Role;
 import com.vertineko.shospital.constrain.Results;
 import com.vertineko.shospital.constrain.errorDef.IErrorCode;
 import com.vertineko.shospital.constrain.errorDef.error.AdminErrorCode;
-import com.vertineko.shospital.usr.JwtUtil;
+import com.vertineko.shospital.utils.JwtUtil;
 import com.vertineko.shospital.usr.UserDO;
-import com.vertineko.shospital.usr.UserUtils;
+import com.vertineko.shospital.utils.UserUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -22,6 +23,7 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Order(2)
 public class DoctorContextInterceptor implements HandlerInterceptor {
 
     private final StringRedisTemplate redisTemplate;

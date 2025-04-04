@@ -33,7 +33,7 @@
             <el-table-column label="预约时间" prop="createTime"/>
             <el-table-column label="操作" >
                 <template #default="scope">
-                    <el-button type="primary">接受预约</el-button>
+                    <el-button type="primary" @click="accept()">接受预约</el-button>
                     <el-button type="danger" @click="isCancel=true; curr=scope.row.id;">取消</el-button>
                 </template>
             </el-table-column>
@@ -63,7 +63,9 @@
 import { onMounted, reactive, ref } from 'vue';
 import { queryCurrReservation, docCancelReservation } from '../../../request/api';
 import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const curr = ref('')
 const isCancel = ref(false)
 const searchForm = reactive({
@@ -93,7 +95,7 @@ onMounted(() =>{
 const reset = () =>{
     clear()
     query()
-    console.log(reservationData.records)
+    
 }
 
 const clear = () =>{
@@ -108,7 +110,6 @@ const date = ref([''])
 const query = async () =>{
     const res = await queryCurrReservation(searchForm);
     if (res.data.code == '200'){
-        console.log(res)
         reservationData.records = res.data.data.records
         reservationData.total = res.data.data.total
     }else {
@@ -119,8 +120,6 @@ const query = async () =>{
 const setDate = ()=>{
     searchForm.minCreateTime = date.value[0]
     searchForm.maxCreateTime = date.value[1]
-    console.log(searchForm.minCreateTime)
-    console.log(searchForm.maxCreateTime)
 }
 
 const cancelReserve = async () =>{
@@ -134,6 +133,10 @@ const cancelReserve = async () =>{
         isCancel.value = false
     }
     
+}
+
+const accept = () =>{
+    router.push('/createRecord')
 }
 </script>
 

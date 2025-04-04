@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(name = "patient-server")
 public interface PatientRemoteService {
 
-    @RequestMapping("/patient/api/currReservation")
+    @RequestMapping("/patient/api/reservation/currReservation")
     String getDocReservationPage(@RequestBody DocCurrReservationPageDTO requestParam);
 
 
     @RequestMapping(method = RequestMethod.PUT, path = "/patient/api/reservation/{id}")
     String cancelReservation(@PathVariable Long id);
 
-    @RequestMapping("/patient/api/hisReservation")
+    @RequestMapping("/patient/api/reservation/hisReservation")
     String getDocReservationHisPage(DocReservationHisDTO requestParam);
 
 }

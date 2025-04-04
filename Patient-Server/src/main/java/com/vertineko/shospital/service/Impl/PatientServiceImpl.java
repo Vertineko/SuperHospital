@@ -18,7 +18,7 @@ import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
 import com.vertineko.shospital.dto.patient.res.PatientPageVO;
 import com.vertineko.shospital.service.PatientService;
-import com.vertineko.shospital.usr.JwtUtil;
+import com.vertineko.shospital.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;

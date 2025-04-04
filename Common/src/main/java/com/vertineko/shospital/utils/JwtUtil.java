@@ -1,4 +1,4 @@
-package com.vertineko.shospital.usr;
+package com.vertineko.shospital.utils;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.jwt.JWT;

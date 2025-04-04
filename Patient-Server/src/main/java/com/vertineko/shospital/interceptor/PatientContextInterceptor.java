@@ -6,9 +6,9 @@ import com.vertineko.shospital.constant.Role;
 import com.vertineko.shospital.constrain.Results;
 import com.vertineko.shospital.constrain.errorDef.IErrorCode;
 import com.vertineko.shospital.constrain.errorDef.error.AdminErrorCode;
-import com.vertineko.shospital.usr.JwtUtil;
+import com.vertineko.shospital.utils.JwtUtil;
 import com.vertineko.shospital.usr.UserDO;
-import com.vertineko.shospital.usr.UserUtils;
+import com.vertineko.shospital.utils.UserUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class PatientContextInterceptor implements HandlerInterceptor {
             log.info("jwt:{}", user_context);
             if (user_context == null) {
                 log.error("[ex]{}", AdminErrorCode.ADMIN_TOKEN_WRONG.getMessage());
-                response.setStatus(401);
+                response.setStatus(403);
                 String res = constructResString(AdminErrorCode.ADMIN_TOKEN_WRONG);
                 response.getWriter().write(res);
                 return false;
@@ -63,7 +63,7 @@ public class PatientContextInterceptor implements HandlerInterceptor {
                 }
             } else {
                 log.error("[ex]{}", AdminErrorCode.ADMIN_TOKEN_MISSING.getMessage());
-                response.setStatus(401);
+                response.setStatus(403);
                 String res = constructResString(AdminErrorCode.ADMIN_TOKEN_MISSING);
                 response.getWriter().write(res);
                 return false;

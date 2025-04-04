@@ -4,6 +4,9 @@ import com.vertineko.shospital.constrain.errorDef.IErrorCode;
 
 public enum PatientErrorCode implements IErrorCode {
 
+    PATIENT_TOKEN_MISSING("A10003", "用户未登录！"),
+    PATIENT_TOKEN_WRONG("A10004", "该TOKEN已过期或失效，请重新登录！"),
+
     DONT_DO_RESERVATION_AGAIN("P00001","请不要重复预约！"),
 
     RESERVATION_NOT_EXISTED("R00001", "该预约记录已不存在！"),
