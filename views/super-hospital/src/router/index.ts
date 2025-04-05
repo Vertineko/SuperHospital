@@ -10,7 +10,6 @@ import DocDetailPage from '../view/pages/admin/doctor/DocDetailPage.vue';
 import ModDocPage from '../view/pages/admin/doctor/ModDocPage.vue';
 import DepMagPage from '../view/pages/admin/department/DepMagPage.vue';
 import AdminMedMag from '../view/pages/admin/medicine/AdminMedMag.vue';
-import MedStockPage from '../view/pages/admin/medicine/MedStockPage.vue';
 import PatientHome from '../view/pages/patient/patientHome.vue';
 import ReserverPage from '../view/pages/patient/reserverPage.vue';
 import myReservation from '../view/pages/patient/myReservation.vue';
@@ -69,11 +68,8 @@ const router = createRouter({
             path: '/AdminMedMag',
             component: AdminMedMag
           }
-          ,
-          {
-            path: '/MedStockPage',
-            component: MedStockPage
-          }
+          
+          
         ]
       },
       {

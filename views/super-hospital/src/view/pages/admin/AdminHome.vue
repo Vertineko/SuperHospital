@@ -56,7 +56,7 @@ const menu = [
   { id: "2", name: '医生管理', val: [{ name: '医生信息管理', path: '/AdminDocMag' }, { name: '科室管理', path: '/AdminDepMag' }] },
   { id: "3", name: '患者管理', val: [{ name: '患者信息管理', path: '/AdminPatMag' }] },
   { id: "4", name: '病历管理', val: [{ name: '病历信息管理', path: '/AdminRecMag' }] },
-  { id: "5", name: '药品管理', val: [{ name: '药品信息管理', path: '/AdminMedMag' }, { name: '药品库存管理', path: '/MedStockPage' }] },
+  { id: "5", name: '药品管理', val: [{ name: '药品信息管理', path: '/AdminMedMag' }] },
 ]
 </script>
 

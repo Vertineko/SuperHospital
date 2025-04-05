@@ -11,7 +11,12 @@ public enum DoctorErrorCode implements IErrorCode {
     //D2xxxx 业务分区错误
     DOCTOR_USER_NOT_EXISTED("D20001", "该医生用户不存在！"),
 
-    RECORD_NOT_EXISTED("R00001", "该病历已被其他用户修改或不存在！");
+    RECORD_NOT_EXISTED("R00001", "该病历已被其他用户修改或不存在！"),
+
+
+    RECORD_INSERT_FAILED("R00002", "病历插入失败！"),
+
+    MEDICINE_NOT_EXISTED("M00001", "该药品不存在或者已经被删除！");
 
 
     private final String code;

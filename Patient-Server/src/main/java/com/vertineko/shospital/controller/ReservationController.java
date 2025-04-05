@@ -10,6 +10,7 @@ import com.vertineko.shospital.dto.doctor.req.DocReservationHisDTO;
 import com.vertineko.shospital.dto.doctor.res.DocReservationHisVO;
 import com.vertineko.shospital.dto.doctor.res.DocReservationPageVO;
 import com.vertineko.shospital.dto.patient.req.ReservationPageDTO;
+import com.vertineko.shospital.dto.patient.req.UpdReservationDTO;
 import com.vertineko.shospital.dto.patient.res.ReservationPageVO;
 import com.vertineko.shospital.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +29,10 @@ public class ReservationController {
         return Results.success(reservationService.insertReservation(requestParam));
     }
 
-    @Deprecated
-    @RequestMapping("/patient/api/reservation/update/{id}")
-    public Result<Integer> updateReservation(@PathVariable Long id){
-        return Results.success(reservationService.updateReservation(id));
+
+    @RequestMapping("/patient/api/reservation/update")
+    public Result<Integer> updateReservation(@RequestBody UpdReservationDTO requestParam){
+        return Results.success(reservationService.updateReservation(requestParam));
     }
 
     @RequestMapping("/patient/api/reservation/getById/{id}")

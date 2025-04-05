@@ -18,7 +18,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/doctor/api/login")
                 .excludePathPatterns("/doctor/api/getDocAbsPage")
-                .excludePathPatterns("/doctor/api/department/getPage");
+                .excludePathPatterns("/doctor/api/department/getPage")
+                .excludePathPatterns("/doctor/api/medicine/**");
 
     }
 }

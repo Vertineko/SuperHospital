@@ -4,17 +4,20 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.vertineko.shospital.constant.StatusConstant;
 import com.vertineko.shospital.constrain.errorDef.error.DoctorErrorCode;
 import com.vertineko.shospital.constrain.exceptionDef.exception.DoctorException;
 import com.vertineko.shospital.dao.RecordDO;
 import com.vertineko.shospital.dao.dto.req.InsertRecordDTO;
-import com.vertineko.shospital.dao.dto.req.RecordPageDTO;
 import com.vertineko.shospital.dao.mapper.RecordMapper;
+import com.vertineko.shospital.dto.patient.req.UpdReservationDTO;
+import com.vertineko.shospital.remote.service.PatientRemoteService;
 import com.vertineko.shospital.service.RecordService;
 import com.vertineko.shospital.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -25,13 +28,28 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
 
     private final RecordMapper recordMapper;
 
+    private final PatientRemoteService patientRemoteService;
+
     @Override
-    public int insertRecord(InsertRecordDTO requestParam) {
+    @Transactional
+    public Long insertRecord(InsertRecordDTO requestParam) {
+        //先新建病历档案，在更新预约状态，和预约表上的字段
         RecordDO recordDO = new RecordDO();
         BeanUtil.copyProperties(requestParam, recordDO);
         recordDO.setCreateTime(new Date());
         recordDO.setDoctorId(UserUtils.getUser().getId());
-        return recordMapper.insert(recordDO);
+        int flag = recordMapper.insert(recordDO);
+        if (flag > 0) {
+            Long recordId = recordDO.getId();
+            UpdReservationDTO updReservationDTO = new UpdReservationDTO();
+            updReservationDTO.setId(requestParam.getReservationId());
+            updReservationDTO.setRecordId(recordId);
+            updReservationDTO.setStatus(StatusConstant.SUBMITTED);
+            patientRemoteService.updateReservation(updReservationDTO);
+        }else {
+            throw new DoctorException(DoctorErrorCode.RECORD_INSERT_FAILED);
+        }
+        return recordDO.getId();
     }
 
     /**
@@ -51,25 +69,9 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
         return record;
     }
 
-    @Override
-    public RecordPageDTO getDoctorRecords(RecordPageDTO recordPageDTO) {
-        LambdaQueryWrapper<RecordDO> queryWrapper = Wrappers.lambdaQuery(RecordDO.class)
-                .like(RecordDO::getName, recordPageDTO.getName())
-                .gt(RecordDO::getCreateTime, recordPageDTO.getMinCreateTime())
-                .lt(RecordDO::getCreateTime, recordPageDTO.getMaxCreateTime())
-                .eq(RecordDO::getDoctorId, UserUtils.getUser().getId());
-        return recordMapper.selectPage(recordPageDTO, queryWrapper);
-    }
 
-    @Override
-    public RecordPageDTO getPatientRecords(RecordPageDTO recordPageDTO) {
-        LambdaQueryWrapper<RecordDO> queryWrapper = Wrappers.lambdaQuery(RecordDO.class)
-                .like(RecordDO::getName, recordPageDTO.getName())
-                .gt(RecordDO::getCreateTime, recordPageDTO.getMinCreateTime())
-                .lt(RecordDO::getCreateTime, recordPageDTO.getMaxCreateTime())
-                .eq(RecordDO::getPatientId, UserUtils.getUser().getId());
-        return recordMapper.selectPage(recordPageDTO, queryWrapper);
-    }
+
+
 
     @Override
     public int removeRecord(Long id) {

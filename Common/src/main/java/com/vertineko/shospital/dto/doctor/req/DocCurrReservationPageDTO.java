@@ -25,4 +25,6 @@ public class DocCurrReservationPageDTO extends Page<DocReservationPageVO> {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date maxCreateTime;
 
+    private Integer status;
+
 }

@@ -1,11 +1,11 @@
 package com.vertineko.shospital.service.Impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vertineko.shospital.constant.RedisKeyConstant;
-import com.vertineko.shospital.constant.Role;
 import com.vertineko.shospital.constant.StatusConstant;
 import com.vertineko.shospital.constrain.errorDef.error.PatientErrorCode;
 import com.vertineko.shospital.constrain.exceptionDef.exception.PatientException;
@@ -17,6 +17,7 @@ import com.vertineko.shospital.dto.doctor.req.DocReservationHisDTO;
 import com.vertineko.shospital.dto.doctor.res.DocReservationHisVO;
 import com.vertineko.shospital.dto.doctor.res.DocReservationPageVO;
 import com.vertineko.shospital.dto.patient.req.ReservationPageDTO;
+import com.vertineko.shospital.dto.patient.req.UpdReservationDTO;
 import com.vertineko.shospital.dto.patient.res.ReservationPageVO;
 import com.vertineko.shospital.service.ReservationService;
 import com.vertineko.shospital.usr.UserDO;
@@ -58,28 +59,15 @@ public class ReservationServiceImpl extends ServiceImpl<ReservationMapper, Reser
         throw new PatientException(PatientErrorCode.DONT_DO_RESERVATION_AGAIN);
     }
 
-    //此处其实只为更改状态，患者只可能取消，医生只可能接受
+
     @Override
-    public int updateReservation(Long id) {
-        if (getReservation(id) == null) {
+    public Integer updateReservation(UpdReservationDTO requestParam) {
+        ReservationDO reservation = getReservation(requestParam.getId());
+        if (reservation == null) {
             throw new PatientException(PatientErrorCode.RESERVATION_NOT_EXISTED);
         }
-        UserDO user = UserUtils.getUser();
-        ReservationDO reservationDO;
-        if (user != null && user.getRole().equals(Role.PATIENT.getMsg())){
-            reservationDO = ReservationDO.builder()
-                    .id(id)
-                    .status(StatusConstant.CANCELED)
-                    .build();
-
-        }else {
-            reservationDO = ReservationDO.builder()
-                    .id(id)
-                    .status(StatusConstant.COMPLETED)
-                    .build();
-        }
-        return reservationMapper.updateById(reservationDO);
-
+        BeanUtil.copyProperties(requestParam, reservation);
+        return reservationMapper.updateById(reservation);
     }
 
     @Override

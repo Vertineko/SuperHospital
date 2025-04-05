@@ -31,9 +31,13 @@
             <el-table-column label="预约编号" prop="id"/>
             <el-table-column label="患者姓名" prop="name"/>
             <el-table-column label="预约时间" prop="createTime"/>
+            <el-table-column prop="status" v-if="false" />
+            <el-table-column prop="patientId" v-if="false" />
+            <el-table-column prop="recordId" v-if="false" />
             <el-table-column label="操作" >
                 <template #default="scope">
-                    <el-button type="primary" @click="accept()">接受预约</el-button>
+                    <el-button type="primary" v-if="scope.row.status === 0" @click="accept(scope.row.id, scope.row.patientId)">接受预约</el-button>
+                    <el-button type="primary" v-if="scope.row.status === 1" @click="fill(scope.row.recordId)">填写病历</el-button>
                     <el-button type="danger" @click="isCancel=true; curr=scope.row.id;">取消</el-button>
                 </template>
             </el-table-column>
@@ -61,7 +65,7 @@
 <script setup lang="ts">
 
 import { onMounted, reactive, ref } from 'vue';
-import { queryCurrReservation, docCancelReservation } from '../../../request/api';
+import { queryCurrReservation, docCancelReservation, insertRecord } from '../../../request/api';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 
@@ -82,10 +86,18 @@ const reservationData = reactive({
         {
             id:'',
             name:'',
-            createTime:''
+            createTime:'',
+            status:'',
+            patientId:'',
+            recordId:''
         }
     ],
     total:1
+})
+
+const requestParam = reactive({
+    reservationId:'',
+    patientId:''
 })
 
 onMounted(() =>{
@@ -135,8 +147,20 @@ const cancelReserve = async () =>{
     
 }
 
-const accept = () =>{
-    router.push('/createRecord')
+const accept = async (reservationId:string, patientId:string) =>{
+    requestParam.patientId = patientId
+    requestParam.reservationId = reservationId
+    const res = await insertRecord(requestParam)
+    if (res.data.code === '200'){
+        ElMessage.success('接受预约成功，请及时接诊并如实填写病历！')
+        router.push('/createRecord?recordId=' + res.data.data)
+    }else {
+        ElMessage.error(res.data.data)
+    }
+}
+
+const fill = async (recordId:string) =>{
+    router.push('/createRecord?recordId=' + recordId)
 }
 </script>
 

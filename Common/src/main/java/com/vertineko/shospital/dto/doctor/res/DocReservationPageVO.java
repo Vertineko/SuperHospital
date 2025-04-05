@@ -11,4 +11,10 @@ public class DocReservationPageVO {
     private String name;
 
     private String createTime;
+
+    private Integer status;
+
+    private String patientId;
+
+    private String recordId;
 }

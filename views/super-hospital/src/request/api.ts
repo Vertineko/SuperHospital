@@ -343,3 +343,76 @@ export function queryHisReservation(data:queryHisReservationDTO){
     })
 }
 
+interface insertMedicineDTO{
+    name:string
+    form:string
+    note:string
+    price:string
+    count:string
+}
+
+export function insertMedicine(data:insertMedicineDTO){
+    return http({
+        url:'/api/admin/api/medicine/insertMedicine',
+        method:'post',
+        data
+    })
+}
+
+interface getMedicinePageDTO{
+    name:string,
+    current:number,
+    size:number
+}
+
+export function getMedicinePage(data:getMedicinePageDTO){
+    return http({
+        url:'/api/admin/api/medicine/getMedicinePage',
+        method:'post',
+        data
+    })
+}
+
+export function getMedicineById(data:string){
+    return http({
+        url:'/api/admin/api/medicine/getMedicineById/' + data,
+        method:'get'
+    })
+}
+
+export function removeMedicineById(data:string){
+    return http({
+        url:'/api/admin/api/medicine/removeMedicineById/' + data,
+        method:'put'
+    })
+}
+
+interface updMedicineDTO{
+    id:string
+    name:string
+    form:string
+    note:string
+    price:string
+    count:string
+}
+
+export function updateMedicine(data:updMedicineDTO){
+    return http({
+        url:'/api/admin/api/medicine/updMedicineDTO',
+        method:'put',
+        data
+    })
+}
+
+interface InsertRecordDTO{
+    reservationId:string,
+    patientId:string
+}
+
+export function insertRecord(data:InsertRecordDTO){
+    return http({
+        url:'/api/doctor/api/record/insertRecord',
+        method:'post',
+        data
+    })
+}

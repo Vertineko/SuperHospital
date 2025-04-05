@@ -4,10 +4,7 @@ package com.vertineko.shospital.remote.service;
 import com.vertineko.shospital.dto.doctor.req.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Component
 @FeignClient(value = "doctor-server")
@@ -56,5 +53,28 @@ public interface DoctorRemoteService {
 
     @RequestMapping("/doctor/api/department/getAll")
     String getAllDepartment();
+
+
+
+    //药品模块
+    @RequestMapping("/doctor/api/medicine/insertMedicine")
+    String insertMedicine(@RequestBody InsertMedicineDTO requestParam);
+
+
+    @RequestMapping("/doctor/api/medicine/getMedicinePage")
+    String getMedicinePage(@RequestBody MedicinePageDTO requestParam);
+
+
+    @RequestMapping("/doctor/api/medicine/getMedicineById/{id}")
+    String getMedicineById(@PathVariable Long id);
+
+
+    @RequestMapping("/doctor/api/medicine/removeMedicineById/{id}")
+    String removeMedicineById(@PathVariable Long id);
+
+
+    @RequestMapping("/doctor/api/medicine/updMedicineDTO")
+    String updateMedicine(@RequestBody updMedicineDTO requestParam);
+
 
 }

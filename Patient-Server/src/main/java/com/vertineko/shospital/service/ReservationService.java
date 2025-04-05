@@ -8,13 +8,14 @@ import com.vertineko.shospital.dto.doctor.req.DocReservationHisDTO;
 import com.vertineko.shospital.dto.doctor.res.DocReservationHisVO;
 import com.vertineko.shospital.dto.doctor.res.DocReservationPageVO;
 import com.vertineko.shospital.dto.patient.req.ReservationPageDTO;
+import com.vertineko.shospital.dto.patient.req.UpdReservationDTO;
 import com.vertineko.shospital.dto.patient.res.ReservationPageVO;
 
 public interface ReservationService {
 
     int insertReservation(InsertReservationDTO requestParam);
 
-    int updateReservation(Long id);
+    Integer updateReservation(UpdReservationDTO requestParam);
 
     int deleteBatchReservation();
 

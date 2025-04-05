@@ -157,4 +157,34 @@ public class AdminController {
         return doctorRemoteService.getAllDepartment();
     }
 
+    //以下是药品远程调用
+    @RequestMapping("/admin/api/medicine/insertMedicine")
+    String insertMedicine(@RequestBody InsertMedicineDTO requestParam){
+        return doctorRemoteService.insertMedicine(requestParam);
+    }
+
+
+    @RequestMapping("/admin/api/medicine/getMedicinePage")
+    String getMedicinePage(@RequestBody MedicinePageDTO requestParam){
+        return doctorRemoteService.getMedicinePage(requestParam);
+    }
+
+
+    @RequestMapping("/admin/api/medicine/getMedicineById/{id}")
+    String getMedicineById(@PathVariable Long id){
+        return doctorRemoteService.getMedicineById(id);
+    }
+
+
+    @RequestMapping("/admin/api/medicine/removeMedicineById/{id}")
+    String removeMedicineById(@PathVariable Long id){
+        return doctorRemoteService.removeMedicineById(id);
+    }
+
+
+    @RequestMapping("/admin/api/medicine/updMedicineDTO")
+    String updateMedicine(@RequestBody updMedicineDTO requestParam){
+        return doctorRemoteService.updateMedicine(requestParam);
+    }
+
 }

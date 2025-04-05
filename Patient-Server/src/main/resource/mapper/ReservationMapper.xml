@@ -25,7 +25,7 @@
 
     <select id="getCurrReservationPage" parameterType="com.vertineko.shospital.dto.doctor.req.DocCurrReservationPageDTO"
             resultType="com.vertineko.shospital.dto.doctor.res.DocReservationPageVO">
-        select r.id, p.name as name, r.create_time
+        select r.id, p.name as name, r.create_time, r.status, r.patient_id, r.record_id
         from reservation r left join patient p
         on r.patient_id = p.id
         <where>
@@ -40,10 +40,11 @@
                 and r.create_time &gt;= #{minCreateTime}
             </if>
             <if test="true">
-                and r.status = 0 and r.doctor_id = #{id}
+                and r.status &gt;= 0 and r.status &lt;2 and r.doctor_id = #{id}
             </if>
         </where>
     </select>
+
     <select id="getDocHisReservationPage" parameterType="com.vertineko.shospital.dto.doctor.req.DocReservationHisDTO"
             resultType="com.vertineko.shospital.dto.doctor.res.DocReservationHisVO">
         select r.id, p.name as name, r.create_time, r.status

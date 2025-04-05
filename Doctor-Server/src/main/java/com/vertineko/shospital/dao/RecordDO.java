@@ -1,5 +1,6 @@
 package com.vertineko.shospital.dao;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.Date;
 @TableName("record")
 public class RecordDO {
 
+    @TableId(value = "id")
     private Long id;
 
     //患者ID
@@ -21,15 +23,6 @@ public class RecordDO {
 
     //主治医生ID
     private Long doctorId;
-
-//    //患者姓名
-//    private String name;
-//
-//    private Sex sex;
-//
-//    private Integer age;
-//
-//    private String department;
 
     private Integer epidemic;
 
