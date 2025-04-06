@@ -27,10 +27,10 @@ public class RecordDO {
     private Integer epidemic;
 
     //病情症状
-    private String condition;
+    private String conditions;
 
     //临床初步诊断
-    private String check;
+    private String checks;
 
     //辅助诊断
     private String assistantCheck;

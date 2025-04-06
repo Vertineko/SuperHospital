@@ -35,6 +35,7 @@ public class PatientController {
         return Results.success(patientService.removeById(id));
     }
 
+
     @RequestMapping("/patient/api/removeByUsername")
     public Result<Integer> removeByUsername(@RequestParam("username") String username){
         return Results.success(patientService.removeByUsername(username));

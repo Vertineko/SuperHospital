@@ -9,31 +9,31 @@
         border
         title="录入病历">
             <el-descriptions-item span="2" label="病历编号">
-                <el-form-items v-model="updRecordDTO.id" prop="id">
+                <el-form-items v-model="updRecordDTO.records.id" prop="id">
                     {{ recordBaseInfo.id }}
                 </el-form-items>
             </el-descriptions-item>
             <el-descriptions-item label="科室">
-                {{ recordBaseInfo.department }}
+                {{ updRecordDTO.records.department }}
             </el-descriptions-item>
             <el-descriptions-item label="主治医生">
-                {{ recordBaseInfo.dName }}
+                {{ updRecordDTO.records.doctor }}
             </el-descriptions-item>
             <el-descriptions-item label="患者姓名">
-                {{ recordBaseInfo.pName }}
+                {{ updRecordDTO.records.patient }}
             </el-descriptions-item>
             <el-descriptions-item label="患者性别">
-                {{ recordBaseInfo.sex }}
+                {{ updRecordDTO.records.sex }}
             </el-descriptions-item>
             <el-descriptions-item label="患者年龄">
-                {{ recordBaseInfo.age }}
+                {{ updRecordDTO.records.age }}
             </el-descriptions-item>
             <el-descriptions-item label="诊断时间">
-                {{ recordBaseInfo.createTime }}
+                {{ updRecordDTO.records.createTime }}
             </el-descriptions-item>
             <el-descriptions-item span="2" label="传染病">
                 <el-form-item prop="epidemic">
-                    <el-radio-group v-model="updRecordDTO.epidemic">
+                    <el-radio-group v-model="updRecordDTO.records.epidemic">
                         <el-radio value="true">是</el-radio>
                         <el-radio value="false">否</el-radio>
                     </el-radio-group>
@@ -98,17 +98,16 @@
 </template>
 
 <script setup lang="ts">
-import type { FormInstance } from 'element-plus';
-import { reactive, ref } from 'vue';
+import { ElMessage, type FormInstance } from 'element-plus';
+import { onMounted, reactive, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { getRecordDetails } from '../../../request/api';
 
-const recordId = ref('')
+const route = useRoute()
 const isConfirm = ref(false)
 const recordRef = ref<FormInstance>()
-// 请求初始化数据，用于自动填写病历上的基础栏目
-const recordInitalInfo = reactive({
-    patientId:'',
-    doctor:''
-})
+
+
 // interface medicine{
 //     id:string,
 //     count:number
@@ -119,6 +118,8 @@ const medicines = reactive({
         count:1
     }]
 })
+
+
 
 //基础栏目的接受值
 const recordBaseInfo = reactive({
@@ -140,17 +141,26 @@ const states = [
     }
 ]
 const updRecordDTO = reactive({
-    id:'',
-    patientId:'',
-    doctorId:'',
-    epidemic:'',
-    conditon:'',
-    check:'',
-    assistant_check:'',
-    diagnosis:'',
-    handle:'',
-    advice:'',
+    records:{
+        id:'',
+        department:'',
+        doctor:'',
+        patient:'',
+        sex:'',
+        epidemic:'',
+        age:'',
+        conditions:'',
+        assistantCheck:'',
+        diagnosis:'',
+        handle:'',
+        advice:'',
+        createTime:''
+    }
+})
 
+onMounted(() =>{
+    const recordId = route.query.recordId
+    init(recordId)
 })
 
 const addMedicine = () =>{
@@ -163,6 +173,15 @@ const addMedicine = () =>{
 
 const updRules = {
     
+}
+
+const init = async (recordId:any) =>{
+    const res = await getRecordDetails(recordId)
+    if (res.data.code === '200'){
+        updRecordDTO.records = res.data.data
+    }else {
+        ElMessage.error(res.data.data)
+    }
 }
 
 const removeMedicine = (item:any) =>{

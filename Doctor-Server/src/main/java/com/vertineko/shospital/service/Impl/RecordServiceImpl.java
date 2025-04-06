@@ -10,6 +10,7 @@ import com.vertineko.shospital.constrain.exceptionDef.exception.DoctorException;
 import com.vertineko.shospital.dao.RecordDO;
 import com.vertineko.shospital.dao.dto.req.InsertRecordDTO;
 import com.vertineko.shospital.dao.mapper.RecordMapper;
+import com.vertineko.shospital.dto.doctor.res.RecordDetailVO;
 import com.vertineko.shospital.dto.patient.req.UpdReservationDTO;
 import com.vertineko.shospital.remote.service.PatientRemoteService;
 import com.vertineko.shospital.service.RecordService;
@@ -86,5 +87,19 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
     @Override
     public int updateRecord(RecordDO requestParam) {
         return 0;
+    }
+
+    @Override
+    public RecordDetailVO getRecordDetail(Long id) {
+        RecordDO record = getById(id);
+        Long patientId = record.getPatientId();
+        Long doctorId = record.getDoctorId();
+        RecordDetailVO recordDetailVO = recordMapper.getDetailByRecordId(id, patientId, doctorId);
+        if (recordDetailVO.getSex().equals("FEMALE")) {
+            recordDetailVO.setSex("女");
+        }else{
+            recordDetailVO.setSex("男");
+        }
+        return recordDetailVO;
     }
 }

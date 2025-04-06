@@ -29,4 +29,5 @@ public interface PatientRemoteService {
     @RequestMapping("/patient/api/reservation/update")
     String updateReservation(@RequestBody UpdReservationDTO requestParam);
 
+
 }

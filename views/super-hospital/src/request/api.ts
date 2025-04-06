@@ -416,3 +416,10 @@ export function insertRecord(data:InsertRecordDTO){
         data
     })
 }
+
+export function getRecordDetails(data:string){
+    return http({
+        url:'/api/doctor/api/record/getRecordDetail/' + data,
+        method:'get',
+    })
+}
