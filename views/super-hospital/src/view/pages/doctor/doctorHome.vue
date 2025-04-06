@@ -106,7 +106,7 @@
     padding-top: 0;
     padding-bottom: 0;
     padding-right: 0;
-    overflow: hidden;
+    overflow: scroll;
   
     .main {
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

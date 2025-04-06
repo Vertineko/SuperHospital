@@ -65,12 +65,20 @@
                 </el-form-item>
             </el-descriptions-item>
             <el-descriptions-item  label="配药">
-                <el-select
-                mutiple
-                clearable
-                collapse-tags="true">
-
-                </el-select>
+                <template #label>
+                    配药 <el-icon @click="addMedicine()" ><Plus /></el-icon>
+                </template>
+                <el-form-item v-for="(item) in medicines.records" style="margin-bottom: 10px;">
+                    <el-select-v2
+                    v-model="item.id"
+                    filterable
+                    :options="states"
+                    placeholder="Please select"
+                    style="width: 240px"
+                    />
+                    {{ item.count }}
+                    <el-button type="danger" @click="removeMedicine(item)">删除</el-button>
+                </el-form-item>
             </el-descriptions-item>
         </el-descriptions>
         <el-form-item>
@@ -93,13 +101,23 @@
 import type { FormInstance } from 'element-plus';
 import { reactive, ref } from 'vue';
 
-
+const recordId = ref('')
 const isConfirm = ref(false)
 const recordRef = ref<FormInstance>()
 // 请求初始化数据，用于自动填写病历上的基础栏目
 const recordInitalInfo = reactive({
     patientId:'',
     doctor:''
+})
+// interface medicine{
+//     id:string,
+//     count:number
+// }
+const medicines = reactive({
+    records:[{
+        id:'',
+        count:1
+    }]
 })
 
 //基础栏目的接受值
@@ -115,7 +133,12 @@ const recordBaseInfo = reactive({
     department:'儿科',
     createTime:'2025-3-25 14:00:26'
 })
-
+const states = [
+    {
+        value:'12123',
+        label:'长生不老药'
+    }
+]
 const updRecordDTO = reactive({
     id:'',
     patientId:'',
@@ -130,8 +153,23 @@ const updRecordDTO = reactive({
 
 })
 
+const addMedicine = () =>{
+    medicines.records.push({
+        id:'',
+        count:1
+    })
+    console.log(medicines)
+}
+
 const updRules = {
     
+}
+
+const removeMedicine = (item:any) =>{
+    var idx = medicines.records.indexOf(item)
+    if (idx !== -1){
+        medicines.records.splice(idx, 1)
+    }
 }
 </script>
 
@@ -140,4 +178,9 @@ const updRules = {
 .el-form-item{
     margin-bottom: 0;
 }
+
+.el-description{
+    overflow: scroll;
+}
+
 </style>
