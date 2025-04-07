@@ -2,6 +2,7 @@ package com.vertineko.shospital.service;
 
 import com.vertineko.shospital.dao.RecordDO;
 import com.vertineko.shospital.dao.dto.req.InsertRecordDTO;
+import com.vertineko.shospital.dto.doctor.req.updRecordDTO;
 import com.vertineko.shospital.dto.doctor.res.RecordDetailVO;
 
 public interface RecordService {
@@ -23,7 +24,8 @@ public interface RecordService {
      */
     int removeRecord(Long id);
 
-    int updateRecord(RecordDO requestParam);
+    Integer updateRecord(updRecordDTO requestParam);
 
     RecordDetailVO getRecordDetail(Long id);
+
 }

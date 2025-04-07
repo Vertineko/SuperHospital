@@ -36,8 +36,8 @@
             <el-table-column prop="recordId" v-if="false" />
             <el-table-column label="操作" >
                 <template #default="scope">
-                    <el-button type="primary" v-if="scope.row.status === 0" @click="accept(scope.row.id, scope.row.patientId)">接受预约</el-button>
-                    <el-button type="primary" v-if="scope.row.status === 1" @click="fill(scope.row.recordId)">填写病历</el-button>
+                    <el-button type="primary" v-if="scope.row.status === 0" @click="curr=scope.row.id; accept(scope.row.id, scope.row.patientId)">接受预约</el-button>
+                    <el-button type="primary" v-if="scope.row.status === 1" @click="curr=scope.row.id; fill(scope.row.recordId)">填写病历</el-button>
                     <el-button type="danger" @click="isCancel=true; curr=scope.row.id;">取消</el-button>
                 </template>
             </el-table-column>
@@ -160,7 +160,7 @@ const accept = async (reservationId:string, patientId:string) =>{
 }
 
 const fill = async (recordId:string) =>{
-    router.push('/createRecord?recordId=' + recordId)
+    router.push('/createRecord?recordId=' + recordId + '&' + 'reservationId=' + curr.value)
 }
 </script>
 

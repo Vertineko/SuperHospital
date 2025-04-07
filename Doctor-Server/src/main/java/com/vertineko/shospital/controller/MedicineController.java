@@ -7,6 +7,7 @@ import com.vertineko.shospital.dto.doctor.req.InsertMedicineDTO;
 import com.vertineko.shospital.dto.doctor.req.MedicinePageDTO;
 import com.vertineko.shospital.dto.doctor.req.updMedicineDTO;
 import com.vertineko.shospital.dto.doctor.res.MedicinePageVO;
+import com.vertineko.shospital.dto.doctor.res.MedicinesVO;
 import com.vertineko.shospital.service.MedicineService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -45,5 +48,10 @@ public class MedicineController {
     @RequestMapping("/doctor/api/medicine/updMedicineDTO")
     public Result<Integer> updateMedicine(@RequestBody updMedicineDTO requestParam){
         return Results.success(medicineService.updateMedicine(requestParam));
+    }
+
+    @RequestMapping("/doctor/api/medicine/getMedicines")
+    public Result<List<MedicinesVO>> getMedicineList(){
+        return Results.success(medicineService.getMedicineList());
     }
 }

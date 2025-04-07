@@ -423,3 +423,34 @@ export function getRecordDetails(data:string){
         method:'get',
     })
 }
+
+export function getMedicines(){
+    return http({
+        url:'/api/doctor/api/medicine/getMedicines',
+        method:'post'
+    })
+}
+interface medicines{
+    id:string
+    count:number
+}
+
+interface updateRecordDTO{
+    id:string
+    reservationId:string
+    epidemic:string
+    conditions:string
+    checks:string
+    assistantCheck:string
+    handle:string
+    advice:string
+    medicinesVOList:Array<medicines>
+}
+
+export function updateRecord1(data:updateRecordDTO){
+    return http({
+        url:'/api/doctor/api/record/updateRecord',
+        method:'post',
+        data
+    })
+}

@@ -5,6 +5,9 @@ import com.vertineko.shospital.dto.doctor.req.InsertMedicineDTO;
 import com.vertineko.shospital.dto.doctor.req.MedicinePageDTO;
 import com.vertineko.shospital.dto.doctor.req.updMedicineDTO;
 import com.vertineko.shospital.dto.doctor.res.MedicinePageVO;
+import com.vertineko.shospital.dto.doctor.res.MedicinesVO;
+
+import java.util.List;
 
 public interface MedicineService {
 
@@ -17,4 +20,6 @@ public interface MedicineService {
     Integer removeMedicineById(Long id);
 
     Integer updateMedicine(updMedicineDTO requestParam);
+
+    List<MedicinesVO> getMedicineList();
 }

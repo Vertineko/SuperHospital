@@ -12,4 +12,8 @@
             </if>
         </where>
     </select>
+
+    <select id="getMedicineList" resultType="com.vertineko.shospital.dto.doctor.res.MedicinesVO">
+        select id as value, name as label from medicine
+    </select>
 </mapper>

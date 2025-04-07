@@ -1,15 +1,23 @@
 package com.vertineko.shospital.service.Impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.vertineko.shospital.constant.OrderConstant;
 import com.vertineko.shospital.constant.StatusConstant;
 import com.vertineko.shospital.constrain.errorDef.error.DoctorErrorCode;
 import com.vertineko.shospital.constrain.exceptionDef.exception.DoctorException;
+import com.vertineko.shospital.dao.MedicineDO;
+import com.vertineko.shospital.dao.OrderDO;
 import com.vertineko.shospital.dao.RecordDO;
 import com.vertineko.shospital.dao.dto.req.InsertRecordDTO;
+import com.vertineko.shospital.dao.mapper.MedicineMapper;
+import com.vertineko.shospital.dao.mapper.OrderMapper;
 import com.vertineko.shospital.dao.mapper.RecordMapper;
+import com.vertineko.shospital.dto.doctor.req.MedicinesDTO;
+import com.vertineko.shospital.dto.doctor.req.updRecordDTO;
 import com.vertineko.shospital.dto.doctor.res.RecordDetailVO;
 import com.vertineko.shospital.dto.patient.req.UpdReservationDTO;
 import com.vertineko.shospital.remote.service.PatientRemoteService;
@@ -20,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Service
@@ -30,6 +39,13 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
     private final RecordMapper recordMapper;
 
     private final PatientRemoteService patientRemoteService;
+
+    private final MedicineMapper medicineMapper;
+
+    private final OrderMapper orderMapper;
+
+    private final PatientRemoteService patientService;
+
 
     @Override
     @Transactional
@@ -85,8 +101,46 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
 
     //保留更新病历状态
     @Override
-    public int updateRecord(RecordDO requestParam) {
-        return 0;
+    @Transactional
+    public Integer updateRecord(updRecordDTO requestParam) {
+        if (requestParam.getMedicinesVOList() == null || requestParam.getMedicinesVOList().isEmpty()){
+            return recordMapper.updateById(BeanUtil.copyProperties(requestParam, RecordDO.class));
+        }
+        //先插入Order表
+        recordMapper.updateById(BeanUtil.copyProperties(requestParam, RecordDO.class));
+        String json = JSON.toJSONString(requestParam.getMedicinesVOList());
+        BigDecimal decimal = new BigDecimal("0.00");
+        for (MedicinesDTO medicineDTO : requestParam.getMedicinesVOList()) {
+            MedicineDO medicine = medicineMapper.selectById(medicineDTO.getId());
+            if (medicine == null){
+                throw new DoctorException(DoctorErrorCode.MEDICINE_NOT_EXISTED);
+            }
+            BigDecimal temp = new BigDecimal(medicine.getPrice());
+            decimal = decimal.add(temp);
+        }
+        Double price = decimal.doubleValue();
+        OrderDO orderDO = OrderDO.builder()
+                .medicine(json)
+                .price(price)
+                .Status(OrderConstant.UN_PAYED)
+                .build();
+        int i = orderMapper.insert(orderDO);
+        if (i <= 0){
+            throw new DoctorException(DoctorErrorCode.RECORD_UPDATE_FAILED);
+        }
+        Long orderId = orderDO.getId();
+        log.info("{}", orderId);
+        RecordDO record = new RecordDO();
+        BeanUtil.copyProperties(requestParam, record);
+        //再次更新病历
+        recordMapper.updateById(record);
+        //再更新预约
+        UpdReservationDTO updReservationDTO = new UpdReservationDTO();
+        updReservationDTO.setId(requestParam.getReservationId());
+        updReservationDTO.setOrderId(orderId);
+        updReservationDTO.setStatus(StatusConstant.COMPLETED);
+        patientRemoteService.updateReservation(updReservationDTO);
+        return 1;
     }
 
     @Override

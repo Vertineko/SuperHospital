@@ -11,10 +11,13 @@ import com.vertineko.shospital.dto.doctor.req.InsertMedicineDTO;
 import com.vertineko.shospital.dto.doctor.req.MedicinePageDTO;
 import com.vertineko.shospital.dto.doctor.req.updMedicineDTO;
 import com.vertineko.shospital.dto.doctor.res.MedicinePageVO;
+import com.vertineko.shospital.dto.doctor.res.MedicinesVO;
 import com.vertineko.shospital.service.MedicineService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -69,5 +72,10 @@ public class MedicineServiceImpl extends ServiceImpl<MedicineMapper, MedicineDO>
         BeanUtil.copyProperties(requestParam, medicine);
         return medicineMapper.updateById(medicine);
 
+    }
+
+    @Override
+    public List<MedicinesVO> getMedicineList() {
+        return medicineMapper.getMedicineList();
     }
 }

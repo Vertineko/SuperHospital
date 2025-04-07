@@ -1,7 +1,7 @@
 <template>
     <el-form
     ref="recordRef"
-    :model="updRecordDTO" 
+    :model="updateRecord" 
     :rules="updRules"
     >
         <el-descriptions
@@ -33,50 +33,57 @@
             </el-descriptions-item>
             <el-descriptions-item span="2" label="传染病">
                 <el-form-item prop="epidemic">
-                    <el-radio-group v-model="updRecordDTO.records.epidemic">
-                        <el-radio value="true">是</el-radio>
-                        <el-radio value="false">否</el-radio>
+                    <el-radio-group v-model="updateRecord.epidemic">
+                        <el-radio value="1">是</el-radio>
+                        <el-radio value="0">否</el-radio>
                     </el-radio-group>
                 </el-form-item>
             </el-descriptions-item>
             <el-descriptions-item span="3" label="病情症状">
-                <el-form-item prop="condition">
-                    <el-input type="textarea" show-word-limit maxlength="255"></el-input>
+                <el-form-item prop="conditions">
+                    <el-input type="textarea" v-model="updateRecord.conditions" show-word-limit maxlength="255"></el-input>
                 </el-form-item>
             </el-descriptions-item>
             <el-descriptions-item span="3" label="临床初步判断">
-                <el-form-item prop="check">
-                    <el-input type="textarea" show-word-limit maxlength="255"></el-input>
+                <el-form-item prop="checks">
+                    <el-input type="textarea" v-model="updateRecord.checks" show-word-limit maxlength="255"></el-input>
                 </el-form-item>
             </el-descriptions-item>
             <el-descriptions-item label="辅助判断">
                 <el-form-item prop="assistantCheck">
-                    <el-input type="textarea" show-word-limit maxlength="255"></el-input>
+                    <el-input type="textarea" v-model="updateRecord.assistantCheck" show-word-limit maxlength="255"></el-input>
                 </el-form-item>
             </el-descriptions-item>
             <el-descriptions-item label="当前病症处理">
                 <el-form-item prop="handle">
-                    <el-input type="textarea" show-word-limit maxlength="255"></el-input>
+                    <el-input type="textarea" v-model="updateRecord.handle" show-word-limit maxlength="255"></el-input>
                 </el-form-item>
             </el-descriptions-item>
             <el-descriptions-item span="2" label="医嘱">
                 <el-form-item prop="advice">
-                    <el-input type="textarea" show-word-limit maxlength="255"></el-input>
+                    <el-input type="textarea" v-model="updateRecord.advice" show-word-limit maxlength="255"></el-input>
                 </el-form-item>
             </el-descriptions-item>
             <el-descriptions-item  label="配药">
                 <template #label>
                     配药 <el-icon @click="addMedicine()" ><Plus /></el-icon>
                 </template>
-                <el-form-item v-for="(item) in medicines.records" style="margin-bottom: 10px;">
+                <el-form-item v-for="(item) in updateRecord.medicinesVOList" style="margin-bottom: 10px;">
                     <el-select-v2
                     v-model="item.id"
                     filterable
-                    :options="states"
+                    :options="states.records"
                     placeholder="Please select"
                     style="width: 240px"
+                    @change="report()"
                     />
-                    {{ item.count }}
+
+                    <div class="countAct">
+                        <el-icon @click="item.count > 1 ? item.count--:item.count" style="margin-right: 5px;"><Minus /></el-icon>
+                        <el-text class="mx-1" type="primary">{{ item.count }}</el-text>
+                        <el-icon @click="item.count++" style="margin-left: 5px;"><Plus /></el-icon>
+                    </div>
+
                     <el-button type="danger" @click="removeMedicine(item)">删除</el-button>
                 </el-form-item>
             </el-descriptions-item>
@@ -91,17 +98,18 @@
     <el-dialog v-model="isConfirm" title="录入病历" width="500" center :show-close="false" class="removeDialog">
             <div class="description">请再次确认输入信息无误，提交后不可再次修改！</div>
             <div class="action">
-                <el-button type="primary" @click="">确认</el-button>
+                <el-button type="primary" @click="submit()">确认</el-button>
                 <el-button type="danger" @click="isConfirm = false;">取消</el-button>
             </div>
     </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ElMessage, type FormInstance } from 'element-plus';
+import { ElMessage, type FormInstance,  } from 'element-plus';
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { getRecordDetails } from '../../../request/api';
+import { getMedicines, getRecordDetails, updateRecord1 } from '../../../request/api';
+import router from '../../../router';
 
 const route = useRoute()
 const isConfirm = ref(false)
@@ -112,12 +120,7 @@ const recordRef = ref<FormInstance>()
 //     id:string,
 //     count:number
 // }
-const medicines = reactive({
-    records:[{
-        id:'',
-        count:1
-    }]
-})
+
 
 
 
@@ -134,12 +137,14 @@ const recordBaseInfo = reactive({
     department:'儿科',
     createTime:'2025-3-25 14:00:26'
 })
-const states = [
-    {
-        value:'12123',
-        label:'长生不老药'
-    }
-]
+const states = reactive({
+    records:[
+        {
+            value:'',
+            label:'',
+        }
+    ]
+})
 const updRecordDTO = reactive({
     records:{
         id:'',
@@ -150,12 +155,27 @@ const updRecordDTO = reactive({
         epidemic:'',
         age:'',
         conditions:'',
+        checks:'',
         assistantCheck:'',
-        diagnosis:'',
         handle:'',
         advice:'',
         createTime:''
     }
+})
+
+const updateRecord = reactive({
+    id:'',
+    reservationId:'',
+    epidemic:'',
+    conditions:'',
+    assistantCheck:'',
+    checks:'',
+    handle:'',
+    advice:'',
+    medicinesVOList:[{
+        id:'',
+        count:1,
+    }]
 })
 
 onMounted(() =>{
@@ -164,15 +184,32 @@ onMounted(() =>{
 })
 
 const addMedicine = () =>{
-    medicines.records.push({
+    updateRecord.medicinesVOList.push({
         id:'',
-        count:1
+        count:1,
     })
-    console.log(medicines)
+    
 }
 
 const updRules = {
-    
+    epidemic:[
+        {required:true, message:'请选择是否为传染病！', trigger:'blur'}
+    ],
+    conditions:[
+        {required:true, message:'请填写当前症状！', trigger:'blur'}
+    ],
+    checks:[
+        {required:true, message:'请填写临床初步判断！', trigger:'blur'}
+    ],
+    assistantCheck:[
+        {required:true, message:'请填写辅助判断！', trigger:'blur'}
+    ],
+    handle:[
+        {required:true, message:'请填写当前病症处理方式！', trigger:'blur'}
+    ],
+    advice:[
+        {required:true, message:'请填写医嘱!', trigger:'blur'}
+    ]
 }
 
 const init = async (recordId:any) =>{
@@ -182,12 +219,39 @@ const init = async (recordId:any) =>{
     }else {
         ElMessage.error(res.data.data)
     }
+
+    const medicine = await getMedicines();
+    if (res.data.code === '200'){
+        states.records = medicine.data.data
+    }else {
+        ElMessage.error(medicine.data.data)
+    }
+    
 }
 
 const removeMedicine = (item:any) =>{
-    var idx = medicines.records.indexOf(item)
+    var idx = updateRecord.medicinesVOList.indexOf(item)
     if (idx !== -1){
-        medicines.records.splice(idx, 1)
+        updateRecord.medicinesVOList.splice(idx, 1)
+    }
+}
+const report = () =>{
+    console.log(updateRecord.medicinesVOList)
+}
+
+const submit = async () => {
+    const recordId:any = route.query.recordId
+    const reservationId:any = route.query.reservationId
+    updateRecord.id = recordId
+    updateRecord.reservationId = reservationId 
+    const res = await updateRecord1(updateRecord)
+    if (res.data.code === '200'){
+        ElMessage.success('提交病历成功！')
+        isConfirm.value = false
+        router.go(-1)
+    }else {
+        isConfirm.value = false
+        ElMessage.error(res.data.data)
     }
 }
 </script>
@@ -202,4 +266,8 @@ const removeMedicine = (item:any) =>{
     overflow: scroll;
 }
 
+.countAct{
+    margin-left: 20px;
+    margin-right: 20px;
+}
 </style>

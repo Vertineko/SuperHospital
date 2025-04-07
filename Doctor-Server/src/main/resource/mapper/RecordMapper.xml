@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vertineko.shospital.dao.mapper.RecordMapper">
     <select id="getDetailByRecordId" resultType="com.vertineko.shospital.dto.doctor.res.RecordDetailVO">
-        select r.id, j.department as department, j.doctor as doctor, j.patient as patient, j.age, j.sex as sex, r.epidemic as epidemic, r.conditions as conditions, r.checks as checks, r.assistant_check as assistantCheck, r.diagnosis as diagnosis, r.handle as handle, r.advice as advice, r.create_time as createTime
+        select r.id, j.department as department, j.doctor as doctor, j.patient as patient, j.age, j.sex as sex, r.epidemic as epidemic, r.conditions as conditions, r.checks as checks, r.assistant_check as assistantCheck, r.handle as handle, r.advice as advice, r.create_time as createTime
         from record as r left join (
             select p.name as patient, p.sex, p.age, d.name as doctor, d2.name as department
             from patient p inner join doctor d inner join department d2
