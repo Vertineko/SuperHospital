@@ -12,6 +12,10 @@ public class ReservationPageVO {
 
     private String department;
 
+    private String recordId;
+
+    private String orderId;
+
     /**
      * 医生名称
      */

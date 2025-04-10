@@ -7,7 +7,7 @@
 
     <select id="getReservationPage" parameterType="com.vertineko.shospital.dto.patient.req.ReservationPageDTO"
             resultType="com.vertineko.shospital.dto.patient.res.ReservationPageVO">
-        select r.id, r.department, d.name, r.create_time, r.status
+        select r.id, r.department, d.name, r.create_time, r.status, r.record_id, r.order_id
         from reservation r left join doctor d
         on r.doctor_id = d.id
         <where>

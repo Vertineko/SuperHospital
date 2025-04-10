@@ -37,6 +37,8 @@
                 <el-button type="danger" v-if="scope.row.status === 0" @click="isCancel = true; curr=scope.row.id">取消</el-button>
             </template>
         </el-table-column>
+        <el-table-column prop="recordId" v-if="false" />
+        <el-table-column prop="orderId" v-if="false"/>
     </el-table>
     <div class="pagePlugin">
         <el-pagination v-model:current-page="queryReservationDTO.current" layout="prev, pager, next"
@@ -59,8 +61,9 @@
 import { onMounted, reactive, ref } from 'vue';
 import { pageReservation, cancelReservation } from '../../../request/api';
 import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
 
-
+const router = useRouter()
 const isCancel = ref(false)
 const queryReservationDTO = reactive({
     department: '',
@@ -159,6 +162,10 @@ const assistStatus = (status : number):string => {
             return '未知状态';
     }
 };
+
+const detail = (reservationId:string, recordId:string, orderId:string) => {
+    router.push('/patientRecordDetail?reservationId=' + reservationId + '&' + 'recordId=' + recordId + '&' + 'orderId=' + orderId)
+}
 </script>
 
 
