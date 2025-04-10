@@ -21,5 +21,4 @@ public class OrderDO {
 
     private Double price;
 
-    private Integer Status;
 }

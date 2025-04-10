@@ -21,7 +21,7 @@
                     time-format="A hh:mm:ss" />
                 </el-form-item>
                 <el-form-item label="状态:" >
-                    <el-select v-model="searchForm.status" placeholder="订单状态"
+                    <el-select v-model="searchForm.status" placeholder="预约状态"
                         style="width: 200px; margin-right: 25px;">
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
                     </el-select>
@@ -43,11 +43,13 @@
                 </template>
             </el-table-column>
             <el-table-column label="操作" >
+                
                 <template #default="scope">
-                    <el-button type="primary">查看详情</el-button>
-                    <el-button type="danger" @click="isCancel=true; curr=scope.row.id;">删除</el-button>
+                    <el-button type="primary" @click="detail(scope.row.id, scope.row.recordId, scope.row.orderId)">查看详情</el-button>
                 </template>
             </el-table-column>
+            <el-table-column label="操作" prop="recordId" v-if="false"/>
+            <el-table-column label="操作" prop="orderId" v-if="false"/>
             
         </el-table>
         <div class="pagePlugin">
@@ -74,7 +76,9 @@
 import { onMounted, reactive, ref } from 'vue';
 import { queryHisReservation, docCancelReservation } from '../../../request/api';
 import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const curr = ref('')
 const isCancel = ref(false)
 const searchForm = reactive({
@@ -92,6 +96,8 @@ const reservationData = reactive({
         {
             id:'',
             name:'',
+            recordId:'',
+            orderId:'',
             createTime:'',
             status:''
         }
@@ -191,6 +197,11 @@ const assistStatus = (status : number):string => {
             return '未知状态';
     }
 };
+
+
+const detail = (reservationId:string, recordId:string, orderId:string) => {
+    router.push('/recordDetail?reservationId=' + reservationId + '&' + 'recordId=' + recordId + '&' + 'orderId=' + orderId)
+}
 </script>
 
 

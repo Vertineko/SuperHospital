@@ -454,3 +454,11 @@ export function updateRecord1(data:updateRecordDTO){
         data
     })
 }
+
+
+export function getOrders(data:string){
+    return http({
+        url:'/api/doctor/api/order/getOrders/' + data,
+        method:'get'
+    })
+}

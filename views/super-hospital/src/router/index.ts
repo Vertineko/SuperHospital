@@ -17,6 +17,8 @@ import DoctorHome from '../view/pages/doctor/doctorHome.vue';
 import CurrReservation from '../view/pages/doctor/currReservation.vue';
 import HistoryReservation from '../view/pages/doctor/historyReservation.vue';
 import createRecord from '../view/pages/doctor/createRecord.vue'
+import RecordDetail from '../view/pages/doctor/RecordDetail.vue';
+import PatientRecordDetail from '../view/pages/patient/PatientRecordDetail.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -84,7 +86,11 @@ const router = createRouter({
           {
             path:'/myReservation',
             component: myReservation
-          }
+          },
+          {
+            path:'/patientRecordDetail',
+            component: PatientRecordDetail
+          },
         ]
       },
       {
@@ -103,6 +109,11 @@ const router = createRouter({
           {
             path:'/createRecord',
             component: createRecord
+          }
+          ,
+          {
+            path:'/recordDetail',
+            component: RecordDetail
           }
           
         ]

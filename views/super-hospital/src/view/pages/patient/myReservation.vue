@@ -4,7 +4,7 @@
             <el-input v-model="queryReservationDTO.department" style="width: 300px; margin-right: 20px;" />
         </el-form-item>
         <el-form-item label="预约状态：" prop="status">
-            <el-select v-model="queryReservationDTO.status" placeholder="订单状态"
+            <el-select v-model="queryReservationDTO.status" placeholder="预约状态"
                 style="width: 200px; margin-right: 25px;">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
@@ -31,9 +31,10 @@
 
         <el-table-column label="操作">
             <template #default="scope">
-                <el-button type="primary" @click="isShow = true">查看</el-button>
+                <el-button type="primary" v-if="scope.row.status >= 0" @click="detail(scope.row.id, scope.row.recordId, scope.row.orderId)">查看病历详情</el-button>
+                <el-button type="primary" v-if="scope.row.status === 2" @click="">去支付</el-button>
                 
-                <el-button type="danger" @click="isCancel = true; curr=scope.row.id">取消</el-button>
+                <el-button type="danger" v-if="scope.row.status === 0" @click="isCancel = true; curr=scope.row.id">取消</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -50,17 +51,6 @@
         </div>
     </el-dialog>
 
-    <!-- 查看预约对话框 -->
-    <el-dialog v-model="isShow" title="预约" width="500" center :show-close="false" class="cancelDialog">
-        <div class="description">
-            <el-button type="success" round @click="">点击此处查看就诊病历</el-button>
-            <el-button type="success" round @click="">点击此处查看账单</el-button>
-        </div>
-        <div class="action">
-            <el-button type="primary" @click="cancel(curr)">确认</el-button>
-            <el-button type="danger" @click="isShow = false;">返回</el-button>
-        </div>
-    </el-dialog>
 
 </template>
 
@@ -70,7 +60,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { pageReservation, cancelReservation } from '../../../request/api';
 import { ElMessage } from 'element-plus';
 
-const isShow = ref(false)
+
 const isCancel = ref(false)
 const queryReservationDTO = reactive({
     department: '',

@@ -5,7 +5,6 @@ import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.vertineko.shospital.constant.OrderConstant;
 import com.vertineko.shospital.constant.StatusConstant;
 import com.vertineko.shospital.constrain.errorDef.error.DoctorErrorCode;
 import com.vertineko.shospital.constrain.exceptionDef.exception.DoctorException;
@@ -122,7 +121,6 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
         OrderDO orderDO = OrderDO.builder()
                 .medicine(json)
                 .price(price)
-                .Status(OrderConstant.UN_PAYED)
                 .build();
         int i = orderMapper.insert(orderDO);
         if (i <= 0){

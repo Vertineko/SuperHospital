@@ -22,7 +22,7 @@ public class RecordDetailVO {
 
     private Integer age;
 
-    private Integer epidemic;
+    private String epidemic;
 
     private String conditions;
 
