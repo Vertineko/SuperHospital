@@ -31,7 +31,7 @@
 
         <el-table-column label="操作">
             <template #default="scope">
-                <el-button type="primary" v-if="scope.row.status >= 0" @click="detail(scope.row.id, scope.row.recordId, scope.row.orderId)">查看病历详情</el-button>
+                <el-button type="primary" v-if="scope.row.status >= 2" @click="detail(scope.row.id, scope.row.recordId, scope.row.orderId)">查看病历详情</el-button>
                 <el-button type="primary" v-if="scope.row.status === 2" @click="">去支付</el-button>
                 
                 <el-button type="danger" v-if="scope.row.status === 0" @click="isCancel = true; curr=scope.row.id">取消</el-button>

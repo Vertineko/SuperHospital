@@ -1,5 +1,6 @@
 package com.vertineko.shospital.remote.service;
 
+import com.vertineko.shospital.dto.admin.req.AdminHisReservationDTO;
 import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
 import com.vertineko.shospital.dto.patient.req.UpdatePatientByUsernameDTO;
@@ -27,4 +28,14 @@ public interface PatientRemoteService {
 
     @RequestMapping("/patient/api/updateByUsername")
     String updateByUsername(@RequestBody UpdatePatientByUsernameDTO requestParam);
+
+    /**
+     * 管理员端获取历史预约列表
+     *
+     * @param requestParam
+     * @return
+     */
+    @RequestMapping("/patient/api/reservation/allReservation")
+    String getAllHisReservationPage(AdminHisReservationDTO requestParam);
+
 }

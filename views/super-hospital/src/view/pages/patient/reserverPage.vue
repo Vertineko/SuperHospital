@@ -50,7 +50,6 @@
 import { onMounted, reactive, ref } from 'vue';
 import { patGetDepartmentPage, getAbsDocDTO, insertReservation } from '../../../request/api';
 import { ElMessage, type DrawerProps, type FormInstance } from 'element-plus';
-import { el } from 'element-plus/es/locales.mjs';
 
 
 const queryFormRef = ref<FormInstance>()

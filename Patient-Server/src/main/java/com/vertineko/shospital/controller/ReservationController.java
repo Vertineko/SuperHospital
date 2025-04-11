@@ -5,6 +5,8 @@ import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
 import com.vertineko.shospital.dao.ReservationDO;
 import com.vertineko.shospital.dao.dto.req.InsertReservationDTO;
+import com.vertineko.shospital.dto.admin.req.AdminHisReservationDTO;
+import com.vertineko.shospital.dto.admin.res.AdminHisReservationVO;
 import com.vertineko.shospital.dto.doctor.req.DocCurrReservationPageDTO;
 import com.vertineko.shospital.dto.doctor.req.DocReservationHisDTO;
 import com.vertineko.shospital.dto.doctor.res.DocReservationHisVO;
@@ -59,5 +61,17 @@ public class ReservationController {
     public Result<IPage<DocReservationHisVO>> getDocReservationHisPage(@RequestBody DocReservationHisDTO requestParam){
         log.info("医生id:{}", requestParam.getId());
         return Results.success(reservationService.getDocReservationHisPage(requestParam));
+    }
+
+
+    /**
+     * 管理员端获取历史预约列表
+     *
+     * @param requestParam
+     * @return
+     */
+    @RequestMapping("/patient/api/reservation/allReservation")
+    public Result<IPage<AdminHisReservationVO>> getAllHisReservationPage(@RequestBody AdminHisReservationDTO requestParam) {
+        return Results.success(reservationService.getAllHisReservationPage(requestParam));
     }
 }

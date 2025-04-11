@@ -68,4 +68,28 @@
             </if>
         </where>
     </select>
+
+    <select id="getAllHisReservationPage" parameterType="com.vertineko.shospital.dto.admin.req.AdminHisReservationDTO"
+            resultType="com.vertineko.shospital.dto.admin.res.AdminHisReservationVO">
+        select r.id, p.name as pName, d.name as dName, r.record_id, r.order_id, r.create_time, r.status
+        from reservation r left join patient p
+        on r.patient_id = p.id left join doctor d on r.doctor_id = d.id
+        <where>
+            <if test="patientName != null and patientName != ''">
+                and p.name like concat('%', #{patientName}, '%')
+            </if>
+            <if test="doctorName != null and doctorName != ''">
+                and d.name like concat('%', #{doctorName}, '%')
+            </if>
+            <if test="minCreateTime != null">
+                and r.create_time &lt;= #{maxCreateTime}
+            </if>
+            <if test="minCreateTime != null">
+                and r.create_time &gt;= #{minCreateTime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

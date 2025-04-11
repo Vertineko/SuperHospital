@@ -12,6 +12,8 @@ import com.vertineko.shospital.constrain.exceptionDef.exception.PatientException
 import com.vertineko.shospital.dao.ReservationDO;
 import com.vertineko.shospital.dao.dto.req.InsertReservationDTO;
 import com.vertineko.shospital.dao.mapper.ReservationMapper;
+import com.vertineko.shospital.dto.admin.req.AdminHisReservationDTO;
+import com.vertineko.shospital.dto.admin.res.AdminHisReservationVO;
 import com.vertineko.shospital.dto.doctor.req.DocCurrReservationPageDTO;
 import com.vertineko.shospital.dto.doctor.req.DocReservationHisDTO;
 import com.vertineko.shospital.dto.doctor.res.DocReservationHisVO;
@@ -131,6 +133,17 @@ public class ReservationServiceImpl extends ServiceImpl<ReservationMapper, Reser
     @Override
     public IPage<DocReservationHisVO> getDocReservationHisPage(DocReservationHisDTO requestParam) {
         return reservationMapper.getDocHisReservationPage(requestParam);
+    }
+
+    /**
+     * 管理员端获取历史预约列表
+     *
+     * @param requestParam
+     * @return
+     */
+    @Override
+    public IPage<AdminHisReservationVO> getAllHisReservationPage(AdminHisReservationDTO requestParam) {
+        return reservationMapper.getAllHisReservationPage(requestParam);
     }
 
     //检查患者是否在对某个科室的医生重复预约

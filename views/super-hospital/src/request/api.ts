@@ -335,9 +335,26 @@ interface queryHisReservationDTO{
     size:number
 }
 
+interface queryAllReservationDTO{
+    patientName:string
+    doctorName:string
+    minCreateTime:string
+    maxCreateTime:string
+    status:string
+    current:number
+    size:number
+}
 export function queryHisReservation(data:queryHisReservationDTO){
     return http({
         url:'/api/doctor/api/hisReservation',
+        method:'post',
+        data
+    })
+}
+
+export function queryAllHisReservation(data:queryAllReservationDTO){
+    return http({
+        url:'/api/admin/api/reservation/allReservation',
         method:'post',
         data
     })

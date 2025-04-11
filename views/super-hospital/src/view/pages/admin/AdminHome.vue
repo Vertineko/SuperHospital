@@ -52,7 +52,7 @@ import { RouterView } from 'vue-router'
 
 const username = localStorage.getItem('token')
 const menu = [
-  { id: "1", name: '控制台', val: [{ name: '主页', path: '/AdminConsole' }] },
+  { id: "1", name: '管理员列表', val: [{ name: '管理员信息', path: '/AdminConsole' }] },
   { id: "2", name: '医生管理', val: [{ name: '医生信息管理', path: '/AdminDocMag' }, { name: '科室管理', path: '/AdminDepMag' }] },
   { id: "3", name: '患者管理', val: [{ name: '患者信息管理', path: '/AdminPatMag' }] },
   { id: "4", name: '病历管理', val: [{ name: '病历信息管理', path: '/AdminRecMag' }] },

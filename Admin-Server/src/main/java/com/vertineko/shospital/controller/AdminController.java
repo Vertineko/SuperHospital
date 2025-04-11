@@ -6,6 +6,7 @@ import com.vertineko.shospital.dao.dto.req.AdminPageDTO;
 import com.vertineko.shospital.dao.dto.req.UpdateAdminByIdDTO;
 import com.vertineko.shospital.dao.dto.req.UpdateAdminByUsernameDTO;
 import com.vertineko.shospital.dto.LoginDTO;
+import com.vertineko.shospital.dto.admin.req.AdminHisReservationDTO;
 import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
@@ -185,6 +186,17 @@ public class AdminController {
     @RequestMapping("/admin/api/medicine/updMedicineDTO")
     String updateMedicine(@RequestBody updMedicineDTO requestParam){
         return doctorRemoteService.updateMedicine(requestParam);
+    }
+
+    /**
+     * 管理员端获取历史预约列表
+     *
+     * @param requestParam
+     * @return
+     */
+    @RequestMapping("/admin/api/reservation/allReservation")
+    String getAllHisReservationPage(@RequestBody AdminHisReservationDTO requestParam){
+        return patientRemoteService.getAllHisReservationPage(requestParam);
     }
 
 }

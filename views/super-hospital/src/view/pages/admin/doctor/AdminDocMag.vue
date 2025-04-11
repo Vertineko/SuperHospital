@@ -3,6 +3,7 @@
         <span> 医生管理</span>
         <!-- 搜索输入区域 -->
         <div class="inputArea">
+            <el-row>
             <el-form 
             ref="searchForm"
             style="display: flex;" 
@@ -17,6 +18,7 @@
                 </el-form-item>
                 <el-form-item label="年龄:" prop="age">
                     <el-input style="width: 50px;" v-model="requestParam.minAge"></el-input>
+
                     <el-input style="width: 50px;" v-model="requestParam.maxAge"></el-input>
                 </el-form-item>
                 <el-form-item label="性别:" prop="sex">
@@ -63,8 +65,9 @@
                         <Plus />
                     </el-icon>
                 </el-form-item>
-
+               
             </el-form>
+            </el-row>
         </div>
 
         <el-table 
