@@ -115,9 +115,9 @@
     align-items: center;
     justify-content: center;
 }
-.view{
-    padding: 10 10;
-}
+//.view{
+//    padding: 10 10;
+//}
 .el-icon{
     margin-right: 10px; 
 }
