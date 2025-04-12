@@ -12,6 +12,7 @@ import com.vertineko.shospital.dao.dto.res.AdminVO;
 import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.dto.admin.req.AdminHisReservationDTO;
 import com.vertineko.shospital.dto.doctor.req.*;
+import com.vertineko.shospital.dto.modifyPasswordDTO;
 import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
 import com.vertineko.shospital.dto.patient.req.UpdatePatientByUsernameDTO;
@@ -37,6 +38,11 @@ public class AdminController {
     @RequestMapping("/admin/api/login")
     public Result<String> login(@RequestBody LoginDTO requestParam) {
         return Results.success(adminService.login(requestParam));
+    }
+
+    @RequestMapping("/admin/api/modifyPassword")
+    public Result<Integer> modifyPassword(@RequestBody modifyPasswordDTO requestParam) {
+        return Results.success(adminService.modifyPassword(requestParam));
     }
 
     @RequestMapping("/admin/api/removeById/{id}")

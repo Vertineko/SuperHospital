@@ -20,8 +20,11 @@ import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
+import com.vertineko.shospital.dto.modifyPasswordDTO;
 import com.vertineko.shospital.service.DoctorService;
+import com.vertineko.shospital.usr.UserDO;
 import com.vertineko.shospital.utils.JwtUtil;
+import com.vertineko.shospital.utils.UserUtils;
 import com.vertineko.shospital.utils.WorkTimeUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -233,5 +236,24 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
                 .eq(DoctorDO::getUsername, username);
         log.info("参数:{}", username);
         return doctorMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public Integer modifyPassword(modifyPasswordDTO requestParam) {
+        //获取当前用户
+        UserDO user = UserUtils.getUser();
+        Long id = user.getId();
+        DoctorDO doctor = doctorMapper.selectById(id);
+        if (doctor == null) {
+            throw new DoctorException(DoctorErrorCode.DOCTOR_IS_NOT_EXISTED);
+        }
+        if (doctor.getPassword().equals(requestParam.getOriginPassword())){
+            if (doctor.getPassword().equals(requestParam.getNewPassword())){
+                throw new DoctorException(DoctorErrorCode.OLD_PASSWORD_SAME_WITH_NEW_PASSWORD);
+            }
+            doctor.setPassword(requestParam.getNewPassword());
+            return doctorMapper.updateById(doctor);
+        }
+        throw new DoctorException(DoctorErrorCode.OLD_PASSWORD_NOT_MATCH);
     }
 }

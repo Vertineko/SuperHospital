@@ -8,6 +8,7 @@ import com.vertineko.shospital.dao.dto.req.UpdateAdminByUsernameDTO;
 import com.vertineko.shospital.dao.dto.res.AdminPageVO;
 import com.vertineko.shospital.dao.dto.res.AdminVO;
 import com.vertineko.shospital.dto.LoginDTO;
+import com.vertineko.shospital.dto.modifyPasswordDTO;
 
 public interface AdminService {
 
@@ -27,5 +28,7 @@ public interface AdminService {
     int updateByUsername(UpdateAdminByUsernameDTO requestParam);
 
     IPage<AdminPageVO> getAdminPage(AdminPageDTO requestParam);
+
+    Integer modifyPassword(modifyPasswordDTO requestParam);
 
 }

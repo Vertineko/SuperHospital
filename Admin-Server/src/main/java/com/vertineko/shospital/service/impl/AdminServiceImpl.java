@@ -15,7 +15,9 @@ import com.vertineko.shospital.dao.dto.res.AdminPageVO;
 import com.vertineko.shospital.dao.dto.res.AdminVO;
 import com.vertineko.shospital.dao.mapper.AdminMapper;
 import com.vertineko.shospital.dto.LoginDTO;
+import com.vertineko.shospital.dto.modifyPasswordDTO;
 import com.vertineko.shospital.service.AdminService;
+import com.vertineko.shospital.usr.UserDO;
 import com.vertineko.shospital.utils.JwtUtil;
 import com.vertineko.shospital.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
@@ -182,6 +184,25 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminDO> implemen
     public IPage<AdminPageVO> getAdminPage(AdminPageDTO requestParam) {
         requestParam.setId(UserUtils.getUser().getId());
         return adminMapper.getAdminPage(requestParam);
+    }
+
+    @Override
+    public Integer modifyPassword(modifyPasswordDTO requestParam) {
+        //获取当前用户
+        UserDO user = UserUtils.getUser();
+        Long id = user.getId();
+        AdminDO admin = adminMapper.selectById(id);
+        if (admin == null) {
+            throw new AdminException(AdminErrorCode.ADMIN_IS_NOT_EXISTED);
+        }
+        if (admin.getPassword().equals(requestParam.getOriginPassword())){
+            if (admin.getPassword().equals(requestParam.getNewPassword())){
+                throw new AdminException(AdminErrorCode.OLD_PASSWORD_SAME_WITH_NEW_PASSWORD);
+            }
+            admin.setPassword(requestParam.getNewPassword());
+            return adminMapper.updateById(admin);
+        }
+        throw new AdminException(AdminErrorCode.OLD_PASSWORD_NOT_MATCH);
     }
 
 

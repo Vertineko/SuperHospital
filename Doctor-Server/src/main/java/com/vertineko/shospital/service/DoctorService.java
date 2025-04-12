@@ -7,6 +7,7 @@ import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
+import com.vertineko.shospital.dto.modifyPasswordDTO;
 
 public interface DoctorService {
 
@@ -40,4 +41,5 @@ public interface DoctorService {
      */
     IPage<DocAbsPageVO> getDocAbsPage(DocAbsPageDTO requestParam);
 
+    Integer modifyPassword(modifyPasswordDTO requestParam);
 }

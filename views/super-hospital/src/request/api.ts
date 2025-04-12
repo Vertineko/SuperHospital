@@ -13,6 +13,33 @@ export function AdminLogin(data: LoginData){
     })
 }
 
+interface modifyPasswordDTO{
+    originPassword:string
+    newPassword:string
+}
+export function modifyAdminPassword(data: modifyPasswordDTO){
+    return http({
+        url : "/api/admin/api/modifyPassword",
+        method : "post",
+        data
+    })
+}
+export function modifyDoctorPassword(data: modifyPasswordDTO){
+    return http({
+        url : "/api/doctor/api/modifyPassword",
+        method : "post",
+        data
+    })
+}
+export function modifyPatientPassword(data: modifyPasswordDTO){
+    return http({
+        url : "/api/patient/api/modifyPassword",
+        method : "post",
+        data
+    })
+}
+
+
 interface AdminDocQuery{
     username: string,
     name: string,

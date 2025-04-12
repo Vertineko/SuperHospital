@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.vertineko.shospital.dao.PatientDO;
 import com.vertineko.shospital.dao.dto.req.UpdatePatientByIdDTO;
 import com.vertineko.shospital.dto.LoginDTO;
+import com.vertineko.shospital.dto.modifyPasswordDTO;
 import com.vertineko.shospital.dto.patient.req.UpdatePatientByUsernameDTO;
 import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
@@ -28,4 +29,6 @@ public interface PatientService {
     PatientDO getById(Long id);
 
     PatientDO getByUsername(String username);
+
+    Integer modifyPassword(modifyPasswordDTO requestParam);
 }

@@ -9,6 +9,10 @@ public enum PatientErrorCode implements IErrorCode {
 
     DONT_DO_RESERVATION_AGAIN("P00001","请不要重复预约！"),
 
+    PATIENT_IS_NOT_EXISTED("D10003", "该患者用户不存在！"),
+    OLD_PASSWORD_NOT_MATCH("D10004", "输入的原密码与账号原密码不一致！"),
+    OLD_PASSWORD_SAME_WITH_NEW_PASSWORD("D10005", "输入的新密码与账号原密码一致！"),
+
     RESERVATION_NOT_EXISTED("R00001", "该预约记录已不存在！"),
 
     PATIENT_USERNAME_ALREADY_EXISTED("P00003", "该用户名已注册，请修改后重试！"),

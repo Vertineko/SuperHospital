@@ -9,6 +9,7 @@ import com.vertineko.shospital.dao.dto.req.UpdatePatientByIdDTO;
 import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.dto.doctor.req.DepartmentPageDTO;
 import com.vertineko.shospital.dto.doctor.req.DocAbsPageDTO;
+import com.vertineko.shospital.dto.modifyPasswordDTO;
 import com.vertineko.shospital.dto.patient.req.InsertPatientDTO;
 import com.vertineko.shospital.dto.patient.req.PatientPageDTO;
 import com.vertineko.shospital.dto.patient.req.UpdatePatientByUsernameDTO;
@@ -24,6 +25,11 @@ public class PatientController {
 
     private final PatientService patientService;
     private final DoctorRemoteService doctorRemoteService;
+
+    @RequestMapping("/patient/api/modifyPassword")
+    public Result<Integer> modifyPassword(@RequestBody modifyPasswordDTO requestParam){
+        return Results.success(patientService.modifyPassword(requestParam));
+    }
 
     @RequestMapping("/patient/api/insertPatient")
     public Result<Integer> insertPatient(@RequestBody InsertPatientDTO requestParam){

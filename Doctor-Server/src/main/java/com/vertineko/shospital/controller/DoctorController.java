@@ -8,6 +8,7 @@ import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
+import com.vertineko.shospital.dto.modifyPasswordDTO;
 import com.vertineko.shospital.remote.service.PatientRemoteService;
 import com.vertineko.shospital.service.DoctorService;
 import com.vertineko.shospital.utils.UserUtils;
@@ -35,6 +36,10 @@ public class DoctorController {
         return Results.success(doctorService.login(requestParam));
     }
 
+    @RequestMapping("/doctor/api/modifyPassword")
+    public Result<Integer> modifyPassword(@RequestBody modifyPasswordDTO requestParam) {
+        return Results.success(doctorService.modifyPassword(requestParam));
+    }
     /**
      * 录入医生信息
      * @param requestParam

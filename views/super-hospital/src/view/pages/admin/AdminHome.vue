@@ -12,7 +12,7 @@
                 <el-button> {{username}} </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item>修改个人信息</el-dropdown-item>
+                    <el-dropdown-item @click="modShow = true">修改密码</el-dropdown-item>
                     <el-dropdown-item @click="loginOut()">退出登录</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
@@ -55,15 +55,57 @@
           </el-main>
         </el-container>
       </el-container>
+
+      <!-- 修改用对话框 -->
+      <el-dialog 
+        v-model="modShow" 
+        title="修改密码" 
+        width="500" 
+        align-center
+        :show-close="false">
+            <el-form ref="modFormRef" :model="modFormData" :rules="modRules">
+                <el-form-item prop='originPassword' label="原密码">
+                    <el-input v-model="modFormData.originPassword"></el-input>
+                </el-form-item>
+                <el-form-item prop='newPassword' label="新密码">
+                    <el-input v-model="modFormData.newPassword"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <div class="act">
+                        <el-button type="primary" @click="mod(modFormRef);">确认</el-button>
+                        <el-button type="danger" @click="cancel()">取消</el-button>
+                    </div>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ElMessage, type FormInstance } from 'element-plus'
+import { reactive, ref } from 'vue'
 import { RouterView, useRouter } from 'vue-router'
+import { modifyAdminPassword } from '../../../request/api'
 
+const modShow = ref(false)
+const modFormRef = ref<FormInstance>()
 const router = useRouter()
 const username = localStorage.getItem('token')
+const modFormData = reactive({
+  originPassword:'',
+  newPassword:''
+})
+const modRules = {
+  originPassword: [
+    { required: true, message: '请填写原密码！', trigger: 'blur' },
+    { min: 6, max: 12, message: '请输入长度为5-12之间的密码', trigger: 'blur' }
+  ],
+  newPassword: [
+    { required: true, message: '请填写新密码！', trigger: 'blur' },
+    { min: 6, max: 12, message: '请输入长度为5-12之间的密码', trigger: 'blur' }
+  ],
+}
 const menu = [
   { id: "1", name: '管理员列表', val: [{ name: '管理员信息', path: '/AdminInfoMag' }] },
   { id: "2", name: '医生管理', val: [{ name: '医生信息管理', path: '/AdminDocMag' }, { name: '科室管理', path: '/AdminDepMag' }] },
@@ -75,6 +117,28 @@ const menu = [
 const loginOut = () =>{
   localStorage.removeItem('token')
   router.push('/')
+}
+
+const mod = (formEl:FormInstance | undefined) =>{
+  if (!formEl) return
+  formEl.validate(async (valid) =>{
+    if (valid){
+      const res = await modifyAdminPassword(modFormData)
+      if (res.data.code === '200'){
+        ElMessage.success('修改成功！')
+        cancel()
+      }else{
+        ElMessage.error(res.data.data)
+        cancel()
+      }
+    }
+  })
+}
+
+const cancel = () =>{
+  modShow.value = false
+  modFormData.newPassword = ''
+  modFormData.originPassword = ''
 }
 </script>
 
@@ -142,6 +206,18 @@ const loginOut = () =>{
     height: 100%;
     padding: 0;
     
+  }
+}
+
+.el-dialog{
+  .context{
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: center;
+  }
+  .act{
+      display: flex;
+      justify-content: center;
   }
 }
 </style>

@@ -11,7 +11,9 @@ public enum AdminErrorCode implements IErrorCode {
     ADMIN_USERNAME_REPEATED("A10002", "该用户名已被占用！"),
     ADMIN_TOKEN_MISSING("A10003", "用户未登录！"),
     ADMIN_TOKEN_WRONG("A10004", "该TOKEN已过期或失效，请重新登录！"),
-    ADMIN_IS_NOT_EXISTED("A10005", "该管理员用户不存在！"),;
+    ADMIN_IS_NOT_EXISTED("A10005", "该管理员用户不存在！"),
+    OLD_PASSWORD_NOT_MATCH("A10006", "输入的原密码与账号原密码不一致！"),
+    OLD_PASSWORD_SAME_WITH_NEW_PASSWORD("A10006", "输入的新密码与账号原密码一致！"),;
 
 
 
