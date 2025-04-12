@@ -1,18 +1,19 @@
 <template>
     <div class="view">
-        <span> 患者管理</span>
+        
+        <el-tag type="primary" size="large">患者管理</el-tag>
         <!-- 搜索输入区域 -->
         <div class="inputArea">
             <el-form ref="searchForm" style="display: flex;" :model="requestParam" :rules="rules">
                 <el-form-item label="用户名:" prop="username">
-                    <el-input style="width: 100px;" v-model="requestParam.username"></el-input>
+                    <el-input style="max-width: 100px;" v-model="requestParam.username"></el-input>
                 </el-form-item>
                 <el-form-item label="姓名:" prop="name">
-                    <el-input style="width: 100px;" v-model="requestParam.name"></el-input>
+                    <el-input style="max-width: 100px;" v-model="requestParam.name"></el-input>
                 </el-form-item>
                 <el-form-item label="年龄:" prop="age">
-                    <el-input style="width: 50px;" v-model="requestParam.minAge"></el-input>
-                    <el-input style="width: 50px;" v-model="requestParam.maxAge"></el-input>
+                    <el-input style="max-width: 50px;" v-model="requestParam.minAge"></el-input>
+                    <el-input style="max-width: 50px;" v-model="requestParam.maxAge"></el-input>
                 </el-form-item>
                 <el-form-item label="性别:" prop="sex">
                     <el-radio-group v-model="requestParam.sex">
@@ -44,11 +45,15 @@
         </div>
 
         <el-table :data="FormData.records" style="width: 100%;">
-            <el-table-column prop="username" label="用户名" width="180" />
-            <el-table-column prop="name" label="姓名" width="180" />
-            <el-table-column prop="age" label="年龄" width="180" />
-            <el-table-column prop="sex" label="性别" width="180" />
-            <el-table-column prop="tele" label="电话" width="180" />
+            <el-table-column prop="username" label="用户名"  />
+            <el-table-column prop="name" label="姓名"  />
+            <el-table-column prop="age" label="年龄"  />
+            <el-table-column prop="sex" label="性别">
+                <template #default="scope">
+                    {{ scope.row.sex === 'MALE' ? '男' : '女' }}
+                </template>
+            </el-table-column>
+            <el-table-column prop="tele" label="电话"  />
             <el-table-column label="操作">
                 <template style="display: block;" #default="scope">
                     <el-icon size="20" @click="view(scope.row.username)">
@@ -93,17 +98,19 @@
                 <el-form-item label="电话:" prop="tele">
                     <el-input v-model="addPatientForm.tele"></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="add(addPatientFormRef)">确认</el-button>
-                    <el-button type="danger" @click="isAddshow = false; addFormClear()">取消</el-button>
-                </el-form-item>
+                <div class="act">
+                    <el-form-item>
+                        <el-button type="primary" @click="add(addPatientFormRef)">确认</el-button>
+                        <el-button type="danger" @click="isAddshow = false; addFormClear()">取消</el-button>
+                    </el-form-item>
+                </div>
             </el-form>
         </el-dialog>
 
         <!-- 删除对话框 -->
         <el-dialog v-model="isRemoveShow" title="删除患者" width="500" center :show-close="false" class="removeDialog">
-            <div class="description">您真的要删除这个病人信息吗，该操作不可撤销！</div>
-            <div class="action">
+            <div class="context">您真的要删除这个病人信息吗，该操作不可撤销！</div>
+            <div class="act">
                 <el-button type="primary" @click="remove(currentRow.currentItem)">确认</el-button>
                 <el-button type="danger" @click="isRemoveShow = false;">取消</el-button>
             </div>
@@ -113,8 +120,11 @@
         <!-- 详细对话框 -->
         <el-dialog v-model="isViewShow" title="患者详情" width="700" center :show-close="false" class="viewDialog">
             <el-divider></el-divider>
-            <div class="description">
-                <el-descriptions>
+            <div >
+                <el-descriptions 
+                border
+                column="1"
+                style="margin-bottom: 10px;">
                     <el-descriptions-item label="患者编号">{{ PatientDetail.record.id }}</el-descriptions-item>
                     <el-descriptions-item label="姓名">{{ PatientDetail.record.name }}</el-descriptions-item>
                     <el-descriptions-item label="用户名">{{ PatientDetail.record.username }}</el-descriptions-item>
@@ -125,7 +135,7 @@
                 </el-descriptions>
 
             </div>
-            <div class="action">
+            <div class="act">
                 <el-button type="primary" @click="isViewShow = false">后退</el-button>
             </div>
         </el-dialog>
@@ -155,10 +165,12 @@
                 <el-form-item label="电话:" prop="tele">
                     <el-input v-model="ModForm.record.tele"></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="mod(ModFormRef)">确认</el-button>
-                    <el-button type="danger" @click="isModShow = false; modFormClear()">取消</el-button>
-                </el-form-item>
+                <div class="act">
+                    <el-form-item>
+                        <el-button type="primary" @click="mod(ModFormRef)">确认</el-button>
+                        <el-button type="danger" @click="isModShow = false; modFormClear()">取消</el-button>
+                    </el-form-item>
+                </div>
             </el-form>
         </el-dialog>
     </div>
@@ -229,6 +241,17 @@
 .modDialog {
     .el-form-item {
         margin-top: 10px;
+    }
+}
+.el-dialog{
+    .context{
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: center;
+    }
+    .act{
+        display: flex;
+        justify-content: center;
     }
 }
 </style>

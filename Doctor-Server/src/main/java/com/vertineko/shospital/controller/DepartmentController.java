@@ -7,21 +7,25 @@ import com.vertineko.shospital.dao.DepartmentDO;
 import com.vertineko.shospital.dao.mapper.DepartmentMapper;
 import com.vertineko.shospital.dto.doctor.req.DepartmentPageDTO;
 import com.vertineko.shospital.dto.doctor.res.DepartmentPageVO;
+import com.vertineko.shospital.dto.doctor.res.DepartmentVO;
 import com.vertineko.shospital.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class DepartmentController {
 
     private final DepartmentService departmentService;
     private final DepartmentMapper departmentMapper;
 
     @RequestMapping("/doctor/api/department/insert")
-    public Result<Integer> insertDepartment(String name){
+    public Result<Integer> insertDepartment(@RequestParam String name){
+        log.info("DepartmentController:{}", name);
         return Results.success(departmentService.insertDepartment(name));
     }
 
@@ -41,7 +45,7 @@ public class DepartmentController {
     }
 
     @RequestMapping("/doctor/api/department/getAll")
-    public Result<List<DepartmentDO>> getAllDepartment(){
+    public Result<List<DepartmentVO>> getAllDepartment(){
         return Results.success(departmentService.getDepartments());
     }
 

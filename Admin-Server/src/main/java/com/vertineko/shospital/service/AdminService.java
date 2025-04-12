@@ -1,7 +1,12 @@
 package com.vertineko.shospital.service;
 
-import com.vertineko.shospital.dao.AdminDO;
-import com.vertineko.shospital.dao.dto.req.*;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.vertineko.shospital.dao.dto.req.AdminInsertDTO;
+import com.vertineko.shospital.dao.dto.req.AdminPageDTO;
+import com.vertineko.shospital.dao.dto.req.UpdateAdminByIdDTO;
+import com.vertineko.shospital.dao.dto.req.UpdateAdminByUsernameDTO;
+import com.vertineko.shospital.dao.dto.res.AdminPageVO;
+import com.vertineko.shospital.dao.dto.res.AdminVO;
 import com.vertineko.shospital.dto.LoginDTO;
 
 public interface AdminService {
@@ -10,9 +15,8 @@ public interface AdminService {
 
     int addAdmin(AdminInsertDTO requestParam);
 
-    AdminDO getById(Long id);
 
-    AdminDO getByUsername(String username);
+    AdminVO getAdmin(String username);
 
     int removeById(Long id);
 
@@ -22,6 +26,6 @@ public interface AdminService {
 
     int updateByUsername(UpdateAdminByUsernameDTO requestParam);
 
-    AdminPageDTO getAdminPage(AdminPageDTO requestParam);
+    IPage<AdminPageVO> getAdminPage(AdminPageDTO requestParam);
 
 }

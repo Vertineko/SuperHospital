@@ -28,14 +28,48 @@
                         </el-form-item>
                         <el-form-item style="align-items: center;">
                             <el-button type="primary" style="margin-top: 10%;" @click="login(loginRef)">登录</el-button>
+                            <el-button type="success" v-if="model === 'patient'" style="margin-top: 10%;" @click="isAddshow = true">注册</el-button>
                         </el-form-item>
                     </div>
                     
-                    忘记密码了？<el-link type="primary">找回密码</el-link>
+                    
                 </el-form>
 
             </div>
         </div>
+        <!-- 注册对话框 -->
+        <el-dialog v-model="isAddshow" title="注册" width="500" center :show-close="false" class="addDialog">
+            <el-form ref='addPatientFormRef' :model='addPatientForm' :rules='addPatientRules'>
+                <el-form-item label="姓名:" prop='name'>
+                    <el-input v-model="addPatientForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="用户名:" prop='username'>
+                    <el-input v-model="addPatientForm.username"></el-input>
+                </el-form-item>
+
+                <el-form-item label="密码:" prop="password">
+                    <el-input type="password" v-model="addPatientForm.password"></el-input>
+                </el-form-item>
+                <el-form-item label="性别:" prop="sex">
+                    <el-radio-group v-model="addPatientForm.sex">
+                        <el-radio value="MALE">男</el-radio>
+                        <el-radio value="FEMALE">女</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="年龄:" prop="age">
+                    <el-input v-model="addPatientForm.age"></el-input>
+                </el-form-item>
+                <el-form-item label="电话:" prop="tele">
+                    <el-input v-model="addPatientForm.tele"></el-input>
+                </el-form-item>
+                <div class="act">
+                    <el-form-item>
+                        <el-button type="primary" @click="add(addPatientFormRef)">确认</el-button>
+                        <el-button type="danger" @click="isAddshow = false; addFormClear()">取消</el-button>
+                    </el-form-item>
+                </div>
+            </el-form>
+        </el-dialog>
     </div>
 
 </template>
@@ -95,6 +129,17 @@ template {
     padding-left: 1%;
     margin-right: 1%;
 }
+.el-dialog{
+    .context{
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: center;
+    }
+    .act{
+        display: flex;
+        justify-content: center;
+    }
+}
 </style>
 
 
@@ -102,10 +147,38 @@ template {
 import { ElMessage, type FormInstance } from 'element-plus';
 import { reactive, ref  } from 'vue';
 import { useRouter } from 'vue-router';
-import { AdminLogin, PatientLogin, DoctorLogin } from '../request/api';
+import { AdminLogin, PatientLogin, DoctorLogin, patientRegister } from '../request/api';
 
+const model = ref('admin')
 const router = useRouter();
 const loginRef = ref<FormInstance>()
+const addPatientFormRef = ref<FormInstance>()
+const isAddshow = ref(false)
+
+const addPatientRules = {
+    name: [
+        { required: true, message: '请填写用户名！', trigger: 'blur' }
+    ],
+    username: [
+        { required: true, message: '请填写用户名！', trigger: 'blur' },
+        { min: 5, max: 12, message: '请输入长度为5-12之间的用户名', trigger: 'blur' }
+    ],
+    password: [
+        { required: true, message: '请填写密码！', trigger: 'blur' },
+        { min: 6, max: 12, message: '请输入长度为5-12之间的密码', trigger: 'blur' }
+    ],
+    sex: [
+        { required: true, message: '请选择性别', trigger: 'blur' }
+    ],
+    age: [
+        { required: true, message: '请填写年龄！', trigger: 'blur' },
+        { min: 1, max: 3, message: '请输入正确的年龄', trigger: 'blur' }
+    ],
+    tele: [
+        { required: true, message: '请填写联系电话！', trigger: 'blur' },
+        { min: 11, max: 11, message: '请输入正确的电话号码！', trigger: 'blur' }
+    ]
+}
 const loginRules = {
     username: [
         {required: true, message:'请输入不为空的工号！', trigger: 'blur'},
@@ -113,7 +186,7 @@ const loginRules = {
     ],
     password: [
         {required: true, message:'请输入不为空的密码！', trigger: 'blur'},
-        {min: 6, max: 13, message:'密码应该在6-13之间！', trigger: 'blur'}
+        {min: 6, max: 12, message:'密码应该在6-12之间！', trigger: 'blur'}
     ]
 }
 
@@ -122,7 +195,15 @@ const LoginFormData = reactive({
     password: '',
 })
 
-const model = ref('admin')
+const addPatientForm = reactive({
+    username: '',
+    password: '',
+    name: '',
+    age: '',
+    sex: 'NULL',
+    tele: ''
+})
+
 const login = (formEl:any) =>{
     if (model.value == 'admin'){
         adminLogin(formEl)
@@ -232,4 +313,29 @@ const patientLogin = (formEl:FormInstance | undefined) => {
     })
       
 }
+
+const add = (formEl: FormInstance | undefined) => {
+    if (!formEl) return
+    formEl.validate(async (valid) => {
+        if (valid) {
+            const res = await patientRegister(addPatientForm)
+            if (res.data.code == '200') {
+                ElMessage.success('注册成功！')
+                addFormClear()
+                isAddshow.value = false
+            } else {
+                ElMessage.error(res.data.data)
+            }
+        }
+    })
+}
+const addFormClear = () => {
+    addPatientForm.username = ''
+    addPatientForm.password = ''
+    addPatientForm.name = ''
+    addPatientForm.sex = 'NULL'
+    addPatientForm.age = ''
+    addPatientForm.tele = ''
+}
+
 </script>

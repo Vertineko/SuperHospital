@@ -1,8 +1,9 @@
 <template>
     <div class="view">
-        <span> 药品管理</span>
+        <el-tag type="primary" size="large">药品管理</el-tag>
         <!-- 搜索输入区域 -->
         <div class="inputArea">
+            <el-row>
             <el-form 
             ref="searchFormRef"
             style="display: flex;" 
@@ -23,6 +24,7 @@
                     </el-icon>
                 </el-form-item>
             </el-form>
+            </el-row>
         </div>
 
         <el-table 

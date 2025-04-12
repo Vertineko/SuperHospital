@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AdminLogin from '../view/Login.vue';
 import AdminHome from '../view/pages/admin/AdminHome.vue';
-import AdminConsole from '../view/pages/admin/AdminConsole.vue';
 import AdminDocMag from '../view/pages/admin/doctor/AdminDocMag.vue';
 import AdminPatMag from '../view/pages/admin/patient/AdminPatMag.vue';
 import AdminRecMag from '../view/pages/admin/record/AdminRecMag.vue';
@@ -19,6 +18,7 @@ import HistoryReservation from '../view/pages/doctor/historyReservation.vue';
 import createRecord from '../view/pages/doctor/createRecord.vue'
 import RecordDetail from '../view/pages/doctor/RecordDetail.vue';
 import PatientRecordDetail from '../view/pages/patient/PatientRecordDetail.vue';
+import AdminInfoMag from '../view/pages/admin/AdminInfoMag.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,10 +33,7 @@ const router = createRouter({
         name: 'AdminHome',
         component: AdminHome,
         children:[
-          {
-            path: '/AdminConsole',
-            component: AdminConsole
-          },
+          
           {
             path: '/AdminDocMag',
             component: AdminDocMag
@@ -64,13 +61,15 @@ const router = createRouter({
           {
             path: '/AdminDepMag',
             component: DepMagPage
-          }
-          ,
+          },
           {
             path: '/AdminMedMag',
             component: AdminMedMag
+          },
+          {
+            path: '/AdminInfoMag',
+            component: AdminInfoMag
           }
-          
           
         ]
       },

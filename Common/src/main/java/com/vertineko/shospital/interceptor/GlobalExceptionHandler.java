@@ -3,6 +3,7 @@ package com.vertineko.shospital.interceptor;
 import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
 import com.vertineko.shospital.constrain.exceptionDef.exception.AdminException;
+import com.vertineko.shospital.constrain.exceptionDef.exception.DepartmentException;
 import com.vertineko.shospital.constrain.exceptionDef.exception.DoctorException;
 import com.vertineko.shospital.constrain.exceptionDef.exception.PatientException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,6 +42,13 @@ public class GlobalExceptionHandler {
     @SneakyThrows
     @ExceptionHandler(PatientException.class)
     public Result<String> handleOthersException(PatientException e, HttpServletRequest request) {
+        log.error("[{}] {}", request.getMethod(), request.getRequestURL().toString(), e);
+        return Results.fail(e.getMsg());
+    }
+
+    @SneakyThrows
+    @ExceptionHandler(DepartmentException.class)
+    public Result<String> handleOthersException(DepartmentException e, HttpServletRequest request) {
         log.error("[{}] {}", request.getMethod(), request.getRequestURL().toString(), e);
         return Results.fail(e.getMsg());
     }

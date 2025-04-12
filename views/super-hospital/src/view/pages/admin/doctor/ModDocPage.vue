@@ -1,12 +1,12 @@
 <template>
-    <span> 录入医生信息</span>
+    <el-tag type="primary" size="large">修改医生信息</el-tag>
     <div class="inputArea">
         <el-form ref="FormRef" :model="requestParam.records" :rules="requstRules">
             <el-form-item label="用户名：" prop="username">
                 {{ requestParam.records.username }}
             </el-form-item>
             <el-form-item label="密码：" prop="password">
-                <el-input v-model="requestParam.records.password"></el-input>
+                <el-input type="password" v-model="requestParam.records.password"></el-input>
             </el-form-item>
             <el-form-item label="姓名：" prop="name">
                 <el-input v-model="requestParam.records.name"></el-input>
@@ -44,7 +44,8 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="submit(FormRef)">提交</el-button>
+                <el-button type="success" @click="submit(FormRef)">提交</el-button>
+                <el-button type="primary" @click="router.go(-1)">返回</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -74,6 +75,7 @@ const FormRef = ref<FormInstance>()
 
 const requstRules = {
     password: [
+        { required: true, message: '请输入用户真实姓名', trigger: 'blur' },
         { min: 6, max: 13, message: '密码应该在6-13之间！', trigger: 'blur' }
     ],
     name: [
@@ -99,7 +101,6 @@ const requstRules = {
     ],
     age: [
         { required: true, message: '请输入年龄！', trigger: 'blur' },
-        { min: 1, max: 150, message: '请输入正确的年龄！', trigger: 'blur' }
     ]
 
 }

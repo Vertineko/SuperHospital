@@ -1,6 +1,7 @@
 <template>
     <div class="view">
-        <span> 医生管理</span>
+        
+        <el-tag type="primary" size="large">医生管理</el-tag>
         <!-- 搜索输入区域 -->
         <div class="inputArea">
             <el-row>
@@ -11,15 +12,15 @@
             :rules="rules"
             >
                 <el-form-item label="工号:" prop="username">
-                    <el-input style="width: 100px;" v-model="requestParam.username"></el-input>
+                    <el-input style="max-width: 80px;" v-model="requestParam.username"></el-input>
                 </el-form-item>
                 <el-form-item label="姓名:" prop="name">
-                    <el-input style="width: 100px;" v-model="requestParam.name"></el-input>
+                    <el-input style="max-width: 80px;" v-model="requestParam.name"></el-input>
                 </el-form-item>
                 <el-form-item label="年龄:" prop="age">
-                    <el-input style="width: 50px;" v-model="requestParam.minAge"></el-input>
+                    <el-input style="max-width: 50px;" v-model="requestParam.minAge"></el-input>
 
-                    <el-input style="width: 50px;" v-model="requestParam.maxAge"></el-input>
+                    <el-input style="max-width: 50px;" v-model="requestParam.maxAge"></el-input>
                 </el-form-item>
                 <el-form-item label="性别:" prop="sex">
                     <el-radio-group v-model="requestParam.sex">
@@ -32,17 +33,17 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="联系电话:" prop="tele">
-                    <el-input v-model="requestParam.tele"></el-input>
+                    <el-input style="max-width: 120px;" v-model="requestParam.tele"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱:" prop="mail">
-                    <el-input v-model="requestParam.mail"></el-input>
+                    <el-input style="max-width: 170px;" v-model="requestParam.mail"></el-input>
                 </el-form-item>
                 <el-form-item label="科室:" prop="department">
                     <el-select 
                     :empty-values="[null, undefined]"
                     :value-on-clear="null"
                     clearable
-                    style="width: 100px;" 
+                    style="max-width: 80px;" 
                     placeholder="选择科室"
                     v-model="requestParam.department">
                         <el-option 
@@ -74,13 +75,17 @@
         :data="FormData.records" 
         style="width: 100%;"
         >
-            <el-table-column prop="username" label="工号" width="180" />
-            <el-table-column prop="name" label="姓名" width="180" />
-            <el-table-column prop="age" label="年龄" width="180" />
-            <el-table-column prop="sex" label="性别" width="180" />
-            <el-table-column prop="tele" label="电话" width="180" />
-            <el-table-column prop="mail" label="邮箱" width="180" />
-            <el-table-column prop="departmentName" label="科室" width="180" />
+            <el-table-column prop="username" label="工号"  />
+            <el-table-column prop="name" label="姓名"  />
+            <el-table-column prop="age" label="年龄"  />
+            <el-table-column prop="sex" label="性别"  >
+                <template #default="scope">
+                    {{ scope.row.sex === 'MALE' ? '男' : '女' }}
+                </template>
+            </el-table-column>
+            <el-table-column prop="tele" label="电话"  />
+            <el-table-column prop="mail" label="邮箱"  />
+            <el-table-column prop="departmentName" label="科室"  />
             <el-table-column label="操作">
                 <template style="display: block;" #default="scope">
                     <el-icon size="20" @click="view(scope.row.username)">
@@ -90,7 +95,7 @@
                         <Edit />
                     </el-icon>
                     <el-icon size="20">
-                        <CircleCloseFilled @click="remove(scope.row.username)"/>
+                        <CircleCloseFilled @click="curr = scope.row.username; isRemoveShow=true"/>
                     </el-icon>
                 </template>
             </el-table-column>
@@ -98,6 +103,18 @@
         <div class="pagePlugin">
             <el-pagination v-model:current-page="requestParam.current" layout="prev, pager, next" :total="FormData.total" @change="search(searchForm)"/>
         </div>
+
+        <!-- 删除对话框 -->
+        <el-dialog v-model="isRemoveShow" title="删除患者" width="500" center :show-close="false" class="removeDialog">
+            <div class="context">您真的要删除这个医生吗，该操作不可撤销！</div>
+            <div class="act">
+                
+                <el-button type="primary" @click="remove(curr)">确认</el-button>
+                <el-button type="danger" @click="isRemoveShow = false; curr = ''">取消</el-button>
+                
+                
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -115,9 +132,9 @@
     align-items: center;
     justify-content: center;
 }
-//.view{
-//    padding: 10 10;
-//}
+/* .view{
+    padding: 10 10;
+} */
 .el-icon{
     margin-right: 10px; 
 }
@@ -137,6 +154,18 @@
 .el-form-item{
     margin-bottom: 0;
 }
+
+.el-dialog{
+    .context{
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: center;
+    }
+    .act{
+        display: flex;
+        justify-content: center;
+    }
+}
 </style>
 
 <script setup lang="ts">
@@ -149,6 +178,8 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 const searchForm = ref<FormInstance>()
+const isRemoveShow = ref(false)
+const curr = ref('')
 const FormData = reactive(
     {
         records:[

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vertineko.shospital.dao.mapper.AdminMapper">
+
+
+    <select id="getAdminPage" parameterType="com.vertineko.shospital.dao.dto.req.AdminPageDTO"
+            resultType="com.vertineko.shospital.dao.dto.res.AdminPageVO">
+        select username, name, tele
+        from admin
+        <where>
+            <if test="username != null and username != ''">
+                and username like concat('%', #{username}, '%')
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="tele != null and tele != ''">
+                and tele like concat('%', #{tele}, '%')
+            </if>
+            <if test="true">
+                and id != #{id}
+            </if>
+        </where>
+    </select>
+
+</mapper>

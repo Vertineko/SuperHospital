@@ -1,46 +1,42 @@
 <template>
-    <span>科室管理</span>
+    
+    <el-tag type="primary" size="large">科室管理</el-tag>
     <div class="showArea">
-        <el-row :gutter="0">
-            <el-col :span="12">
-                <el-card style="width: 90%;" shadow="always">
-                    <span>科室</span>
-                    <el-icon style="padding-left: 10px;" size="20" @click="addIsShow = true">
+        <el-row>
+            <el-form
+            :model="queryParam"
+            style="display: flex;">
+                <el-form-item label="科室名称">
+                    <el-input v-model="queryParam.name" style="margin-right: 10px;"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-icon @click="addIsShow = true" style="margin-right: 10px;">
                         <Plus />
                     </el-icon>
-                    <el-divider style="width: 100%;"></el-divider>
-                    <el-table :data="departments.records" highlight-current-row @current-change="showDocs">
-                        <el-table-column prop="id" label="编号"></el-table-column>
-                        <el-table-column prop="name" label="科室名称"></el-table-column>
-                        <el-table-column label="操作">
-                            <template #default="scope">
-                                <el-icon size="20" @click="modIsShow = true; FormData.id = scope.row.id; getDetil(scope.row.id)">
-                                    <Edit />
-                                </el-icon>
-                                <el-icon size="20">
-                                    <CircleCloseFilled @click="remove(scope.row.id)" />
-                                </el-icon>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-card>
-            </el-col>
-            <el-col :span="12">
-                <el-card style="" shadow="always">
-                    <span>所属医生</span>
-                    <el-divider style="width: 100%;"></el-divider>
-                    <el-table :data="doctors.records">
-                        <el-table-column prop="username" label="用户名"></el-table-column>
-                        <el-table-column prop="name" label="真实姓名"></el-table-column>
-                        <el-table-column prop="tele" label="联系电话"></el-table-column>
-                    </el-table>
-                    <div class="pagePlugin">
-                        <el-pagination v-model:current-page="requestParam.current" layout="prev, pager, next"
-                            :total="doctors.total" @change="showDocs(requestParam)" />
-                    </div>
-                </el-card>
-            </el-col>
+                    <el-button type="success" @click="getDepartments()">搜索</el-button>
+                    <el-button type="primary" @click="reset()">重置</el-button>
+                </el-form-item>
+            </el-form>
         </el-row>
+        <el-table
+        :data="departments.records">
+            <el-table-column label="科室编号" prop="id"/>
+            
+            <el-table-column label="科室名称" prop="name"/>
+                
+            <el-table-column label="操作">
+                <template #default="scope">
+                    <el-button type="primary" @click="modIsShow = true; FormData.id = scope.row.id ">修改</el-button>
+                    <el-button type="danger" @click="removeIsShow = true; FormData.id = scope.row.id ">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="pagePlugin">
+            <el-pagination v-model:current-page="queryParam.current" layout="prev, pager, next" 
+            :total="departments.total" @change="getDepartments()" />
+        </div>
+            
+       
 
         <!-- 新增用对话框 -->
         <el-dialog 
@@ -50,20 +46,22 @@
         align-center
         :show-close="false">
             <el-form 
-            ref="FormRef" 
-            :model="FormData" 
+            ref="addFormRef" 
+            :model="addFormData" 
             :rules="Rules">
                 <el-form-item prop='name' label="科室名">
-                    <el-input v-model="FormData.name"></el-input>
+                    <el-input v-model="addFormData.name"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <div class="action">
-                        <el-button type="danger" @click="addIsShow = false; FormData.name = ''">取消</el-button>
-                        <el-button type="primary" @click="add(FormRef); addIsShow = false">确认</el-button>
+                        <el-button type="danger" @click="addIsShow = false; addFormData.name = ''">取消</el-button>
+                        <el-button type="primary" @click="add(addFormRef); addIsShow = false">确认</el-button>
                     </div>
                 </el-form-item>
             </el-form>
         </el-dialog>
+        
+        
         <!-- 修改用对话框 -->
         <el-dialog 
         v-model="modIsShow" 
@@ -83,8 +81,19 @@
                 </el-form-item>
             </el-form>
         </el-dialog>
-    </div>
+        
 
+        <!-- 删除对话框 -->
+        <el-dialog v-model="removeIsShow" title="删除科室" width="500" center :show-close="false" class="removeDialog">
+            <div class="context">您真的要删除这个科室吗，该操作不可撤销！</div>
+            <div class="act">
+                <el-button type="primary" @click="remove(FormData.id)">确认</el-button>
+                <el-button type="danger" @click="removeIsShow = false;">取消</el-button>
+            </div>
+        </el-dialog>
+
+    </div>
+    
 </template>
 
 
@@ -107,9 +116,7 @@
     height: 100%;
 }
 
-h2 {
-    font-size: 24px;
-}
+
 
 .pagePlugin {
     display: flex;
@@ -118,21 +125,30 @@ h2 {
     justify-content: center;
 }
 
-.el-row {
-    max-height: 80%;
+.el-dialog{
+    .context{
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: center;
+    }
+    .act{
+        display: flex;
+        justify-content: center;
+    }
 }
 </style>
 
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
-import { removeDepartment, getDepartment ,getAllDepartment, getDocByDepartment, addDepartment, updateDepartment } from '../../../../request/api';
+import { removeDepartment, getDepartment, getDocByDepartment, addDepartment, updateDepartment, getAdminDepartmentPage } from '../../../../request/api';
 import { ElMessage, type FormInstance } from 'element-plus';
 
-
+const addFormRef = ref<FormInstance>()
 const FormRef = ref<FormInstance>()
 const addIsShow = ref(false)
 const modIsShow = ref(false)
+const removeIsShow = ref(false)
 
 const departments = reactive({
     records: [
@@ -140,7 +156,13 @@ const departments = reactive({
             id: '',
             name: ''
         }
-    ]
+    ],
+    total:1
+})
+const queryParam = reactive({
+    name:'',
+    current:'1',
+    size:'10'
 })
 
 const doctors = reactive({
@@ -151,7 +173,7 @@ const doctors = reactive({
             tele: ''
         }
     ],
-    total: ''
+    total: 1
 })
 const requestParam = reactive({
     current: '1',
@@ -159,6 +181,9 @@ const requestParam = reactive({
     department: ''
 })
 
+const addFormData = reactive({
+    name: ''
+})
 
 const FormData = reactive({
     id: '',
@@ -191,9 +216,10 @@ const init = async () => {
 }
 
 const getDepartments = async () => {
-    const res = await getAllDepartment()
+    const res = await getAdminDepartmentPage(queryParam)
     if (res.data.code == '200') {
-        departments.records = res.data.data
+        departments.records = res.data.data.records
+        departments.total = res.data.data.total
         console.log('Department_data:' + departments.records)
     } else {
         ElMessage.error(res.data.data)
@@ -204,11 +230,12 @@ const add = (formEl: FormInstance | undefined) => {
     if (!formEl) return
     formEl.validate(async (valid) => {
         if (valid) {
-            const res = await addDepartment(FormData.name)
+            const res = await addDepartment(addFormData.name)
             if (res.data.code == '200') {
                 ElMessage.success('新增科室成功')
-                FormData.name = ''
+                addFormData.name = ''
                 getDepartments()
+                init()
             } else {
                 ElMessage.error(res.data.data)
             }
@@ -247,8 +274,17 @@ const remove = async (id:string) => {
     if (res.data.code == '200') {
         ElMessage.success('删除成功！')
         getDepartments()
+        FormData.id = ''
+        removeIsShow.value = false
     } else {
         ElMessage.error(res.data.data)
     }
+}
+
+const reset = () =>{
+    queryParam.name = ''
+    queryParam.current = '1'
+    queryParam.size = '10'
+    init()
 }
 </script>

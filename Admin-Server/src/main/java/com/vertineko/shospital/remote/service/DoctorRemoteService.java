@@ -36,7 +36,7 @@ public interface DoctorRemoteService {
     String getDocDepPageByDepId(DocDepartPageDTO requestParam);
 
     @RequestMapping("/doctor/api/department/insert")
-    String insertDepartment(String name);
+    String insertDepartment(@RequestParam String name);
 
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/doctor/api/department/{id}")
@@ -54,6 +54,8 @@ public interface DoctorRemoteService {
     @RequestMapping("/doctor/api/department/getAll")
     String getAllDepartment();
 
+    @RequestMapping("/doctor/api/department/getPage")
+    String getDepartmentPage(@RequestBody DepartmentPageDTO requestParam);
 
 
     //药品模块

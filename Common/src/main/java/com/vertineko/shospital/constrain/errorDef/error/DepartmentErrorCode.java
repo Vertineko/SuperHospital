@@ -5,7 +5,8 @@ import lombok.Getter;
 
 @Getter
 public enum DepartmentErrorCode implements IErrorCode {
-    DEPARTMENT_NOT_EXISTED("D00001", "指定的部门不存在！");
+    DEPARTMENT_NOT_EXISTED("D00001", "指定的部门不存在！"),
+    DOCTORS_IS_NOT_EMPTY("D00002", "该科室下仍然有在职医生，无法删除！");
 
     private final String code;
 

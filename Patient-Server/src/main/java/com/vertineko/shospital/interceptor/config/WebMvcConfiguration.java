@@ -17,7 +17,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(patientContextInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/patient/api/login")
-                .excludePathPatterns("/patient/api/register")
+                .excludePathPatterns("/patient/api/insertPatient")
                 .excludePathPatterns("/patient/api/pagePatient")
                 .excludePathPatterns("/patient/api/reservation/currReservation")
                 .excludePathPatterns("/patient/api/reservation/hisReservation")

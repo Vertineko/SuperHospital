@@ -24,4 +24,6 @@ public class UpdateDoctorByIdDTO {
 
     private Long department;
 
+    private Double price;
+
 }

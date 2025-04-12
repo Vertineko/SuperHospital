@@ -1,6 +1,6 @@
 <template>
     <div class="show">
-        历史处理预约
+        <el-tag type="primary" size="large">预约/病历管理</el-tag>
         <el-form :model="searchForm">
             <el-row>
                 <el-form-item 
@@ -214,7 +214,9 @@ const detail = (reservationId:string, recordId:string, orderId:string) => {
 </script>
 
 
-<style scoped lang="ts">
+<style scoped lang="css">
 
-
+.el-input{
+    margin-right: 3px;
+}
 </style>

@@ -1,59 +1,58 @@
 <template>
     <div>
-        <span>医生详细</span>
+        <el-tag type="primary" size="large">医生详细</el-tag>
     </div>
     <div class="showArea">
-        <el-row>
-            用户名:{{ showParam.records.username }}
-        </el-row>
-        <el-row>
-            姓名:{{ showParam.records.name }}
-        </el-row>
-        <el-row>
-            性别:{{ showParam.records.sex }}
-        </el-row>
-        <el-row>
-            年龄:{{ showParam.records.age }}
-        </el-row>
-        <el-row>
-            电话:{{ showParam.records.tele }}
-        </el-row>
-        <el-row>
-            邮箱:{{ showParam.records.mail }}
-        </el-row>
-        <el-row>
-            科室:{{ showParam.records.department }}
-        </el-row>
-        <el-row>
-            工作时间:
-            <el-checkbox-group v-model="weeks.idx" size="large" disabled>
-                <el-checkbox 
-                v-for="item in weeks.week" 
-                :key="item" 
-                :value="item"
-                >
-                    {{ item }}
-                </el-checkbox>
-            </el-checkbox-group>
-        </el-row>
-
+        <el-descriptions 
+        column="1"
+        border>
+            <el-descriptions-item label="用户名">
+                {{ showParam.records.username }}
+            </el-descriptions-item>
+            <el-descriptions-item label="姓名">
+                {{ showParam.records.name }}
+            </el-descriptions-item>
+            <el-descriptions-item label="性别">
+                {{ showParam.records.sex }}
+            </el-descriptions-item>
+            <el-descriptions-item label="年龄">
+                {{ showParam.records.age }}
+            </el-descriptions-item>
+            <el-descriptions-item label="电话">
+                {{ showParam.records.tele }}
+            </el-descriptions-item>
+            <el-descriptions-item label="邮箱">
+                {{ showParam.records.mail }}
+            </el-descriptions-item>
+            <el-descriptions-item label="科室">
+                {{ showParam.records.department }}
+            </el-descriptions-item>
+            <el-descriptions-item label="工作时间">
+                <el-checkbox-group v-model="weeks.idx" size="large" disabled>
+                    <el-checkbox 
+                    v-for="item in weeks.week" 
+                    :key="item" 
+                    :value="item"
+                    >
+                        {{ item }}
+                    </el-checkbox>
+                </el-checkbox-group>
+            </el-descriptions-item>
+            <el-descriptions-item label="挂号费">
+                {{ showParam.records.price }} 元/次
+            </el-descriptions-item>
+        </el-descriptions>
+        <el-button type="primary" @click="router.go(-1)">返回</el-button>
     </div>
 </template>
 
 <style lang="css">
-h1{
-    padding-top: 20px;
-    padding-left: 10px;
-}
 .showArea{
-    padding-top: 10px;
-    padding-left: 30px;
+
+    
     font-size: 20px;
 }
-.el-row{
-    align-items: center;
-    margin-top: 10px;
-}
+
 </style>
 
 <script setup lang="ts">
@@ -78,6 +77,7 @@ const showParam = reactive(
             mail: '',
             worktime: '',
             department: '',
+            price:'',
             role: ''
         }
     }

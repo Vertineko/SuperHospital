@@ -9,6 +9,8 @@ public class DocDetailVO {
 
     private String username;
 
+    private String password;
+
     private String name;
 
     private Integer age;
@@ -21,7 +23,9 @@ public class DocDetailVO {
 
     private String worktime;
 
-    private Long department;
+    private String department;
+
+    private String price;
 
     private Role role;
 }

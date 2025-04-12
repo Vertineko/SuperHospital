@@ -8,7 +8,7 @@
             resultType="com.vertineko.shospital.dto.doctor.res.DepartmentPageVO">
             select * from department
             <where>
-                <if test="name != null and name != null">
+                <if test="name != null and name != ''">
                     name like concat('%', #{name}, '%')
                 </if>
             </where>

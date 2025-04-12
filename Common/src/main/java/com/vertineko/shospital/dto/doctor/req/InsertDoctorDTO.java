@@ -23,4 +23,6 @@ public class InsertDoctorDTO {
     private String worktime;
 
     private Long department;
+
+    private Double price;
 }

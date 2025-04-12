@@ -35,6 +35,72 @@ export function AdminDocQuery(data: AdminDocQuery){
     })
 }
 
+interface addAdminDTO{
+    username:string
+    password:string
+    name:string
+    tele:string
+}
+
+export function addAdmin(data:addAdminDTO){
+    return http({
+        url:'/api/admin/api/addAdmin',
+        method:'post',
+        data
+    })
+}
+
+export function getAdminDepartmentPage(data:getDepartmentPageData){
+    return http({
+        url:'/api/admin/api/department/getDepartmentPage',
+        method:'post',
+        data
+    })
+}
+
+export function getAdmin(data:string){
+    return http({
+        url:'/api/admin/api/getAdmin?username='+data,
+        method:'get',
+    })
+}
+interface updAdminDTO{
+    username:string,
+    password:string,
+    name:string,
+    tele:string
+}
+export function updAdmin(data:updAdminDTO){
+    return http({
+        url:'/api/admin/api/updateAdmin',
+        method:'post',
+        data
+    })
+}
+
+export function removeAdmin(data:string){
+    return http({
+        url:'/api/admin/api/removeByUsername/' + data,
+        method:'put'
+    })
+}
+
+interface AdminPageDTO{
+    username:string
+    name:string
+    tele:string
+    current:number
+    size:number
+}
+
+export function getAdminPage(data:AdminPageDTO){
+    return http({
+        url: '/api/admin/api/getAdminPage',
+        method:'post',
+        data
+    })
+}
+
 export function getAllDepartment(){
     return http({
         url: "/api/admin/api/department/getAll",
@@ -47,7 +113,8 @@ interface addDocParam{
     password:string,
     name:string,
     worktime:string,
-    department:string
+    department:string,
+    price:string
 }
 
 export function addDoc(data:addDocParam){
@@ -206,6 +273,14 @@ export function addPatient(data: addPatientData){
     })
 }
 
+export function patientRegister(data: addPatientData){
+    return http({
+        url:'/api/patient/api/insertPatient',
+        method:'put',
+        data
+    })
+}
+
 export function removePatient(data: string){
     return http({
         url:'/api/admin/api/removePatient?username=' + data,
@@ -260,7 +335,7 @@ interface getAbsDocDTO{
     size:string
 }
 
-export function getAbsDocDTO(data:getAbsDocDTO){
+export function getAbsDoc(data:getAbsDocDTO){
     return http({
         url: '/api/patient/api/getDocAbsPage',
         method: 'post',

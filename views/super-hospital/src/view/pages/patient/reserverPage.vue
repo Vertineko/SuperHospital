@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
-import { patGetDepartmentPage, getAbsDocDTO, insertReservation } from '../../../request/api';
+import { patGetDepartmentPage, getAbsDoc, insertReservation } from '../../../request/api';
 import { ElMessage, type DrawerProps, type FormInstance } from 'element-plus';
 
 
@@ -139,7 +139,7 @@ const selectDepartment = async (row:any) => {
     currRow.id = row.id
     currRow.name = row.name
     drawRequest.departmentId = currRow.id
-    const res = await getAbsDocDTO(drawRequest)
+    const res = await getAbsDoc(drawRequest)
     if (res.data.code === '200'){
         absDocList.records = res.data.data.records
         absDocList.total = res.data.data.total

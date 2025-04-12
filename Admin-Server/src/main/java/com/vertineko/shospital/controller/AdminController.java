@@ -1,10 +1,14 @@
 package com.vertineko.shospital.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.vertineko.shospital.constrain.Result;
 import com.vertineko.shospital.constrain.Results;
+import com.vertineko.shospital.dao.dto.req.AdminInsertDTO;
 import com.vertineko.shospital.dao.dto.req.AdminPageDTO;
 import com.vertineko.shospital.dao.dto.req.UpdateAdminByIdDTO;
 import com.vertineko.shospital.dao.dto.req.UpdateAdminByUsernameDTO;
+import com.vertineko.shospital.dao.dto.res.AdminPageVO;
+import com.vertineko.shospital.dao.dto.res.AdminVO;
 import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.dto.admin.req.AdminHisReservationDTO;
 import com.vertineko.shospital.dto.doctor.req.*;
@@ -56,11 +60,24 @@ public class AdminController {
     }
 
     @RequestMapping("/admin/api/getAdminPage")
-    public Result<AdminPageDTO> getAdminPage(@RequestBody AdminPageDTO requestParam) {
+    public Result<IPage<AdminPageVO>> getAdminPage(@RequestBody AdminPageDTO requestParam) {
         return Results.success(adminService.getAdminPage(requestParam));
     }
 
+    @RequestMapping("/admin/api/addAdmin")
+    public Result<Integer> addAdmin(@RequestBody AdminInsertDTO requestParam) {
+        return Results.success(adminService.addAdmin(requestParam));
+    }
 
+    @RequestMapping("/admin/api/getAdmin")
+    public Result<AdminVO> getAdmin(String username) {
+        return Results.success(adminService.getAdmin(username));
+    }
+
+    @RequestMapping("/admin/api/updateAdmin")
+    public Result<Integer> updAdmin(@RequestBody UpdateAdminByUsernameDTO requestParam) {
+        return Results.success(adminService.updateByUsername(requestParam));
+    }
 
     //以下都是医生端远程调用
 
@@ -133,8 +150,14 @@ public class AdminController {
 
     //科室远程调用
 
+    @RequestMapping("/admin/api/department/getDepartmentPage")
+    public String getDepartmentPage(@RequestBody DepartmentPageDTO requestParam){
+        return doctorRemoteService.getDepartmentPage(requestParam);
+    }
+
     @RequestMapping("/admin/api/department/insert")
-    public String insertDepartment(String name){
+    public String insertDepartment(@RequestParam("name") String name){
+        log.info("AdminController:{}", name);
         return doctorRemoteService.insertDepartment(name);
     }
 

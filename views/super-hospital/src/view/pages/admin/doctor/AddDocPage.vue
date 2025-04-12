@@ -1,6 +1,7 @@
 <template>
-    <span> 录入医生信息</span>
+    <el-tag type="primary" size="large">录入医生信息</el-tag>
     <div class="inputArea">
+        <el-row>
         <el-form ref="FormRef" :model="requestParam" :rules="requstRules">
             <el-form-item label="用户名：" prop="username">
                 <el-input v-model="requestParam.username"></el-input>
@@ -43,10 +44,15 @@
                     </el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="挂号费" prop="price">
+                <el-input style="width: 100px; margin-right: 6px;" v-model="requestParam.price" />元/次
+            </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="submit(FormRef)">提交</el-button>
+                <el-button type="success" @click="submit(FormRef)">提交</el-button>
+                <el-button type="primary" @click="router.go(-1)">返回</el-button>
             </el-form-item>
         </el-form>
+        </el-row>
     </div>
 
 </template>
@@ -104,6 +110,9 @@ const requstRules = {
     age:[
         { required: true, message: '请输入年龄！', trigger: 'blur' },
         { min: 1, max: 3, message: '请输入正确的年龄！' , trigger: 'blur' }
+    ],
+    price:[
+        { required: true, message: '请输入挂号费！', trigger: 'blur' },
     ]
 
 }
@@ -163,7 +172,8 @@ const requestParam = reactive({
     tele: '',
     mail: '',
     worktime: '',
-    department: ''
+    department: '',
+    price:''
 })
 
 const weeks = reactive({
@@ -182,7 +192,7 @@ const init = async () => {
 
 const submit = (formEl: FormInstance | undefined) => {
     requestParam.worktime = getTime(weeks.idx)
-    console.log(requestParam.worktime)
+    
     if (!formEl) return
     formEl.validate(async (valid) => {
         if (valid) {
