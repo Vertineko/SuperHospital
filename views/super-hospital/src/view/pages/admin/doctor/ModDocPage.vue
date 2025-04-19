@@ -12,7 +12,7 @@
                 <el-input v-model="requestParam.records.name"></el-input>
             </el-form-item>
             <el-form-item label="年龄：" prop="age">
-                <el-input v-model="requestParam.records.age"></el-input>
+                <el-input v-model.number="requestParam.records.age"></el-input>
             </el-form-item>
             <el-form-item label="性别：" prop="sex">
                 <el-radio-group v-model="requestParam.records.sex">
@@ -42,6 +42,9 @@
                     <el-option v-for="item in departments.records" :key="item.id" :label="item.name" :value="item.id">
                     </el-option>
                 </el-select>
+            </el-form-item>
+            <el-form-item label="挂号费" prop="price">
+                <el-input style="width: 100px; margin-right: 6px;" v-model="requestParam.records.price" />元/次
             </el-form-item>
             <el-form-item>
                 <el-button type="success" @click="submit(FormRef)">提交</el-button>
@@ -73,9 +76,20 @@ const route = useRoute()
 const router = useRouter()
 const FormRef = ref<FormInstance>()
 
+const checkAge = (rule:any, value:any, callback:any) =>{
+    if (value < 0 || value > 150){
+        callback(new Error('请输入的年龄应该为0-150！'))
+    } else {
+        callback()
+    }
+}
 const requstRules = {
+    username: [
+        { required: true, message: '请输入不为空的工号！', trigger: 'blur' },
+        { min: 5, max: 11, message: '工号长度应在8-11之间！', trigger: 'blur' }
+    ],
     password: [
-        { required: true, message: '请输入用户真实姓名', trigger: 'blur' },
+        { required: true, message: '请输入不为空的密码！', trigger: 'blur' },
         { min: 6, max: 13, message: '密码应该在6-13之间！', trigger: 'blur' }
     ],
     name: [
@@ -90,17 +104,28 @@ const requstRules = {
         { required: true, message: '请选择科室', trigger: 'blur' },
     ],
     mail: [
-        { required: true, message: '请输入邮箱！', trigger: 'blur' },
-        {}
+        { required: true, type:'email', message: '请输入正确的邮箱地址！', trigger: 'blur' },
+        
     ],
     tele: [
         { required: true, message: '请输入手机号码！', trigger: 'blur' },
+        { pattern: /^1[3-9]\d{9}$/, message:'请输入有效的手机号码', trigger: 'blur'}
     ],
     sex: [
         { required: true, message: '请选择性别！', trigger: 'blur' },
     ],
-    age: [
+    age:[
         { required: true, message: '请输入年龄！', trigger: 'blur' },
+        { type:'number', message:'年龄必须为数字！', trigger: ['blur', 'change'] },
+        { validator: checkAge, trigger: 'blur'}
+    ],
+    price:[
+        { required: true, message: '请输入挂号费！', trigger: 'blur' },
+        { 
+            pattern: /^[0-9]+(\.[0-9]{1,2})?$/, 
+            message: '请输入有效的金额，最多两位小数', 
+            trigger: 'blur' 
+        }
     ]
 
 }
@@ -161,7 +186,8 @@ const requestParam = reactive({
         tele: '',
         mail: '',
         worktime: '',
-        department: ''
+        department: '',
+        price:''
     }
 })
 

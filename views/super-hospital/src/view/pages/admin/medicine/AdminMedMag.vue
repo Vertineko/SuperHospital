@@ -69,7 +69,7 @@
                     <el-input v-model="addMedicineForm.price"></el-input>
                 </el-form-item>
                 <el-form-item label="数量:" prop="count">
-                    <el-input v-model="addMedicineForm.count"></el-input>
+                    <el-input v-model.number="addMedicineForm.count"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="add(addMedicineRef)">确认</el-button>
@@ -133,9 +133,7 @@
     align-items: center;
     justify-content: center;
 }
-.view{
-    padding: 10 10;
-}
+
 .el-icon{
     margin-right: 10px; 
 }
@@ -200,11 +198,17 @@ const addMedicineRules = {
         { required: true, message: '请填写备注！', trigger: 'blur' },
         { max: 255, message:'备注最长不超过255字符', trigger: 'blur'}
     ],
-    price: [
-        { required: true, message: '请填写价格！', trigger: 'blur' }
+    price:[
+        { required: true, message: '请输入挂号费！', trigger: 'blur' },
+        { 
+            pattern: /^[0-9]+(\.[0-9]{1,2})?$/, 
+            message: '请输入有效的金额，最多两位小数', 
+            trigger: 'blur' 
+        }
     ],
     count: [
-        { required: true, message: '请填写数量！', trigger: 'blur' }
+        { required: true, message: '请填写数量！', trigger: 'blur' },
+        { type:'number', message:'数量必须为数字！', trigger: ['blur', 'change'] },
     ]
 }
 
@@ -219,11 +223,17 @@ const modMedicineRules = {
         { required: true, message: '请填写备注！', trigger: 'blur' },
         { max: 255, message:'备注最长不超过255字符', trigger: 'blur'}
     ],
-    price: [
-        { required: true, message: '请填写价格！', trigger: 'blur' }
+    price:[
+        { required: true, message: '请输入挂号费！', trigger: 'blur' },
+        { 
+            pattern: /^[0-9]+(\.[0-9]{1,2})?$/, 
+            message: '请输入有效的金额，最多两位小数', 
+            trigger: 'blur' 
+        }
     ],
     count: [
-        { required: true, message: '请填写数量！', trigger: 'blur' }
+        { required: true, message: '请填写数量！', trigger: 'blur' },
+        { type:'number', message:'数量必须为数字！', trigger: ['blur', 'change'] },
     ]
 }
 

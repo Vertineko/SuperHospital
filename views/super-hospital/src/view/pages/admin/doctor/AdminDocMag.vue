@@ -18,9 +18,9 @@
                     <el-input style="max-width: 80px;" v-model="requestParam.name"></el-input>
                 </el-form-item>
                 <el-form-item label="年龄:" prop="age">
-                    <el-input style="max-width: 50px;" v-model="requestParam.minAge"></el-input>
-
-                    <el-input style="max-width: 50px;" v-model="requestParam.maxAge"></el-input>
+                    <el-input style="max-width: 50px;" v-model.number="requestParam.minAge"></el-input>
+                  
+                    <el-input style="max-width: 50px;" v-model.number="requestParam.maxAge"></el-input>
                 </el-form-item>
                 <el-form-item label="性别:" prop="sex">
                     <el-radio-group v-model="requestParam.sex">
@@ -218,8 +218,21 @@ const requestParam = reactive({
     size: '10'
 
 })
-const rules = {
+const checkAge = (rule:any, value:any, callback:any) => {
+    if (requestParam.maxAge != '' && requestParam.minAge != ''){
+        if (requestParam.maxAge < requestParam.minAge){
+            callback(new Error('最小年龄不能大于最大年龄！'))
+        }else {
+            callback()
+        }
+    }
+}
 
+const rules = {
+    age:[
+        {type:'number', message:'年龄必须是数字！', trigger:'change'},
+        {validator: checkAge, trigger:'blur'}
+    ],
 }
 const departments = reactive(
     {

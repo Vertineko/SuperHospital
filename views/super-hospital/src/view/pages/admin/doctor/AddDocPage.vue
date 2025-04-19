@@ -13,7 +13,7 @@
                 <el-input v-model="requestParam.name"></el-input>
             </el-form-item>
             <el-form-item label="年龄：" prop="age">
-                <el-input v-model="requestParam.age"></el-input>
+                <el-input v-model.number="requestParam.age"></el-input>
             </el-form-item>
             <el-form-item label="性别：" prop="sex">
                 <el-radio-group v-model="requestParam.sex">
@@ -76,6 +76,13 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 const FormRef = ref<FormInstance>()
+const checkAge = (rule:any, value:any, callback:any) =>{
+    if (value < 0 || value > 150){
+        callback(new Error('请输入的年龄应该为0-150！'))
+    } else {
+        callback()
+    }
+}
 
 const requstRules = {
     username: [
@@ -98,21 +105,28 @@ const requstRules = {
         { required: true, message: '请选择科室', trigger: 'blur' },
     ],
     mail: [
-        { required: true, message: '请输入邮箱！', trigger: 'blur' },
-        {}
+        { required: true, type:'email', message: '请输入正确的邮箱地址！', trigger: 'blur' },
+        
     ],
     tele: [
         { required: true, message: '请输入手机号码！', trigger: 'blur' },
+        { pattern: /^1[3-9]\d{9}$/, message:'请输入有效的手机号码', trigger: 'blur'}
     ],
     sex: [
         { required: true, message: '请选择性别！', trigger: 'blur' },
     ],
     age:[
         { required: true, message: '请输入年龄！', trigger: 'blur' },
-        { min: 1, max: 3, message: '请输入正确的年龄！' , trigger: 'blur' }
+        { type:'number', message:'年龄必须为数字！', trigger: ['blur', 'change'] },
+        { validator: checkAge, trigger: 'blur'}
     ],
     price:[
         { required: true, message: '请输入挂号费！', trigger: 'blur' },
+        { 
+            pattern: /^[0-9]+(\.[0-9]{1,2})?$/, 
+            message: '请输入有效的金额，最多两位小数', 
+            trigger: 'blur' 
+        }
     ]
 
 }
@@ -168,7 +182,7 @@ const requestParam = reactive({
     password: '',
     name: '',
     age: '',
-    sex: 'NULL',
+    sex: '',
     tele: '',
     mail: '',
     worktime: '',

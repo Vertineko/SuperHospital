@@ -26,7 +26,7 @@
                 
             <el-table-column label="操作">
                 <template #default="scope">
-                    <el-button type="primary" @click="modIsShow = true; FormData.id = scope.row.id ">修改</el-button>
+                    <el-button type="primary" @click="modInit(scope.row.id)">修改</el-button>
                     <el-button type="danger" @click="removeIsShow = true; FormData.id = scope.row.id ">删除</el-button>
                 </template>
             </el-table-column>
@@ -241,6 +241,11 @@ const add = (formEl: FormInstance | undefined) => {
             }
         }
     })
+}
+
+const modInit = async (id:string) =>{
+    modIsShow.value = true; 
+    getDetil(id)
 }
 
 const mod = (formEl: FormInstance | undefined) => {

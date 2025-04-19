@@ -93,7 +93,7 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="年龄:" prop="age">
-                    <el-input v-model="addPatientForm.age"></el-input>
+                    <el-input v-model.number="addPatientForm.age"></el-input>
                 </el-form-item>
                 <el-form-item label="电话:" prop="tele">
                     <el-input v-model="addPatientForm.tele"></el-input>
@@ -160,7 +160,7 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="年龄:" prop="age">
-                    <el-input v-model="ModForm.record.age"></el-input>
+                    <el-input v-model.number="ModForm.record.age"></el-input>
                 </el-form-item>
                 <el-form-item label="电话:" prop="tele">
                     <el-input v-model="ModForm.record.tele"></el-input>
@@ -305,6 +305,13 @@ const requestParam = reactive({
 const rules = {
 
 }
+const checkAge = (rule:any, value:any, callback:any) =>{
+    if (value < 0 || value > 150){
+        callback(new Error('请输入的年龄应该为0-150！'))
+    } else {
+        callback()
+    }
+}
 
 const addPatientRules = {
     name: [
@@ -323,11 +330,12 @@ const addPatientRules = {
     ],
     age: [
         { required: true, message: '请填写年龄！', trigger: 'blur' },
-        { min: 1, max: 3, message: '请输入正确的年龄', trigger: 'blur' }
+        { type:'number', message:'年龄必须为数字！', trigger: ['blur', 'change'] },
+        { validator: checkAge, trigger: 'blur'}
     ],
     tele: [
         { required: true, message: '请填写联系电话！', trigger: 'blur' },
-        { min: 11, max: 11, message: '请输入正确的电话号码！', trigger: 'blur' }
+        { pattern: /^1[3-9]\d{9}$/, message:'请输入有效的手机号码', trigger: 'blur'}
     ]
 }
 
@@ -336,7 +344,7 @@ const addPatientForm = reactive({
     password: '',
     name: '',
     age: '',
-    sex: 'NULL',
+    sex: '',
     tele: ''
 })
 
@@ -345,7 +353,7 @@ const ModForm = reactive({
         username:'',
         name: '',
         password: '',
-        sex: 'NULL',
+        sex: '',
         age: '',
         tele: ''
     }
@@ -361,7 +369,7 @@ const addFormClear = () => {
     addPatientForm.username = ''
     addPatientForm.password = ''
     addPatientForm.name = ''
-    addPatientForm.sex = 'NULL'
+    addPatientForm.sex = ''
     addPatientForm.age = ''
     addPatientForm.tele = ''
 }
