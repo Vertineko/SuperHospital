@@ -9,6 +9,7 @@ public enum DoctorErrorCode implements IErrorCode {
     DOCTOR_IS_NOT_EXISTED("D10003", "该医生用户不存在！"),
     OLD_PASSWORD_NOT_MATCH("D10004", "输入的原密码与账号原密码不一致！"),
     OLD_PASSWORD_SAME_WITH_NEW_PASSWORD("D10005", "输入的新密码与账号原密码一致！"),
+    DOCTOR_CAN_NOT_DELETE("D10006", "该医生下仍有预约或病历待处理，无法删除！"),
 
     DOCTOR_TOKEN_MISSING("A10003", "用户未登录！"),
     DOCTOR_TOKEN_WRONG("A10004", "该TOKEN已过期或失效，请重新登录！"),

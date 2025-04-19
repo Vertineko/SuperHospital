@@ -63,6 +63,11 @@ public class ReservationController {
         return Results.success(reservationService.getDocReservationHisPage(requestParam));
     }
 
+    @RequestMapping("/patient/api/reservation/isDelete")
+    public long isDelete(@RequestBody DocReservationHisDTO requestParam){
+        return reservationService.getDocReservationHisPage(requestParam).getTotal();
+    }
+
 
     /**
      * 管理员端获取历史预约列表

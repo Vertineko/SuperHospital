@@ -1,6 +1,7 @@
 package com.vertineko.shospital.service.Impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -21,6 +22,7 @@ import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
 import com.vertineko.shospital.dto.modifyPasswordDTO;
+import com.vertineko.shospital.remote.service.PatientRemoteService;
 import com.vertineko.shospital.service.DoctorService;
 import com.vertineko.shospital.usr.UserDO;
 import com.vertineko.shospital.utils.JwtUtil;
@@ -49,6 +51,8 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
     private final DoctorMapper doctorMapper;
 
     private final RedissonClient redisson;
+
+    private final PatientRemoteService patientRemoteService;
 
     private static final int KEY_ALIVE_TIME = 4;
 
@@ -108,6 +112,7 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
         //首先查找该ID指向的用户是否真实存在
         DoctorDO doctorDO = getById(id);
         if (doctorDO != null) {
+
             //先加锁, 此处的所获取模式为有限等待获取写锁(3000ms)，超时抛异常， 获取成功就删除
             RReadWriteLock rwLock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_KEY_PREFIX.getVal() + doctorDO.getId());
             rwLock.writeLock().lock(Long.parseLong(RedisKeyConstant.REDIS_LOCK_MAX_WAIT_TIME.getVal()), TimeUnit.MILLISECONDS);
@@ -126,6 +131,9 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
         //首先查找该ID指向的用户是否真实存在
         DoctorDO doctorDO = getByUsername(username);
         if (doctorDO != null) {
+            if (isDelete(username)){
+                throw new DoctorException(DoctorErrorCode.DOCTOR_CAN_NOT_DELETE);
+            }
             //先加锁, 此处的所获取模式为有限等待获取写锁(3000ms)，超时抛异常， 获取成功就删除
             RReadWriteLock rwLock = redisson.getReadWriteLock(RedisKeyConstant.DOCTOR_INFO_RWLOCK_KEY_PREFIX.getVal() + doctorDO.getId());
             rwLock.writeLock().lock(Long.parseLong(RedisKeyConstant.REDIS_LOCK_MAX_WAIT_TIME.getVal()), TimeUnit.MILLISECONDS);
@@ -255,5 +263,14 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
             return doctorMapper.updateById(doctor);
         }
         throw new DoctorException(DoctorErrorCode.OLD_PASSWORD_NOT_MATCH);
+    }
+
+    private boolean isDelete(String username){
+        DoctorDO doctor = getByUsername(username);
+        DocReservationHisDTO requestParam = new DocReservationHisDTO();
+        requestParam.setId(doctor.getId());
+        String res = patientRemoteService.isDelete(requestParam);
+        long result = JSON.parseObject(res, long.class);
+        return result > 0L;
     }
 }
