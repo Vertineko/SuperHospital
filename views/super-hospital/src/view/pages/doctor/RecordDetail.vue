@@ -118,18 +118,22 @@ onMounted(() =>{
 
 
 const init = async (recordId:any, orderId:any) =>{
-    const res = await getRecordDetails(recordId)
-    if (res.data.code === '200'){
-        updRecordDTO.records = res.data.data
-    }else {
-        ElMessage.error(res.data.data)
+    if (recordId != null && recordId != ''){
+        const res = await getRecordDetails(recordId)
+        if (res.data.code === '200'){
+            updRecordDTO.records = res.data.data
+        }else {
+            ElMessage.error(res.data.data)
+        }
     }
 
-    const orders = await getOrders(orderId);
-    if (orders.data.code === '200'){
-        updRecordDTO.records.medicinesVOList = orders.data.data
-    }else {
-        ElMessage.error(orders.data.data)
+    if (orderId != null && orderId != ''){
+        const orders = await getOrders(orderId);
+        if (orders.data.code === '200'){
+            updRecordDTO.records.medicinesVOList = orders.data.data
+        }else {
+            ElMessage.error(orders.data.data)
+        }
     }
     
 }
