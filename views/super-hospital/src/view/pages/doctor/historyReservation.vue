@@ -122,10 +122,7 @@ const options = [
         value:'2',
         label:'已归档病历'
     },
-    {
-        value:'3',
-        label:'已付款'
-    },
+
 ]
 
 onMounted(() =>{
@@ -190,8 +187,6 @@ const assistStatus = (status : number):string => {
             return '已接诊';
         case 2:
             return '已归档病历';
-        case 3:
-            return '已付款';
         default:
             // 处理未预期的状态值
             return '未知状态';

@@ -28,7 +28,7 @@
             <el-table-column label="姓名" prop="name" />
 
 
-            <el-table-column label="挂号费" prop="price" />
+            <el-table-column label="挂号费(元)" prop="price" />
 
 
             <el-table-column label="操作" >
