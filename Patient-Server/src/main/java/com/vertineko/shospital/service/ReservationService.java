@@ -19,7 +19,7 @@ public interface ReservationService {
 
     Integer updateReservation(UpdReservationDTO requestParam);
 
-    int deleteBatchReservation();
+    int deleteReservation(Long id);
 
     ReservationDO getReservation(Long id);
 

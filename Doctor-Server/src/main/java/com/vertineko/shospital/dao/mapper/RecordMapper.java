@@ -9,4 +9,10 @@ import org.apache.ibatis.annotations.Mapper;
 public interface RecordMapper extends BaseMapper<RecordDO> {
 
     RecordDetailVO getDetailByRecordId(Long recordId, Long patientId, Long doctorId);
+
+    Integer updReservation(Long reservationId, Long doctorId);
+
+    Integer updRecord(Long recordId, Long doctorId);
+
+    Long getRecordId(Long reservationId);
 }

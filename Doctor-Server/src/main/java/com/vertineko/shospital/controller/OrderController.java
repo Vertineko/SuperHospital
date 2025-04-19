@@ -23,4 +23,9 @@ public class OrderController {
     public Result<List<OrderVO>> getOrders(@PathVariable Long id){
         return Results.success(orderService.getOrders(id));
     }
+
+    @RequestMapping("/doctor/api/order/remove")
+    public Result<Integer> removeOrder(Long id) {
+        return Results.success(orderService.removeOrder(id));
+    }
 }

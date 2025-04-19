@@ -38,4 +38,8 @@ public interface PatientRemoteService {
     @RequestMapping("/patient/api/reservation/allReservation")
     String getAllHisReservationPage(AdminHisReservationDTO requestParam);
 
+
+    @RequestMapping("/patient/api/reservation/remove")
+    String deleteReservation(@RequestParam Long id);
+
 }

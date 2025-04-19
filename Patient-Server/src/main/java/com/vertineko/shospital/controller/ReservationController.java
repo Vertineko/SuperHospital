@@ -68,6 +68,11 @@ public class ReservationController {
         return reservationService.getDocReservationHisPage(requestParam).getTotal();
     }
 
+    @RequestMapping("/patient/api/reservation/remove")
+    public Result<Integer> deleteReservation(@RequestParam Long id){
+        return Results.success(reservationService.deleteReservation(id));
+    }
+
 
     /**
      * 管理员端获取历史预约列表

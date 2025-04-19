@@ -61,4 +61,19 @@
         where department = #{departmentId}
             and substring(worktime, #{currDay}, 1)
     </select>
+
+    <select id="getDoctorList" resultType="com.vertineko.shospital.dto.doctor.res.DoctorVO">
+        select id, name
+        from doctor
+        where department in (
+            select department from doctor where id = #{id}
+        ) and id != #{id}
+    </select>
+
+    <select id="getDoctorId" resultType="java.lang.Long">
+        select doctor_id from reservation
+        where id = #{id}
+    </select>
+
+
 </mapper>

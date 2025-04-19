@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vertineko.shospital.dao.mapper.RecordMapper">
+    <update id="updReservation">
+        update reservation
+        set doctor_id = #{doctorId}
+        where id = #{reservationId}
+    </update>
+    <update id="updRecord">
+        update record
+        set doctor_id = #{doctorId}
+        where id = #{recordId}
+    </update>
     <select id="getDetailByRecordId" resultType="com.vertineko.shospital.dto.doctor.res.RecordDetailVO">
         select r.id, j.department as department, j.doctor as doctor, j.patient as patient, j.age, j.sex as sex, r.epidemic as epidemic, r.conditions as conditions, r.checks as checks, r.assistant_check as assistantCheck, r.handle as handle, r.advice as advice, r.create_time as createTime
         from record as r left join (
@@ -11,6 +21,10 @@
         ) as j
         on r.id = #{recordId}
 
+    </select>
+
+    <select id="getRecordId" resultType="java.lang.Long">
+        select record_id from reservation where id = #{reservationId}
     </select>
 
 </mapper>

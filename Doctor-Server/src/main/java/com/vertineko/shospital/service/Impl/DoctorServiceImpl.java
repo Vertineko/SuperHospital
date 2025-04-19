@@ -16,11 +16,13 @@ import com.vertineko.shospital.constrain.exceptionDef.exception.DoctorException;
 import com.vertineko.shospital.constrain.exceptionDef.exception.PatientException;
 import com.vertineko.shospital.dao.DoctorDO;
 import com.vertineko.shospital.dao.mapper.DoctorMapper;
+import com.vertineko.shospital.dao.mapper.RecordMapper;
 import com.vertineko.shospital.dto.LoginDTO;
 import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
+import com.vertineko.shospital.dto.doctor.res.DoctorVO;
 import com.vertineko.shospital.dto.modifyPasswordDTO;
 import com.vertineko.shospital.remote.service.PatientRemoteService;
 import com.vertineko.shospital.service.DoctorService;
@@ -38,6 +40,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +52,8 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
     private final StringRedisTemplate redisTemplate;
 
     private final DoctorMapper doctorMapper;
+
+    private final RecordMapper recordMapper;
 
     private final RedissonClient redisson;
 
@@ -263,6 +268,21 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, DoctorDO> imple
             return doctorMapper.updateById(doctor);
         }
         throw new DoctorException(DoctorErrorCode.OLD_PASSWORD_NOT_MATCH);
+    }
+
+    /**
+     * 根据传入的医生ID查询同部门的其他医生
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public List<DoctorVO> getDoctorList(Long id) {
+        Long doctorId = doctorMapper.getDoctorId(id);
+        if (doctorId == null) {
+            throw new DoctorException(DoctorErrorCode.RECORD_NOT_EXISTED);
+        }
+        return doctorMapper.getDoctorList(doctorId);
     }
 
     private boolean isDelete(String username){

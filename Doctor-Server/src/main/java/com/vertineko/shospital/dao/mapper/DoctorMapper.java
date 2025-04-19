@@ -7,7 +7,10 @@ import com.vertineko.shospital.dto.doctor.req.DocAbsPageDTO;
 import com.vertineko.shospital.dto.doctor.req.DoctorPageDTO;
 import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
+import com.vertineko.shospital.dto.doctor.res.DoctorVO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface DoctorMapper extends BaseMapper<DoctorDO> {
@@ -16,4 +19,13 @@ public interface DoctorMapper extends BaseMapper<DoctorDO> {
 
 
     IPage<DocAbsPageVO> getDocAbsPage(DocAbsPageDTO requestParam);
+
+    List<DoctorVO> getDoctorList(Long id);
+
+    /**
+     * 根据预约ID获取医生ID
+     * @param id
+     * @return
+     */
+    Long getDoctorId(Long id);
 }

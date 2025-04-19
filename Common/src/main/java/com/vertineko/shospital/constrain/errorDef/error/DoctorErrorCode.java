@@ -23,6 +23,8 @@ public enum DoctorErrorCode implements IErrorCode {
 
     RECORD_UPDATE_FAILED("R00002", "病历更新失败！"),
 
+    ORDER_NOT_EXISTED("O00001", "该处方不存在或者已经被删除！"),
+
     MEDICINE_NOT_EXISTED("M00001", "该药品不存在或者已经被删除！");
 
 

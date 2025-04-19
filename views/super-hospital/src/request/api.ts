@@ -581,3 +581,24 @@ export function getOrders(data:string){
         method:'get'
     })
 }
+
+export function removeReservation(data:string){
+    return http({
+        url:'/api/admin/api/reservation/remove?id=' + data,
+        method:'delete'
+    })
+}
+
+export function getDoctorList(data:string){
+    return http({
+        url:'/api/admin/api/doctor/getDoctorList?id=' + data,
+        method:'get'
+    })
+}
+
+export function updateRecordsDoctor(reservationId:string, doctorId:string){
+    return http({
+        url:'/api/admin/api/record/change?reservationId=' + reservationId + '&' + 'doctorId=' + doctorId,
+        method:'put'
+    })
+}

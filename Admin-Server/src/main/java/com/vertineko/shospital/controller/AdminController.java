@@ -228,4 +228,24 @@ public class AdminController {
         return patientRemoteService.getAllHisReservationPage(requestParam);
     }
 
+    @RequestMapping("/admin/api/reservation/remove")
+    String deleteReservation(@RequestParam Long id){
+        return patientRemoteService.deleteReservation(id);
+    }
+
+    /**
+     * 获取该预约医生同科室的医生列表
+     * @param id
+     * @return
+     */
+    @RequestMapping("/admin/api/doctor/getDoctorList")
+    String getDoctorList(@RequestParam Long id){
+        return doctorRemoteService.getDoctorList(id);
+    }
+
+    @RequestMapping("/admin/api/record/change")
+    String updateRecordsDoctor(@RequestParam("reservationId") Long reservationId, @RequestParam("doctorId") Long doctorId){
+        return doctorRemoteService.updateRecordsDoctor(reservationId, doctorId);
+    }
+
 }

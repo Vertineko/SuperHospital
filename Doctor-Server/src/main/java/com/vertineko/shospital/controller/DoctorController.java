@@ -8,6 +8,7 @@ import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
+import com.vertineko.shospital.dto.doctor.res.DoctorVO;
 import com.vertineko.shospital.dto.modifyPasswordDTO;
 import com.vertineko.shospital.remote.service.PatientRemoteService;
 import com.vertineko.shospital.service.DoctorService;
@@ -15,6 +16,8 @@ import com.vertineko.shospital.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -113,6 +116,10 @@ public class DoctorController {
     }
 
 
+    @RequestMapping("/doctor/api/getDoctorList")
+    public Result<List<DoctorVO>> getDoctorList(@RequestParam Long id){
+        return Results.success(doctorService.getDoctorList(id));
+    }
 
     //远程调用
     @RequestMapping("/doctor/api/currReservation")

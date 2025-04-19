@@ -10,4 +10,6 @@ public interface OrderService {
     Long insertOrder(OrderDO order);
 
     List<OrderVO> getOrders(Long orderId);
+
+    Integer removeOrder(Long id);
 }

@@ -78,5 +78,10 @@ public interface DoctorRemoteService {
     @RequestMapping("/doctor/api/medicine/updMedicineDTO")
     String updateMedicine(@RequestBody updMedicineDTO requestParam);
 
+    @RequestMapping("/doctor/api/getDoctorList")
+    String getDoctorList(@RequestParam Long id);
+
+    @RequestMapping("/doctor/api/record/change")
+    String updateRecordsDoctor(@RequestParam("reservationId") Long reservationId, @RequestParam("doctorId") Long doctorId);
 
 }

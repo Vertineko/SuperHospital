@@ -51,7 +51,9 @@
             <el-table-column label="操作" >
                 
                 <template #default="scope">
-                    <el-button type="primary" v-if="scope.row.status >= 2" @click="detail(scope.row.id, scope.row.recordId, scope.row.orderId)">查看详情</el-button>
+                    <el-button type="success" v-if="scope.row.status >= 2" @click="detail(scope.row.id, scope.row.recordId, scope.row.orderId)">详情</el-button>
+                    <el-button type="primary" @click="isChange = true; curr = scope.row.id; changeInit()">修改</el-button>
+                    <el-button type="danger" @click="isRemove = true; curr = scope.row.id">删除</el-button>
                 </template>
             </el-table-column>
             <el-table-column  prop="recordId" v-if="false"/>
@@ -72,6 +74,38 @@
                 <el-button type="danger" @click="isCancel = false;">返回</el-button>
             </div>
         </el-dialog>
+
+        <!-- 删除预约对话框 -->
+        <el-dialog v-model="isRemove" title="删除预约" width="500" center :show-close="false" class="cancelDialog">
+            <div class="description">
+                确定要删除该预约吗，若是该预约已完成，将一并删除病历数据，此操作不可撤回！
+            </div>
+            <div class="act">
+                <el-button type="primary" @click="remove(curr)">确认</el-button>
+                <el-button type="danger" @click="isRemove = false;">返回</el-button>
+            </div>
+        </el-dialog>
+
+        <!-- 修改负责人对话框 -->
+        <el-dialog v-model="isChange" title="更改负责人" width="500" center :show-close="false" class="cancelDialog">
+            请选择医生：
+            <el-select
+            v-model="doctor"
+            placeholder="请选择同科室其他医生"
+            >
+                <el-option
+                v-for="item in doctorList.records"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+                
+                </el-option>
+            </el-select>
+            <div class="act">
+                <el-button type="primary" @click="change()">确认</el-button>
+                <el-button type="danger" @click="isChange = false;">返回</el-button>
+            </div>
+        </el-dialog>
     </div>
 
 </template>
@@ -80,13 +114,16 @@
 <script setup lang="ts">
 
 import { onMounted, reactive, ref } from 'vue';
-import { queryAllHisReservation, docCancelReservation } from '../../../../request/api';
+import { queryAllHisReservation, docCancelReservation, removeReservation, getDoctorList, updateRecordsDoctor } from '../../../../request/api';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
+const doctor = ref('')
 const curr = ref('')
+const isChange = ref(false)
 const isCancel = ref(false)
+const isRemove = ref(false)
 const searchForm = reactive({
     patientName: '',
     doctorName:'',
@@ -111,6 +148,16 @@ const reservationData = reactive({
         }
     ],
     total:1
+})
+
+const doctorList = reactive({
+    records:[
+        {
+            id:'',
+            name:''
+            
+        }
+    ]
 })
 
 const options = [
@@ -207,6 +254,53 @@ const assistStatus = (status : number):string => {
     }
 };
 
+const remove = async (id:string) =>{
+    if (curr.value != ''){
+        const res = await removeReservation(id)
+        if (res.data.code === '200'){
+            ElMessage.success('删除成功！')
+            query()
+            isRemove.value = false
+            curr.value = ''
+        }else {
+            ElMessage.error(res.data.data)
+            isRemove.value = false
+            curr.value = ''
+        }
+    }
+}
+
+const changeInit = async () =>{
+    if (curr.value != ''){
+        const res = await getDoctorList(curr.value)
+        if (res.data.code === '200'){
+            doctorList.records = res.data.data
+        }else{
+            ElMessage.error(res.data.data)
+            isChange.value = false
+        }
+    }
+}
+
+const change = async () => {
+    if (curr.value != '' && doctor.value != ''){
+        const res = await updateRecordsDoctor(curr.value, doctor.value)
+        if (res.data.code === '200'){
+            ElMessage.success('修改成功!')
+            query()
+            isChange.value = false
+            curr.value = ''
+            doctor.value = ''
+        }else {
+            ElMessage.error(res.data.data)
+            isChange.value = false
+            curr.value = ''
+            doctor.value = ''
+        }
+    }else {
+        ElMessage.info('请选择一个医生！')
+    }
+}
 
 const detail = (reservationId:string, recordId:string, orderId:string) => {
     router.push('/recordDetail?reservationId=' + reservationId + '&' + 'recordId=' + recordId + '&' + 'orderId=' + orderId)
@@ -218,5 +312,18 @@ const detail = (reservationId:string, recordId:string, orderId:string) => {
 
 .el-input{
     margin-right: 3px;
+}
+
+.el-dialog{
+    .context{
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: center;
+    }
+    .act{
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+    }
 }
 </style>

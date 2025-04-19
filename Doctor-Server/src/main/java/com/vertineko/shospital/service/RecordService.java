@@ -28,4 +28,5 @@ public interface RecordService {
 
     RecordDetailVO getRecordDetail(Long id);
 
+    Integer updateRecordsDoctor(Long reservationId, Long doctorId);
 }

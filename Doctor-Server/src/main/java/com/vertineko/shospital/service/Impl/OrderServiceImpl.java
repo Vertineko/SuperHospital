@@ -4,6 +4,8 @@ import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.vertineko.shospital.constrain.errorDef.error.DoctorErrorCode;
+import com.vertineko.shospital.constrain.exceptionDef.exception.DoctorException;
 import com.vertineko.shospital.dao.OrderDO;
 import com.vertineko.shospital.dao.mapper.MedicineMapper;
 import com.vertineko.shospital.dao.mapper.OrderMapper;
@@ -48,5 +50,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDO> implemen
             orderVO.setId(medicineMapper.selectById(orderVO.getId()).getName());
         }
         return res;
+    }
+
+    @Override
+    public Integer removeOrder(Long id) {
+        log.info("此次要删除的处方ID:{}", id);
+        OrderDO order = orderMapper.selectById(id);
+        if (order == null) {
+            throw new DoctorException(DoctorErrorCode.ORDER_NOT_EXISTED);
+        }
+        return orderMapper.deleteById(id);
     }
 }

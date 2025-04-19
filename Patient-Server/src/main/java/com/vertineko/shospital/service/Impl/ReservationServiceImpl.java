@@ -21,6 +21,7 @@ import com.vertineko.shospital.dto.doctor.res.DocReservationPageVO;
 import com.vertineko.shospital.dto.patient.req.ReservationPageDTO;
 import com.vertineko.shospital.dto.patient.req.UpdReservationDTO;
 import com.vertineko.shospital.dto.patient.res.ReservationPageVO;
+import com.vertineko.shospital.remote.service.DoctorRemoteService;
 import com.vertineko.shospital.service.ReservationService;
 import com.vertineko.shospital.usr.UserDO;
 import com.vertineko.shospital.utils.UserUtils;
@@ -29,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -40,6 +42,8 @@ public class ReservationServiceImpl extends ServiceImpl<ReservationMapper, Reser
     private final ReservationMapper reservationMapper;
 
     private final RedissonClient redisson;
+
+    private final DoctorRemoteService doctorRemoteService;
 
     private static final int LOCK_ALIVE_TIME = 100000;
 
@@ -73,8 +77,22 @@ public class ReservationServiceImpl extends ServiceImpl<ReservationMapper, Reser
     }
 
     @Override
-    public int deleteBatchReservation() {
-        return 0;
+    @Transactional
+    public int deleteReservation(Long id) {
+        //先检查预约是否存在
+        ReservationDO reservation = getReservation(id);
+        if (reservation == null) {
+            throw new PatientException(PatientErrorCode.RESERVATION_NOT_EXISTED);
+        }
+        //先删病历和处方
+        if (reservation.getOrderId() != null){
+            doctorRemoteService.removeOrder(reservation.getOrderId());
+        }
+        if (reservation.getRecordId() != null){
+            doctorRemoteService.removeRecord(reservation.getRecordId());
+        }
+        //最后删除预约
+        return reservationMapper.deleteById(id);
     }
 
     @Override

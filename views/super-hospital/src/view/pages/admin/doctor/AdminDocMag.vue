@@ -229,10 +229,7 @@ const checkAge = (rule:any, value:any, callback:any) => {
 }
 
 const rules = {
-    age:[
-        {type:'number', message:'年龄必须是数字！', trigger:'change'},
-        {validator: checkAge, trigger:'blur'}
-    ],
+    
 }
 const departments = reactive(
     {
@@ -308,6 +305,7 @@ const remove = async (username:string) => {
         init(requestParam)
     }else {
         ElMessage.error(res.data.data)
+        isRemoveShow.value = false
     }
 }
 </script>

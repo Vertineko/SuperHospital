@@ -7,7 +7,10 @@ import com.vertineko.shospital.dto.doctor.req.*;
 import com.vertineko.shospital.dto.doctor.res.DocAbsPageVO;
 import com.vertineko.shospital.dto.doctor.res.DocDetailVO;
 import com.vertineko.shospital.dto.doctor.res.DoctorPageVO;
+import com.vertineko.shospital.dto.doctor.res.DoctorVO;
 import com.vertineko.shospital.dto.modifyPasswordDTO;
+
+import java.util.List;
 
 public interface DoctorService {
 
@@ -42,4 +45,11 @@ public interface DoctorService {
     IPage<DocAbsPageVO> getDocAbsPage(DocAbsPageDTO requestParam);
 
     Integer modifyPassword(modifyPasswordDTO requestParam);
+
+    /**
+     * 根据传入的医生ID查询同部门的其他医生
+     * @param id
+     * @return
+     */
+    List<DoctorVO> getDoctorList(Long id);
 }

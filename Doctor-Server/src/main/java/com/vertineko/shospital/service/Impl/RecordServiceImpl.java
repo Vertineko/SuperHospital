@@ -12,6 +12,7 @@ import com.vertineko.shospital.dao.MedicineDO;
 import com.vertineko.shospital.dao.OrderDO;
 import com.vertineko.shospital.dao.RecordDO;
 import com.vertineko.shospital.dao.dto.req.InsertRecordDTO;
+import com.vertineko.shospital.dao.mapper.DoctorMapper;
 import com.vertineko.shospital.dao.mapper.MedicineMapper;
 import com.vertineko.shospital.dao.mapper.OrderMapper;
 import com.vertineko.shospital.dao.mapper.RecordMapper;
@@ -44,6 +45,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
     private final OrderMapper orderMapper;
 
     private final PatientRemoteService patientService;
+    private final DoctorMapper doctorMapper;
 
 
     @Override
@@ -91,6 +93,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
 
     @Override
     public int removeRecord(Long id) {
+        log.info("此次要删除的病历ID：{}", id);
         RecordDO record = getById(id);
         if (record == null) {
             throw new DoctorException(DoctorErrorCode.RECORD_NOT_EXISTED);
@@ -154,4 +157,19 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
         }
         return recordDetailVO;
     }
+
+    @Override
+    @Transactional
+    public Integer updateRecordsDoctor(Long reservationId, Long doctorId) {
+        Long recordId = recordMapper.getRecordId(reservationId);
+        RecordDO record = getById(recordId);
+        if (record == null) {
+            throw new DoctorException(DoctorErrorCode.RECORD_NOT_EXISTED);
+        }
+        recordMapper.updRecord(recordId, doctorId);
+        recordMapper.updReservation(reservationId, doctorId);
+        return 1;
+    }
+
+
 }
