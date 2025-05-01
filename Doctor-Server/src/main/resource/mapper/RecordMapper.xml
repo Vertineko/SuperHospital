@@ -20,7 +20,7 @@
             on p.id = #{patientId} and d.id = #{doctorId} and d2.id = d.department
         ) as j
         on r.id = #{recordId}
-
+        where r.id = #{recordId}
     </select>
 
     <select id="getRecordId" resultType="java.lang.Long">
