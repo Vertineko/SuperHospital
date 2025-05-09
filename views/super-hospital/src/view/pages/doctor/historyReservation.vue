@@ -1,6 +1,6 @@
 <template>
     <div class="show">
-        历史处理预约
+        <el-tag type="primary" size="large">历史处理预约</el-tag>
         <el-form :model="searchForm">
             <el-row>
                 <el-form-item 
