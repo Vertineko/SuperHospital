@@ -7,9 +7,9 @@ public class UpdReservationDTO {
 
     private String id;
 
-    private Long orderId;
+    private String orderId;
 
-    private Long recordId;
+    private String recordId;
 
     private Integer status;
 }
