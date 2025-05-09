@@ -25,8 +25,8 @@ public enum DoctorErrorCode implements IErrorCode {
 
     ORDER_NOT_EXISTED("O00001", "该处方不存在或者已经被删除！"),
 
-    MEDICINE_NOT_EXISTED("M00001", "该药品不存在或者已经被删除！");
-
+    MEDICINE_NOT_EXISTED("M00001", "该药品不存在或者已经被删除！"),
+    MEDICINE_NOT_ENOUGH("M00002", "该药品库存不足！");
 
     private final String code;
     private final String message;

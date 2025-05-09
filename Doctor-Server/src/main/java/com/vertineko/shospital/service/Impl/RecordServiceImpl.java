@@ -117,6 +117,12 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
             if (medicine == null){
                 throw new DoctorException(DoctorErrorCode.MEDICINE_NOT_EXISTED);
             }
+            if (medicine.getCount() < medicineDTO.getCount()){
+                throw new DoctorException(DoctorErrorCode.MEDICINE_NOT_ENOUGH);
+            }
+            medicine.setCount(medicine.getCount() - medicineDTO.getCount());
+            //还需要更新药品库存
+            medicineMapper.updateById(medicine);
             BigDecimal temp = new BigDecimal(medicine.getPrice());
             decimal = decimal.add(temp);
         }
