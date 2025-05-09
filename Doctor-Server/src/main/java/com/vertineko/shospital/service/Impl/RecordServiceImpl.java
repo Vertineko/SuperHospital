@@ -61,7 +61,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
             Long recordId = recordDO.getId();
             UpdReservationDTO updReservationDTO = new UpdReservationDTO();
             updReservationDTO.setId(requestParam.getReservationId());
-            updReservationDTO.setRecordId(recordId);
+            updReservationDTO.setRecordId(recordId + "");
             updReservationDTO.setStatus(StatusConstant.SUBMITTED);
             patientRemoteService.updateReservation(updReservationDTO);
         }else {
@@ -144,7 +144,7 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
         //再更新预约
         UpdReservationDTO updReservationDTO = new UpdReservationDTO();
         updReservationDTO.setId(requestParam.getReservationId());
-        updReservationDTO.setOrderId(orderId);
+        updReservationDTO.setOrderId(orderId + "");
         updReservationDTO.setStatus(StatusConstant.COMPLETED);
         patientRemoteService.updateReservation(updReservationDTO);
         return 1;
