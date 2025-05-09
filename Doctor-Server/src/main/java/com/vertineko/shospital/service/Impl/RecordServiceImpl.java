@@ -139,10 +139,11 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, RecordDO> imple
         log.info("{}", orderId);
         RecordDO record = new RecordDO();
         BeanUtil.copyProperties(requestParam, record);
-        //再次更新病历
+        //更新病历
         recordMapper.updateById(record);
         //再更新预约
         UpdReservationDTO updReservationDTO = new UpdReservationDTO();
+
         updReservationDTO.setId(requestParam.getReservationId());
         updReservationDTO.setOrderId(orderId + "");
         updReservationDTO.setStatus(StatusConstant.COMPLETED);

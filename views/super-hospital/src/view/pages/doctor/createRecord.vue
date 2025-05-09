@@ -10,7 +10,7 @@
         title="录入病历">
             <el-descriptions-item span="2" label="病历编号">
                 <el-form-items v-model="updRecordDTO.records.id" prop="id">
-                    {{ recordBaseInfo.id }}
+                    {{ updRecordDTO.records.id }}
                 </el-form-items>
             </el-descriptions-item>
             <el-descriptions-item label="科室">
@@ -90,7 +90,7 @@
         </el-descriptions>
         <el-form-item>
             <el-button type="primary" @click="isConfirm=true">确认提交</el-button>
-            <el-button type="danger" @click="">返回</el-button>
+            <el-button type="danger" @click="back()">返回</el-button>
         </el-form-item>
     </el-form>
 
@@ -253,6 +253,10 @@ const submit = async () => {
         isConfirm.value = false
         ElMessage.error(res.data.data)
     }
+}
+
+const back = () =>{
+    router.go(-1)
 }
 </script>
 

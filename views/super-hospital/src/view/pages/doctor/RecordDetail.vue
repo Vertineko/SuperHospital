@@ -118,7 +118,7 @@ onMounted(() =>{
 
 
 const init = async (recordId:any, orderId:any) =>{
-    if (recordId != null && recordId != ''){
+    if (recordId != "null" && recordId != ''){
         const res = await getRecordDetails(recordId)
         if (res.data.code === '200'){
             updRecordDTO.records = res.data.data
@@ -127,7 +127,8 @@ const init = async (recordId:any, orderId:any) =>{
         }
     }
 
-    if (orderId != null && orderId != ''){
+    if (orderId != "null" && orderId != ''){
+        console.log(orderId)
         const orders = await getOrders(orderId);
         if (orders.data.code === '200'){
             updRecordDTO.records.medicinesVOList = orders.data.data

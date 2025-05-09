@@ -153,7 +153,7 @@ const accept = async (reservationId:string, patientId:string) =>{
     const res = await insertRecord(requestParam)
     if (res.data.code === '200'){
         ElMessage.success('接受预约成功，请及时接诊并如实填写病历！')
-        router.push('/createRecord?recordId=' + res.data.data)
+        router.push('/createRecord?recordId=' + res.data.data + '&' + 'reservationId=' + curr.value)
     }else {
         ElMessage.error(res.data.data)
     }
