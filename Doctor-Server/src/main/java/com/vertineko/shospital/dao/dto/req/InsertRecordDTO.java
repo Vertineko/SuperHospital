@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class InsertRecordDTO {
 
-    private Long reservationId;
+    private String reservationId;
 
-    private Long patientId;
+    private String patientId;
 
 }

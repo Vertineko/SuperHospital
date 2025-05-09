@@ -68,7 +68,7 @@ public class ReservationServiceImpl extends ServiceImpl<ReservationMapper, Reser
 
     @Override
     public Integer updateReservation(UpdReservationDTO requestParam) {
-        ReservationDO reservation = getReservation(requestParam.getId());
+        ReservationDO reservation = getReservation(Long.parseLong(requestParam.getId()));
         if (reservation == null) {
             throw new PatientException(PatientErrorCode.RESERVATION_NOT_EXISTED);
         }

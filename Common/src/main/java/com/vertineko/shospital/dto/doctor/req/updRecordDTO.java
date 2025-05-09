@@ -7,9 +7,9 @@ import java.util.List;
 @Data
 public class updRecordDTO {
 
-    private Long id;
+    private String id;
 
-    private Long reservationId;
+    private String reservationId;
 
     private Integer epidemic;
 

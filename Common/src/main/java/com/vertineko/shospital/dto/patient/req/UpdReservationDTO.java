@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UpdReservationDTO {
 
-    private Long id;
+    private String id;
 
     private Long orderId;
 
