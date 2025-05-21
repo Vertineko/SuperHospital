@@ -72,7 +72,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminDO> implemen
     @Override
     public int addAdmin(AdminInsertDTO requestParam) {
         //先查找该Username是否已经被占用
-        AdminDO admin = getById(requestParam.getUsername());
+        AdminDO admin = getByUsername(requestParam.getUsername());
         if (admin != null) {
             throw new AdminException(AdminErrorCode.ADMIN_USERNAME_REPEATED);
         }
